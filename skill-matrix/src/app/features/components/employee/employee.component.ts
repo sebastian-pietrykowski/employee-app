@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { Employee } from '../employee';
+import { Employee } from '../../models/employee';
 
 @Component({
   selector: 'app-employee',
@@ -8,7 +8,7 @@ import { Employee } from '../employee';
 })
 export class EmployeeComponent {
   employee: Employee = {
-    id: 1,
+    id: "1",
     name: 'Jan',
     surname: 'Kowalski',
     employmentDate: new Date(2023, 7, 17, 10, 0, 0, 0),
