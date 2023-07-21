@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Employee } from '../../models/employee';
+import { MOCK_EMPLOYEES } from '../../mocks/mock-employees';
 
 @Component({
   selector: 'app-employee',
@@ -7,13 +8,9 @@ import { Employee } from '../../models/employee';
   styleUrls: ['./employee.component.scss'],
 })
 export class EmployeeComponent {
-  employee: Employee = {
-    id: '1',
-    name: 'Jan',
-    surname: 'Kowalski',
-    employmentDate: new Date(2023, 7, 17, 10, 0, 0, 0),
-    listOfSkills: ['skill 1', 'skill 2'],
-    listOfProjects: ['project 1', 'project 2'],
-    manager: undefined,
-  };
+  employeeList: Array<Employee> = MOCK_EMPLOYEES;
+  selectedEmployee?: Employee;
+  onSelect(employee: Employee) {
+    this.selectedEmployee = employee;
+  }
 }
