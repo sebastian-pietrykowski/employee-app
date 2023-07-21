@@ -1,17 +1,20 @@
-<header>
-  <h2>Employee info</h2>
-  <h3>
-    {{ employee.name | uppercase }} {{ employee.surname | uppercase }} Details
-  </h3>
-</header>
 <article>
+  <header>
+    <h2>Employee info</h2>
+    <h3>
+      {{ employee.name | uppercase }} {{ employee.surname | uppercase }} Details
+    </h3>
+  </header>
   <div><span>id: </span>{{ employee.id }}</div>
-  <div><span>employment date: </span>{{ employee.employmentDate | date }}</div>
+  <div>
+    <span>employment date: </span
+    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}
+  </div>
   <div><span>skills: </span>{{ employee.listOfSkills }}</div>
   <div><span>projects: </span>{{ employee.listOfProjects }}</div>
   <div><span>manager: </span>{{ employee.manager }}</div>
-  <section>
+  <div>
     <label for="name">Employee name: </label>
     <input id="name" [(ngModel)]="employee.name" placeholder="name" />
-  </section>
+  </div>
 </article>
