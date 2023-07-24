@@ -1,7 +1,4 @@
-@import "../assets/styles/headers";
-
 .app-container {
   &__header {
-    @extend %h1;
   }
 }

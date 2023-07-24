@@ -1,13 +1,7 @@
-@import "../../../../assets/styles/buttons";
-@import "../../../../assets/styles/headers";
 @import "../../../../assets/styles/colors";
 
 .employee {
   font-size: 1.6rem;
-
-  &_header {
-    @extend %h2;
-  }
 
   &__list {
     margin: 0 0 2rem 0;
@@ -21,7 +15,6 @@
   }
 
   &__list-button {
-    @extend %button;
     font-size: 1.6rem;
     flex: 1;
     cursor: pointer;
@@ -37,7 +30,7 @@
   }
 
   &__list-button:hover {
-    color: #2c3a41;
+    color: $app-dark-slate-blue;
     background-color: $app-very-light-gray;
     left: 0.1rem;
   }
@@ -74,9 +67,5 @@
 
   &__employee_list &__full-name-select {
     align-self: center;
-  }
-
-  &__employee__info {
-    color: red;
   }
 }
