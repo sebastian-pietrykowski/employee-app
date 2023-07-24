@@ -8,9 +8,10 @@ import { MOCK_EMPLOYEES } from '../../mocks/mock-employees';
   styleUrls: ['./employee.component.scss'],
 })
 export class EmployeeComponent {
-  employeeList: Array<Employee> = MOCK_EMPLOYEES;
+  employeeList: Employee[] = MOCK_EMPLOYEES;
   selectedEmployee?: Employee;
-  onSelect(employee: Employee) {
+
+  onSelect(employee: Employee): void {
     this.selectedEmployee = employee;
   }
 }

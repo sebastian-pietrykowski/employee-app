@@ -1,6 +1,6 @@
-@import "src/assets/styles/buttons";
-@import "src/assets/styles/headers";
-@import "src/assets/styles/colors";
+@import "../../../../assets/styles/buttons";
+@import "../../../../assets/styles/headers";
+@import "../../../../assets/styles/colors";
 
 .employee {
   font-size: 1.6rem;
@@ -34,18 +34,17 @@
     align-items: center;
     justify-content: center;
     height: 5rem;
-    //width: ;
   }
 
   &__list-button:hover {
     color: #2c3a41;
-    background-color: $very-light-gray;
+    background-color: $app-very-light-gray;
     left: 0.1rem;
   }
 
   &__list-button:active {
-    background-color: $dim-gray;
-    color: #fafafa;
+    background-color: $app-dim-gray;
+    color: white;
   }
 
   &__list-button--selected {
@@ -54,7 +53,7 @@
   }
 
   &__list-button--selected:hover {
-    background-color: $charcoal-gray;
+    background-color: $app-charcoal-gray;
     color: white;
   }
 
@@ -65,10 +64,9 @@
 
   &__employee_list &__full-name-select {
     display: inline-block;
-    //font-size: small;
     color: white;
     padding: 0.8rem 0.7rem 0 0.7rem;
-    background-color: $steel-blue;
+    background-color: $app-steel-blue;
     line-height: 1rem;
     margin-right: 0.8rem;
     border-radius: 4px 0 0 4px;

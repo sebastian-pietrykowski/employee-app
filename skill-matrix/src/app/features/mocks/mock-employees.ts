@@ -1,6 +1,6 @@
 import { Employee } from '../models/employee';
 
-export const MOCK_EMPLOYEES: Array<Employee> = [
+export const MOCK_EMPLOYEES: Employee[] = [
   {
     id: '1',
     name: 'Jan',
