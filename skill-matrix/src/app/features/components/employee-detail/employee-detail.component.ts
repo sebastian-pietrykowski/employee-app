@@ -17,15 +17,19 @@ import { Employee } from '../../models/employee';
 export class EmployeeDetailComponent {
   @Input() employee?: Employee;
 
-  employeeProfileForm = this.formBuilder.group({
-    id: [this.employee?.id],
-    name: ['', Validators.required],
-    surname: ['', Validators.required],
-    employmentDate: ['', Validators.required],
-    listOfSkills: this.formBuilder.array([]),
-    listOfProjects: this.formBuilder.array([]),
-    manager: [''],
-  });
+  employeeProfileForm: FormGroup<any> = new FormGroup({});
+
+  ngOnChanges(): void {
+    this.employeeProfileForm = this.formBuilder.group({
+      id: [this.employee?.id],
+      name: [this.employee?.name, Validators.required],
+      surname: [this.employee?.surname, Validators.required],
+      employmentDate: [this.employee?.employmentDate.toISOString().slice(0,10), Validators.required],
+      listOfSkills: this.formBuilder.array([]),
+      listOfProjects: this.formBuilder.array([]),
+      manager: [this.employee?.manager],
+    });
+  }
 
   get listOfProjects() {
     return this.employeeProfileForm.get('listOfProjects') as FormArray;
