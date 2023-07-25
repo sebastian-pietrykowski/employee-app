@@ -1,0 +1,30 @@
+<div class="employee-detail__info" *ngIf="employee">
+  <h3 class="employee-detail__full-name">
+    {{ employee.name | uppercase }}
+    {{ employee.surname | uppercase }} Details
+  </h3>
+  <div class="employee-detail__id"><span>ID: </span>{{ employee.id }}</div>
+  <div class="employee-detail__employmentDate">
+    <span>Employment date: </span
+    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}
+  </div>
+  <div class="employee-detail__skills">
+    <span>Skills: </span>
+    <ul class="employee-detail__skills-list" *ngFor="let skill of employee.listOfSkills">
+      <li class="employee-detail__skills-item">{{skill}}</li>
+    </ul>
+  </div>
+  <div class="employee-detail_projects">
+    <span>Projects: </span>
+    <ul class="employee-detail__projects-list" *ngFor="let project of employee.listOfProjects">
+      <li class="employee-detail__projects-item">{{project}}</li>
+    </ul>
+  </div>
+  <div class="employee-detail__manager">
+    <span>Manager: </span>{{ employee.manager }}
+  </div>
+  <div class="employee-detail__name-input">
+    <label for="name">Employee name: </label>
+    <input id="name" [(ngModel)]="employee.name" placeholder="name" />
+  </div>
+</div>
