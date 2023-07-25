@@ -1,30 +1,88 @@
 <div class="employee-detail__info" *ngIf="employee">
-  <h3 class="employee-detail__full-name">
+  <h2 class="employee-detail__full-name">
     {{ employee.name | uppercase }}
     {{ employee.surname | uppercase }} Details
-  </h3>
-  <div class="employee-detail__id"><span>ID: </span>{{ employee.id }}</div>
-  <div class="employee-detail__employmentDate">
-    <span>Employment date: </span
-    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}
-  </div>
-  <div class="employee-detail__skills">
-    <span>Skills: </span>
-    <ul class="employee-detail__skills-list" *ngFor="let skill of employee.listOfSkills">
-      <li class="employee-detail__skills-item">{{skill}}</li>
-    </ul>
-  </div>
-  <div class="employee-detail_projects">
-    <span>Projects: </span>
-    <ul class="employee-detail__projects-list" *ngFor="let project of employee.listOfProjects">
-      <li class="employee-detail__projects-item">{{project}}</li>
-    </ul>
-  </div>
-  <div class="employee-detail__manager">
-    <span>Manager: </span>{{ employee.manager }}
-  </div>
-  <div class="employee-detail__name-input">
-    <label for="name">Employee name: </label>
-    <input id="name" [(ngModel)]="employee.name" placeholder="name" />
-  </div>
+  </h2>
+  <!--  <div class="employee-detail__id"><span>ID: </span>{{ employee.id }}</div>-->
+  <!--  <div class="employee-detail__employmentDate">-->
+  <!--    <span>Employment date: </span-->
+  <!--    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}-->
+  <!--  </div>-->
+  <!--  <div class="employee-detail__skills">-->
+  <!--    <span>Skills: </span>-->
+  <!--    <ul class="employee-detail__skills-list" *ngFor="let skill of employee.listOfSkills">-->
+  <!--      <li class="employee-detail__skills-item">{{skill}}</li>-->
+  <!--    </ul>-->
+  <!--  </div>-->
+  <!--  <div class="employee-detail_projects">-->
+  <!--    <span>Projects: </span>-->
+  <!--    <ul class="employee-detail__projects-list" *ngFor="let project of employee.listOfProjects">-->
+  <!--      <li class="employee-detail__projects-item">{{project}}</li>-->
+  <!--    </ul>-->
+  <!--  </div>-->
+  <!--  <div class="employee-detail__manager">-->
+  <!--    <span>Manager: </span>{{ employee.manager }}-->
+  <!--  </div>-->
+  <!--  <div class="employee-detail__name-input">-->
+  <!--    <label for="name">Employee name: </label>-->
+  <!--    <input id="name" [(ngModel)]="employee.name" placeholder="name" />-->
+  <!--  </div>-->
+  <form
+    class="employee-detail__form"
+    [formGroup]="employeeProfileForm"
+    (ngSubmit)="updateProfile()"
+  >
+    <div>
+      <label for="name">Name: </label>
+      <input id="name" type="text" formControlName="name" />
+    </div>
+    <div>
+      <label for="surname">Surname: </label>
+      <input id="surname" type="text" formControlName="surname" />
+    </div>
+    <div>
+      <label for="employmentDate">Employment date: </label>
+      <input id="employmentDate" type="date" formControlName="employmentDate" />
+    </div>
+    <div>
+      <label for="manager">Manager: </label>
+      <input id="manager" type="text" formControlName="manager" />
+    </div>
+    <div formArrayName="listOfSkills">
+      <h3>Skills:</h3>
+      <button type="button" (click)="addUndefinedSkill()">+ Add another skill</button>
+      <div
+        *ngFor="let skillControl of listOfSkills.controls; let index = index"
+      >
+        <label for="skill-{{ index }}">Skill:</label>
+        <input id="skill-{{ index }}" type="text" [formControlName]="index" />
+        <button type="button" (click)="removeSkillAt(index)">
+          - Remove skill
+        </button>
+      </div>
+    </div>
+    <div formArrayName="listOfProjects">
+      <h3>Projects:</h3>
+      <button type="button" (click)="addUndefinedProject()">
+        + Add another project
+      </button>
+      <div
+        *ngFor="
+          let projectControl of listOfProjects.controls;
+          let index = index
+        "
+      >
+        <label for="project-{{ index }}">Project:</label>
+        <input id="project-{{ index }}" type="text" [formControlName]="index" />
+        <button type="button" (click)="removeProjectAt(index)">
+          - Remove skill
+        </button>
+      </div>
+    </div>
+    <p>Form Value: {{ employeeProfileForm.status | json }}</p>
+    <button type="submit" [disabled]="!employeeProfileForm.valid">
+      Submit
+    </button>
+    <p>{{ employeeProfileForm.value | json }}</p>
+  </form>
 </div>
