@@ -1,20 +1,43 @@
-<article>
-  <header>
+<article class="employee">
+  <header class="employee__header">
     <h2>Employee info</h2>
-    <h3>
-      {{ employee.name | uppercase }} {{ employee.surname | uppercase }} Details
-    </h3>
   </header>
-  <div><span>id: </span>{{ employee.id }}</div>
-  <div>
-    <span>employment date: </span
-    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}
-  </div>
-  <div><span>skills: </span>{{ employee.listOfSkills }}</div>
-  <div><span>projects: </span>{{ employee.listOfProjects }}</div>
-  <div><span>manager: </span>{{ employee.manager }}</div>
-  <div>
-    <label for="name">Employee name: </label>
-    <input id="name" [(ngModel)]="employee.name" placeholder="name" />
+  <ul class="employee__list">
+    <li class="employee__list-element" *ngFor="let employee of employeeList">
+      <button
+        class="employee__list-button"
+        [class.employee__list-button--selected]="employee === selectedEmployee"
+        type="button"
+        (click)="onSelect(employee)"
+      >
+        <span class="employee__full-name-select"
+          >{{ employee.name }} {{ employee.surname }}</span
+        >
+      </button>
+    </li>
+  </ul>
+  <div class="employee__info" *ngIf="selectedEmployee">
+    <h3 class="employee__details">
+      {{ selectedEmployee.name | uppercase }}
+      {{ selectedEmployee.surname | uppercase }} Details
+    </h3>
+    <div classs="employee__id"><span>ID: </span>{{ selectedEmployee.id }}</div>
+    <div class="employee_employmentDate">
+      <span>Employment date: </span
+      >{{ selectedEmployee.employmentDate | date: "dd.MM.yyyy" }}
+    </div>
+    <div class="employee_skills">
+      <span>Skills: </span>{{ selectedEmployee.listOfSkills }}
+    </div>
+    <div class="employee_projects">
+      <span>Projects: </span>{{ selectedEmployee.listOfProjects }}
+    </div>
+    <div class="employee_manager">
+      <span>Manager: </span>{{ selectedEmployee.manager }}
+    </div>
+    <div class="employee_name-input">
+      <label for="name">Employee name: </label>
+      <input id="name" [(ngModel)]="selectedEmployee.name" placeholder="name" />
+    </div>
   </div>
 </article>

@@ -1,0 +1,71 @@
+@import "../../../../assets/styles/colors";
+
+.employee {
+  font-size: 1.6rem;
+
+  &__list {
+    margin: 0 0 2rem 0;
+    list-style-type: none;
+    padding: 0;
+    width: 15rem;
+  }
+
+  &__list-element {
+    display: flex;
+  }
+
+  &__list-button {
+    font-size: 1.6rem;
+    flex: 1;
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    margin: 0.5rem;
+    padding: 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 5rem;
+  }
+
+  &__list-button:hover {
+    color: $app-dark-slate-blue;
+    background-color: $app-very-light-gray;
+    left: 0.1rem;
+  }
+
+  &__list-button:active {
+    background-color: $app-dim-gray;
+    color: white;
+  }
+
+  &__list-button--selected {
+    background-color: black;
+    color: white;
+  }
+
+  &__list-button--selected:hover {
+    background-color: $app-charcoal-gray;
+    color: white;
+  }
+
+  &__list-button--selected:active {
+    background-color: black;
+    color: white;
+  }
+
+  &__employee_list &__full-name-select {
+    display: inline-block;
+    color: white;
+    padding: 0.8rem 0.7rem 0 0.7rem;
+    background-color: $app-steel-blue;
+    line-height: 1rem;
+    margin-right: 0.8rem;
+    border-radius: 4px 0 0 4px;
+  }
+
+  &__employee_list &__full-name-select {
+    align-self: center;
+  }
+}
