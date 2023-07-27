@@ -15,6 +15,20 @@
         >
       </button>
     </li>
+    <li class="employee__list-element">
+      <button
+        class="employee__list-button"
+        type="button"
+        (click)="onSelect(createEmptyEmployee())"
+      >
+        <span class="employee__full-name-select">+</span>
+      </button>
+    </li>
   </ul>
-  <app-employee-detail [employee]="selectedEmployee"></app-employee-detail>
+  <app-employee-detail
+    [employee]="selectedEmployee"
+    [employeeList]="employeeList"
+    (updateEmployeeProfileEvent)="updateEmployee($event)"
+    (removeEmployeeEvent)="removeEmployee($event)"
+  ></app-employee-detail>
 </article>

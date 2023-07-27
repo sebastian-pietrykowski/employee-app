@@ -3,34 +3,10 @@
     {{ employee.name | uppercase }}
     {{ employee.surname | uppercase }} Details
   </h2>
-  <!--  <div class="employee-detail__id"><span>ID: </span>{{ employee.id }}</div>-->
-  <!--  <div class="employee-detail__employmentDate">-->
-  <!--    <span>Employment date: </span-->
-  <!--    >{{ employee.employmentDate | date: "dd.MM.yyyy" }}-->
-  <!--  </div>-->
-  <!--  <div class="employee-detail__skills">-->
-  <!--    <span>Skills: </span>-->
-  <!--    <ul class="employee-detail__skills-list" *ngFor="let skill of employee.listOfSkills">-->
-  <!--      <li class="employee-detail__skills-item">{{skill}}</li>-->
-  <!--    </ul>-->
-  <!--  </div>-->
-  <!--  <div class="employee-detail_projects">-->
-  <!--    <span>Projects: </span>-->
-  <!--    <ul class="employee-detail__projects-list" *ngFor="let project of employee.listOfProjects">-->
-  <!--      <li class="employee-detail__projects-item">{{project}}</li>-->
-  <!--    </ul>-->
-  <!--  </div>-->
-  <!--  <div class="employee-detail__manager">-->
-  <!--    <span>Manager: </span>{{ employee.manager }}-->
-  <!--  </div>-->
-  <!--  <div class="employee-detail__name-input">-->
-  <!--    <label for="name">Employee name: </label>-->
-  <!--    <input id="name" [(ngModel)]="employee.name" placeholder="name" />-->
-  <!--  </div>-->
   <form
     class="employee-detail__form"
     [formGroup]="employeeProfileForm"
-    (ngSubmit)="updateProfile()"
+    (ngSubmit)="updateEmployeeProfile()"
   >
     <div>
       <label for="name">Name: </label>
@@ -46,26 +22,48 @@
     </div>
     <div>
       <label for="manager">Manager: </label>
-      <input id="manager" type="text" formControlName="manager" />
+      <select name="manager" id="manager" formControlName="managerId">
+        <option value="none" disabled>Choose a manager</option>
+        <option value="undefined">-</option>
+        <option
+          *ngFor="let manager of determineListOfPossibleManagers()"
+          [ngValue]="manager.id"
+        >
+          {{ manager.name }} {{ manager.surname }}
+        </option>
+      </select>
     </div>
     <div formArrayName="listOfSkills">
       <h3>Skills:</h3>
-      <button type="button" (click)="addUndefinedSkill()">+ Add another skill</button>
       <div
         *ngFor="let skillControl of listOfSkills.controls; let index = index"
       >
         <label for="skill-{{ index }}">Skill:</label>
-        <input id="skill-{{ index }}" type="text" [formControlName]="index" />
+        <select
+          name="skill-{{ index }}"
+          id="skill-{{ index }}"
+          [formControlName]="index"
+        >
+          <option
+            *ngFor="let possibleSkill of possibleSkillsList"
+            [ngValue]="possibleSkill"
+          >
+            {{ possibleSkill }}
+          </option>
+        </select>
         <button type="button" (click)="removeSkillAt(index)">
           - Remove skill
         </button>
       </div>
+      <button
+        type="button"
+        (click)="addUndefinedSkillIfFirstOrLastIsNotEmpty()"
+      >
+        + Add another skill
+      </button>
     </div>
     <div formArrayName="listOfProjects">
       <h3>Projects:</h3>
-      <button type="button" (click)="addUndefinedProject()">
-        + Add another project
-      </button>
       <div
         *ngFor="
           let projectControl of listOfProjects.controls;
@@ -73,16 +71,36 @@
         "
       >
         <label for="project-{{ index }}">Project:</label>
-        <input id="project-{{ index }}" type="text" [formControlName]="index" />
+        <select
+          name="project-{{ index }}"
+          id="project-{{ index }}"
+          [formControlName]="index"
+        >
+          <option
+            *ngFor="let possibleProject of possibleProjectsList"
+            [ngValue]="possibleProject"
+          >
+            {{ possibleProject }}
+          </option>
+        </select>
         <button type="button" (click)="removeProjectAt(index)">
-          - Remove skill
+          - Remove project
         </button>
       </div>
+      <button
+        type="button"
+        (click)="addUndefinedProjectIfFirstOrLastIsNotEmpty()"
+      >
+        + Add another project
+      </button>
     </div>
-    <p>Form Value: {{ employeeProfileForm.status | json }}</p>
-    <button type="submit" [disabled]="!employeeProfileForm.valid">
-      Submit
-    </button>
-    <p>{{ employeeProfileForm.value | json }}</p>
+    <div>
+      <button type="submit" [disabled]="!employeeProfileForm.valid">
+        Submit
+      </button>
+      <button type="button" (click)="removeEmployeeProfile(employee.id)">
+        Remove
+      </button>
+    </div>
   </form>
 </div>

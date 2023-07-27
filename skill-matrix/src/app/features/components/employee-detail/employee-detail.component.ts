@@ -1,13 +1,14 @@
-import { Component, Input } from '@angular/core';
 import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validator,
-  Validators,
-} from '@angular/forms';
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from '../../models/employee';
+import { MOCK_PROJECTS } from '../../mocks/mock-projects';
+import { MOCK_SKILLS } from '../../mocks/mock-skills';
 
 @Component({
   selector: 'app-employee-detail',
@@ -16,19 +17,54 @@ import { Employee } from '../../models/employee';
 })
 export class EmployeeDetailComponent {
   @Input() employee?: Employee;
+  @Input() employeeList!: Employee[];
+  @Output() removeEmployeeEvent = new EventEmitter<string>();
+  @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
 
-  employeeProfileForm: FormGroup<any> = new FormGroup({});
+  employeeProfileForm: FormGroup = new FormGroup({});
+  possibleProjectsList: string[] = MOCK_PROJECTS;
+  possibleSkillsList: string[] = MOCK_SKILLS;
 
-  ngOnChanges(): void {
-    this.employeeProfileForm = this.formBuilder.group({
-      id: [this.employee?.id],
-      name: [this.employee?.name, Validators.required],
-      surname: [this.employee?.surname, Validators.required],
-      employmentDate: [this.employee?.employmentDate.toISOString().slice(0,10), Validators.required],
-      listOfSkills: this.formBuilder.array([]),
-      listOfProjects: this.formBuilder.array([]),
-      manager: [this.employee?.manager],
-    });
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['employee']) {
+      this.employeeProfileForm = this.formBuilder.group({
+        id: [this.employee?.id],
+        name: [
+          this.employee?.name,
+          [Validators.required, Validators.minLength(3)],
+        ],
+        surname: [
+          this.employee?.surname,
+          [Validators.required, Validators.minLength(3)],
+        ],
+        employmentDate: [
+          this.employee?.employmentDate.toISOString().slice(0, 10),
+          Validators.required,
+        ],
+        listOfSkills: this.formBuilder.array(
+          this.employee ? this.employee.listOfSkills : [''],
+        ),
+        listOfProjects: this.formBuilder.array(
+          this.employee ? this.employee.listOfProjects : [''],
+        ),
+        managerId: [this.employee?.managerId],
+      });
+      this.employeeProfileForm
+        .get('managerId')
+        ?.setValue(this.employee?.managerId);
+    }
+  }
+
+  updateEmployeeProfile(): void {
+    const employee: Employee = this.employeeProfileForm.getRawValue();
+    employee.employmentDate = new Date(employee.employmentDate);
+    this.updateEmployeeProfileEvent.emit(employee);
+  }
+
+  removeEmployeeProfile(employeeId: string): void {
+    this.removeEmployeeEvent.emit(employeeId);
   }
 
   get listOfProjects() {
@@ -39,8 +75,7 @@ export class EmployeeDetailComponent {
     return this.employeeProfileForm.get('listOfSkills') as FormArray;
   }
 
-  addUndefinedProject(): void {
-    const length = this.listOfSkills.length;
+  addUndefinedProjectIfFirstOrLastIsNotEmpty(): void {
     if (
       this.listOfProjects.length < 1 ||
       this.listOfProjects.at(length - 1).value != ''
@@ -52,7 +87,7 @@ export class EmployeeDetailComponent {
     this.listOfProjects.removeAt(index);
   }
 
-  addUndefinedSkill(): void {
+  addUndefinedSkillIfFirstOrLastIsNotEmpty(): void {
     if (
       this.listOfSkills.length < 1 ||
       this.listOfSkills.at(length - 1).value != ''
@@ -64,20 +99,9 @@ export class EmployeeDetailComponent {
     this.listOfSkills.removeAt(index);
   }
 
-  updateProfile(): void {
-    this.employeeProfileForm.patchValue({
-      name: '',
-      surname: '',
-      employmentDate: '',
-      // listOfSkills: {
-      //   'skill 1', 'skill 2',
-      // }
-      // listOfProjects: {
-      //   'project 1', 'project 2',
-      // }
-      manager: '',
+  determineListOfPossibleManagers(): Employee[] {
+    return this.employeeList.filter((e) => {
+      return e.id !== this.employee?.id;
     });
   }
-
-  constructor(private formBuilder: FormBuilder) {}
 }

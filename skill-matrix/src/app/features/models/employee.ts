@@ -3,7 +3,7 @@ export interface Employee {
   name: string;
   surname: string;
   employmentDate: Date;
-  listOfSkills: Array<string>;
-  listOfProjects: Array<string>;
-  manager: undefined;
+  listOfSkills: string[];
+  listOfProjects: string[];
+  managerId?: string;
 }
