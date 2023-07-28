@@ -1,6 +1,6 @@
 <article class="employee">
   <header class="employee__header">
-    <h2>Employee info</h2>
+    <h1>Employee info</h1>
   </header>
   <ul class="employee__list">
     <li class="employee__list-element" *ngFor="let employee of employeeList">
@@ -15,29 +15,20 @@
         >
       </button>
     </li>
+    <li class="employee__list-element">
+      <button
+        class="employee__list-button"
+        type="button"
+        (click)="onSelect(createEmptyEmployee())"
+      >
+        <span class="employee__full-name-select">+</span>
+      </button>
+    </li>
   </ul>
-  <div class="employee__info" *ngIf="selectedEmployee">
-    <h3 class="employee__details">
-      {{ selectedEmployee.name | uppercase }}
-      {{ selectedEmployee.surname | uppercase }} Details
-    </h3>
-    <div classs="employee__id"><span>ID: </span>{{ selectedEmployee.id }}</div>
-    <div class="employee_employmentDate">
-      <span>Employment date: </span
-      >{{ selectedEmployee.employmentDate | date: "dd.MM.yyyy" }}
-    </div>
-    <div class="employee_skills">
-      <span>Skills: </span>{{ selectedEmployee.listOfSkills }}
-    </div>
-    <div class="employee_projects">
-      <span>Projects: </span>{{ selectedEmployee.listOfProjects }}
-    </div>
-    <div class="employee_manager">
-      <span>Manager: </span>{{ selectedEmployee.manager }}
-    </div>
-    <div class="employee_name-input">
-      <label for="name">Employee name: </label>
-      <input id="name" [(ngModel)]="selectedEmployee.name" placeholder="name" />
-    </div>
-  </div>
+  <app-employee-detail
+    [employee]="selectedEmployee"
+    [employeeList]="employeeList"
+    (updateEmployeeProfileEvent)="updateEmployee($event)"
+    (removeEmployeeEvent)="removeEmployee($event)"
+  ></app-employee-detail>
 </article>

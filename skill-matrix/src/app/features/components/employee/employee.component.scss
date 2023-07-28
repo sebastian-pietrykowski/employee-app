@@ -37,27 +37,27 @@
 
   &__list-button:active {
     background-color: $app-dim-gray;
-    color: white;
+    color: $app-white;
   }
 
   &__list-button--selected {
-    background-color: black;
-    color: white;
+    background-color: $app-black;
+    color: $app-white;
   }
 
   &__list-button--selected:hover {
     background-color: $app-charcoal-gray;
-    color: white;
+    color: $app-white;
   }
 
   &__list-button--selected:active {
-    background-color: black;
-    color: white;
+    background-color: $app-black;
+    color: $app-white;
   }
 
   &__employee_list &__full-name-select {
     display: inline-block;
-    color: white;
+    color: $app-white;
     padding: 0.8rem 0.7rem 0 0.7rem;
     background-color: $app-steel-blue;
     line-height: 1rem;
