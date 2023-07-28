@@ -5,7 +5,12 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormGroup,
+  NonNullableFormBuilder,
+  Validators,
+} from '@angular/forms';
 import { Employee } from '../../models/employee';
 import { MOCK_PROJECTS } from '../../mocks/mock-projects';
 import { MOCK_SKILLS } from '../../mocks/mock-skills';
@@ -16,8 +21,8 @@ import { MOCK_SKILLS } from '../../mocks/mock-skills';
   styleUrls: ['./employee-detail.component.scss'],
 })
 export class EmployeeDetailComponent {
-  @Input() employee?: Employee;
-  @Input() employeeList!: Employee[];
+  @Input({ required: true }) employee?: Employee;
+  @Input({ required: true }) employeeList!: Employee[];
   @Output() removeEmployeeEvent = new EventEmitter<string>();
   @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
 
@@ -25,7 +30,7 @@ export class EmployeeDetailComponent {
   possibleProjectsList: string[] = MOCK_PROJECTS;
   possibleSkillsList: string[] = MOCK_SKILLS;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: NonNullableFormBuilder) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['employee']) {
@@ -49,11 +54,8 @@ export class EmployeeDetailComponent {
         listOfProjects: this.formBuilder.array(
           this.employee ? this.employee.listOfProjects : [''],
         ),
-        managerId: [this.employee?.managerId],
+        managerId: [this.employee ? this.employee.managerId : undefined],
       });
-      this.employeeProfileForm
-        .get('managerId')
-        ?.setValue(this.employee?.managerId);
     }
   }
 
@@ -75,7 +77,7 @@ export class EmployeeDetailComponent {
     return this.employeeProfileForm.get('listOfSkills') as FormArray;
   }
 
-  addUndefinedProjectIfFirstOrLastIsNotEmpty(): void {
+  addProjectControlIfNeeded(): void {
     if (
       this.listOfProjects.length < 1 ||
       this.listOfProjects.at(length - 1).value != ''
@@ -87,7 +89,7 @@ export class EmployeeDetailComponent {
     this.listOfProjects.removeAt(index);
   }
 
-  addUndefinedSkillIfFirstOrLastIsNotEmpty(): void {
+  addSkillControlIfNeeded(): void {
     if (
       this.listOfSkills.length < 1 ||
       this.listOfSkills.at(length - 1).value != ''
@@ -100,7 +102,7 @@ export class EmployeeDetailComponent {
   }
 
   determineListOfPossibleManagers(): Employee[] {
-    return this.employeeList.filter((e) => {
+    return this.employeeList?.filter((e) => {
       return e.id !== this.employee?.id;
     });
   }

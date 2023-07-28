@@ -29,27 +29,27 @@ export class EmployeeComponent {
 
   updateEmployee(employeeToUpdate: Employee): void {
     this.selectedEmployee = employeeToUpdate;
+
     if (employeeToUpdate.id == '') {
       const lastIdInArray = this.employeeList[this.employeeList.length - 1].id;
-      employeeToUpdate.id = String(Number(lastIdInArray) + 1);
+      employeeToUpdate.id = (Number(lastIdInArray) + 1).toString();
       this.employeeList.push(employeeToUpdate);
     }
 
-    for (let i = 0; i < this.employeeList.length; ++i)
-      if (this.employeeList[i].id == employeeToUpdate.id) {
-        this.employeeList[i] = employeeToUpdate;
-        return;
-      }
+    const indexOfElemToChange = this.employeeList.findIndex(
+      (e) => e.id === employeeToUpdate.id,
+    );
+    this.employeeList.splice(indexOfElemToChange, 1, employeeToUpdate);
   }
 
   removeEmployee(employeeToRemoveId: string): void {
     this.selectedEmployee = undefined;
-    this.employeeList = this.employeeList.filter((e) => {
-      return e.id !== employeeToRemoveId;
-    });
+    this.employeeList = this.employeeList.filter(
+      (e) => e.id !== employeeToRemoveId,
+    );
 
     this.employeeList.forEach((e) => {
-      if (e.managerId == employeeToRemoveId) {
+      if (e.managerId === employeeToRemoveId) {
         e.managerId = undefined;
       }
     });
