@@ -10,7 +10,7 @@ import {
   FormArray,
   FormGroup,
   FormBuilder,
-  Validators,
+  Validators, NonNullableFormBuilder,
 } from '@angular/forms';
 import { Employee } from '../../models/employee';
 import { MOCK_PROJECTS } from '../../mocks/mock-projects';
@@ -31,7 +31,7 @@ export class EmployeeDetailComponent implements OnChanges {
   possibleProjectsList: string[] = MOCK_PROJECTS;
   possibleSkillsList: string[] = MOCK_SKILLS;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: NonNullableFormBuilder) {
     this.employeeProfileForm = new FormGroup({});
   }
 

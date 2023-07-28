@@ -1,7 +1,8 @@
 <div class="employee-detail__info" *ngIf="employee">
   <h2 class="employee-detail__full-name">
     {{ employee.name | uppercase }}
-    {{ employee.surname | uppercase }} {{"employee.detail.details" | translate}}
+    {{ employee.surname | uppercase }}
+    {{ "employee.detail.details" | translate }}
   </h2>
   <form
     class="employee-detail__form"
@@ -46,7 +47,9 @@
       <div
         *ngFor="let skillControl of listOfSkills.controls; let index = index"
       >
-        <label for="skill-{{ index }}">{{"employee.detail.skills.skill" | translate}}: </label>
+        <label for="skill-{{ index }}"
+          >{{ "employee.detail.skills.skill" | translate }}:
+        </label>
         <select
           name="skill-{{ index }}"
           id="skill-{{ index }}"
@@ -75,7 +78,9 @@
           let index = index
         "
       >
-        <label for="project-{{ index }}">{{"employee.detail.projects.project" | translate}}: </label>
+        <label for="project-{{ index }}"
+          >{{ "employee.detail.projects.project" | translate }}:
+        </label>
         <select
           name="project-{{ index }}"
           id="project-{{ index }}"
