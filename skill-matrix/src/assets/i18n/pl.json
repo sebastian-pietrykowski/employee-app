@@ -1,0 +1,29 @@
+{
+  "employee": {
+    "header": "Informacje o pracownikach",
+    "detail": {
+      "details": "Szczegóły",
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "employment.date": "Data zatrudnienia",
+      "manager": {
+        "manager": "Menedżer",
+        "choose": "Wybierz menedżera"
+      },
+      "skills": {
+        "skills": "Umięjetności",
+        "skill": "Umiejętność",
+        "remove": "Usuń umiejętność",
+        "add": "Dodaj kolejną umiejętność"
+      },
+      "projects": {
+        "projects": "Projekty",
+        "project": "Projekt",
+        "remove": "Usuń projekt",
+        "add": "Dodaj kolejny projekt"
+      },
+      "submit": "Zatwierdź",
+      "remove": "Usuń"
+    }
+  }
+}

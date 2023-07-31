@@ -1,0 +1,29 @@
+{
+  "employee": {
+    "header": "Employee info",
+    "detail": {
+      "details": "Details",
+      "name": "Name",
+      "surname": "Surname",
+      "employment.date": "Employment date",
+      "manager": {
+        "manager": "Manager",
+        "choose": "Choose a manager"
+      },
+      "skills": {
+        "skills": "Skills",
+        "skill": "Skill",
+        "remove": "Remove skill",
+        "add": "Add another skill"
+      },
+      "projects": {
+        "projects": "Projects",
+        "project": "Project",
+        "remove": "Remove project",
+        "add": "Add another project"
+      },
+      "submit": "Submit",
+      "remove": "Remove"
+    }
+  }
+}

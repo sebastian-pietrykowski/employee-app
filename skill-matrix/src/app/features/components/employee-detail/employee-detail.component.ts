@@ -2,6 +2,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -20,17 +21,19 @@ import { MOCK_SKILLS } from '../../mocks/mock-skills';
   templateUrl: './employee-detail.component.html',
   styleUrls: ['./employee-detail.component.scss'],
 })
-export class EmployeeDetailComponent {
+export class EmployeeDetailComponent implements OnChanges {
   @Input({ required: true }) employee?: Employee;
   @Input({ required: true }) employeeList!: Employee[];
   @Output() removeEmployeeEvent = new EventEmitter<string>();
   @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
 
-  employeeProfileForm: FormGroup = new FormGroup({});
+  employeeProfileForm: FormGroup;
   possibleProjectsList: string[] = MOCK_PROJECTS;
   possibleSkillsList: string[] = MOCK_SKILLS;
 
-  constructor(private formBuilder: NonNullableFormBuilder) {}
+  constructor(private formBuilder: NonNullableFormBuilder) {
+    this.employeeProfileForm = new FormGroup({});
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['employee']) {

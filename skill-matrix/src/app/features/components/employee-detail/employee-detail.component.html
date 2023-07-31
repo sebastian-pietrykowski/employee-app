@@ -1,7 +1,8 @@
 <div class="employee-detail__info" *ngIf="employee">
   <h2 class="employee-detail__full-name">
     {{ employee.name | uppercase }}
-    {{ employee.surname | uppercase }} Details
+    {{ employee.surname | uppercase }}
+    {{ "employee.detail.details" | translate }}
   </h2>
   <form
     class="employee-detail__form"
@@ -9,21 +10,29 @@
     (ngSubmit)="updateEmployeeProfile()"
   >
     <div>
-      <label for="name">Name: </label>
+      <label for="name"
+        ><span>{{ "employee.detail.name" | translate }}: </span></label
+      >
       <input id="name" type="text" formControlName="name" />
     </div>
     <div>
-      <label for="surname">Surname: </label>
+      <label for="surname">{{ "employee.detail.surname" | translate }}: </label>
       <input id="surname" type="text" formControlName="surname" />
     </div>
     <div>
-      <label for="employmentDate">Employment date: </label>
+      <label for="employmentDate"
+        >{{ "employee.detail.employment.date" | translate }}:
+      </label>
       <input id="employmentDate" type="date" formControlName="employmentDate" />
     </div>
     <div>
-      <label for="manager">Manager: </label>
+      <label for="manager"
+        >{{ "employee.detail.manager.manager" | translate }}:
+      </label>
       <select name="manager" id="manager" formControlName="managerId">
-        <option value="none" disabled>Choose a manager</option>
+        <option value="none" disabled>
+          {{ "employee.detail.manager.choose" | translate }}
+        </option>
         <option value="null">-</option>
         <option
           *ngFor="let manager of determineListOfPossibleManagers()"
@@ -34,11 +43,13 @@
       </select>
     </div>
     <div formArrayName="listOfSkills">
-      <h3>Skills:</h3>
+      <h3>{{ "employee.detail.skills.skills" | translate }}:</h3>
       <div
         *ngFor="let skillControl of listOfSkills.controls; let index = index"
       >
-        <label for="skill-{{ index }}">Skill:</label>
+        <label for="skill-{{ index }}"
+          >{{ "employee.detail.skills.skill" | translate }}:
+        </label>
         <select
           name="skill-{{ index }}"
           id="skill-{{ index }}"
@@ -52,22 +63,24 @@
           </option>
         </select>
         <button type="button" (click)="removeSkillAt(index)">
-          - Remove skill
+          - {{ "employee.detail.skills.remove" | translate }}
         </button>
       </div>
       <button type="button" (click)="addSkillControlIfNeeded()">
-        + Add another skill
+        + {{ "employee.detail.skills.add" | translate }}
       </button>
     </div>
     <div formArrayName="listOfProjects">
-      <h3>Projects:</h3>
+      <h3>{{ "employee.detail.projects.projects" | translate }}:</h3>
       <div
         *ngFor="
           let projectControl of listOfProjects.controls;
           let index = index
         "
       >
-        <label for="project-{{ index }}">Project:</label>
+        <label for="project-{{ index }}"
+          >{{ "employee.detail.projects.project" | translate }}:
+        </label>
         <select
           name="project-{{ index }}"
           id="project-{{ index }}"
@@ -81,19 +94,19 @@
           </option>
         </select>
         <button type="button" (click)="removeProjectAt(index)">
-          - Remove project
+          - {{ "employee.detail.projects.remove" | translate }}
         </button>
       </div>
       <button type="button" (click)="addProjectControlIfNeeded()">
-        + Add another project
+        + {{ "employee.detail.projects.add" | translate }}
       </button>
     </div>
     <div>
       <button type="submit" [disabled]="employeeProfileForm.invalid">
-        Submit
+        {{ "employee.detail.submit" | translate }}
       </button>
       <button type="button" (click)="removeEmployeeProfile(employee.id)">
-        Remove
+        {{ "employee.detail.remove" | translate }}
       </button>
     </div>
   </form>
