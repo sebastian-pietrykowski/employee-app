@@ -1,15 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee';
-import { MOCK_EMPLOYEES } from '../../mocks/mock-employees';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss'],
 })
-export class EmployeeComponent {
-  employeeList: Employee[] = MOCK_EMPLOYEES;
+export class EmployeeComponent implements OnInit {
+  employeeList: Employee[] = [];
   selectedEmployee?: Employee;
+
+  constructor(private employeeService: EmployeeService) {}
+
+  ngOnInit(): void {
+    this.getEmployees();
+  }
+
+  private getEmployees(): void {
+    const nOfEmployeesToLoad = 8;
+    this.employeeService
+      .getEmployees()
+      .pipe(take(nOfEmployeesToLoad))
+      .subscribe((employees) => (this.employeeList = employees));
+  }
 
   onSelect(employee: Employee): void {
     this.selectedEmployee = employee;

@@ -3,6 +3,7 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
@@ -13,26 +14,52 @@ import {
   Validators,
 } from '@angular/forms';
 import { Employee } from '../../models/employee';
-import { MOCK_PROJECTS } from '../../mocks/mock-projects';
-import { MOCK_SKILLS } from '../../mocks/mock-skills';
+import { ProjectService } from '../../../core/services/project.service';
+import { SkillService } from '../../../core/services/skill.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employee-detail',
   templateUrl: './employee-detail.component.html',
   styleUrls: ['./employee-detail.component.scss'],
 })
-export class EmployeeDetailComponent implements OnChanges {
+export class EmployeeDetailComponent implements OnChanges, OnInit {
   @Input({ required: true }) employee?: Employee;
   @Input({ required: true }) employeeList!: Employee[];
   @Output() removeEmployeeEvent = new EventEmitter<string>();
   @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
 
   employeeProfileForm: FormGroup;
-  possibleProjectsList: string[] = MOCK_PROJECTS;
-  possibleSkillsList: string[] = MOCK_SKILLS;
+  possibleProjectsList: string[] = [];
+  possibleSkillsList: string[] = [];
 
-  constructor(private formBuilder: NonNullableFormBuilder) {
+  constructor(
+    private projectService: ProjectService,
+    private skillService: SkillService,
+    private formBuilder: NonNullableFormBuilder,
+  ) {
     this.employeeProfileForm = new FormGroup({});
+  }
+
+  ngOnInit(): void {
+    this.getProjects();
+    this.getSkills();
+  }
+
+  private getProjects(): void {
+    const nOfProjectsToLoad = 10;
+    this.projectService
+      .getProjects()
+      .pipe(take(nOfProjectsToLoad))
+      .subscribe((projects) => (this.possibleProjectsList = projects));
+  }
+
+  private getSkills(): void {
+    const nOfSkillsToLoad = 24;
+    this.skillService
+      .getSkills()
+      .pipe(take(nOfSkillsToLoad))
+      .subscribe((skills) => (this.possibleSkillsList = skills));
   }
 
   ngOnChanges(changes: SimpleChanges): void {

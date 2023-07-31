@@ -57,7 +57,7 @@ export const MOCK_EMPLOYEES: Employee[] = [
   },
   {
     id: '7',
-    name: 'Jan',
+    name: 'Janusz',
     surname: 'Kowalski',
     employmentDate: new Date(2022, 8, 28, 0, 0, 0, 0),
     listOfSkills: [
