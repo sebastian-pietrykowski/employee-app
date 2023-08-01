@@ -25,5 +25,9 @@
       "submit": "Submit",
       "remove": "Remove"
     }
+  },
+  "messages": {
+    "header": "Messages",
+    "clear": "Clear messages"
   }
 }

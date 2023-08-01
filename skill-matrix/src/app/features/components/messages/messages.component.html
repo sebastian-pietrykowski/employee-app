@@ -1,0 +1,11 @@
+<div class="messages" *ngIf="messageService.messages.length">
+  <h2>{{ "messages.header" | translate }}</h2>
+  <button
+    type="button"
+    class="messages__clear"
+    (click)="messageService.clear()"
+  >
+    {{ "messages.clear" | translate }}
+  </button>
+  <div *ngFor="let message of messageService.messages">{{ message }}</div>
+</div>
