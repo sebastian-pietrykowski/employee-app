@@ -65,33 +65,37 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['employee']) {
-      this.employeeProfileForm = this.formBuilder.group({
-        id: [this.employee?.id],
-        name: [
-          this.employee?.name,
-          [Validators.required, Validators.minLength(3)],
-        ],
-        surname: [
-          this.employee?.surname,
-          [Validators.required, Validators.minLength(3)],
-        ],
-        employmentDate: [
-          this.employee?.employmentDate.toISOString().slice(0, 10),
-          Validators.required,
-        ],
-        listOfSkills: this.formBuilder.array(
-          (this.employee ? this.employee.listOfSkills : ['']).map((skill) =>
-            this.createFormControlWithValidatorsForArrayFromValue(skill),
-          ),
-        ),
-        listOfProjects: this.formBuilder.array(
-          (this.employee ? this.employee.listOfProjects : ['']).map((project) =>
-            this.createFormControlWithValidatorsForArrayFromValue(project),
-          ),
-        ),
-        managerId: [this.employee ? this.employee.managerId : undefined],
-      });
+      this.fillForm();
     }
+  }
+
+  private fillForm(): void {
+    this.employeeProfileForm = this.formBuilder.group({
+      id: [this.employee?.id],
+      name: [
+        this.employee?.name,
+        [Validators.required, Validators.minLength(3)],
+      ],
+      surname: [
+        this.employee?.surname,
+        [Validators.required, Validators.minLength(3)],
+      ],
+      employmentDate: [
+        this.employee?.employmentDate.toISOString().slice(0, 10),
+        Validators.required,
+      ],
+      listOfSkills: this.formBuilder.array(
+        (this.employee ? this.employee.listOfSkills : ['']).map((skill) =>
+          this.createFormControlWithValidatorsForArrayFromValue(skill),
+        ),
+      ),
+      listOfProjects: this.formBuilder.array(
+        (this.employee ? this.employee.listOfProjects : ['']).map((project) =>
+          this.createFormControlWithValidatorsForArrayFromValue(project),
+        ),
+      ),
+      managerId: [this.employee ? this.employee.managerId : undefined],
+    });
   }
 
   private createFormControlWithValidatorsForArrayFromValue(
@@ -143,5 +147,16 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     return this.employeeList?.filter((e) => {
       return e.id !== this.employee?.id;
     });
+  }
+
+  undoChangesInForm() {
+    this.fillForm();
+  }
+
+  checkIfLastElementsOfArraysInEmployeeFormAreNotEmpty(): boolean {
+    return (
+      this.listOfProjects.value.at(-1) != '' &&
+      this.listOfSkills.value.at(-1) != ''
+    );
   }
 }

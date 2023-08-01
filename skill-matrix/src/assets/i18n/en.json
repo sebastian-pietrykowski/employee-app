@@ -23,6 +23,7 @@
         "add": "Add another project"
       },
       "submit": "Submit",
+      "undo": "Undo changes",
       "remove": "Remove"
     }
   },

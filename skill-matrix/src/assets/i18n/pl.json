@@ -23,6 +23,7 @@
         "add": "Dodaj kolejny projekt"
       },
       "submit": "Zatwierdź",
+      "undo": "Cofnij zmiany",
       "remove": "Usuń"
     }
   }
