@@ -15,8 +15,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Employee } from '../../models/employee';
+import { MessageService } from '../../../core/services/message.service';
 import { ProjectService } from '../../../core/services/project.service';
 import { SkillService } from '../../../core/services/skill.service';
+import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
 @Component({
@@ -35,8 +37,10 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   allPossibleSkillsList: string[] = [];
 
   constructor(
+    private readonly messageService: MessageService,
     private readonly projectService: ProjectService,
     private readonly skillService: SkillService,
+    private readonly translationService: TranslateService,
     private formBuilder: NonNullableFormBuilder,
   ) {
     this.employeeProfileForm = new FormGroup({});
@@ -108,6 +112,12 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     const employee: Employee = this.employeeProfileForm.getRawValue();
     employee.employmentDate = new Date(employee.employmentDate);
     this.updateEmployeeProfileEvent.emit(employee);
+
+    const message = this.translationService.instant(
+      'messages.employee.detail.component.updated',
+      { id: employee.id },
+    );
+    this.messageService.add(message);
   }
 
   removeEmployeeProfile(employeeId: string): void {
