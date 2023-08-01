@@ -56,7 +56,11 @@
           [formControlName]="index"
         >
           <option
-            *ngFor="let possibleSkill of possibleSkillsList"
+            *ngFor="
+              let possibleSkill of determineListOfPossibleNewSkillsAndOneAlreadyAdded(
+                listOfSkills.value.at(index)
+              )
+            "
             [ngValue]="possibleSkill"
           >
             {{ possibleSkill }}
@@ -87,7 +91,11 @@
           [formControlName]="index"
         >
           <option
-            *ngFor="let possibleProject of possibleProjectsList"
+            *ngFor="
+              let possibleProject of determineListOfPossibleNewProjectsAndOneAlreadyAdded(
+                listOfProjects.value.at(index)
+              )
+            "
             [ngValue]="possibleProject"
           >
             {{ possibleProject }}
@@ -112,7 +120,7 @@
         type="button"
         (click)="undoChangesInForm()"
         [disabled]="
-          checkIfLastElementsOfArraysInEmployeeFormAreNotEmpty() &&
+          checkIfLastElementsOfProjectsAndSkillsInEmployeeFormAreNotEmpty() &&
           employeeProfileForm.pristine
         "
       >

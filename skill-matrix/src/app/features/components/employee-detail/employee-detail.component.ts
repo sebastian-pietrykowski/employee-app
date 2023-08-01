@@ -31,8 +31,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
 
   employeeProfileForm: FormGroup;
-  possibleProjectsList: string[] = [];
-  possibleSkillsList: string[] = [];
+  allPossibleProjectsList: string[] = [];
+  allPossibleSkillsList: string[] = [];
 
   constructor(
     private readonly projectService: ProjectService,
@@ -52,7 +52,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     this.projectService
       .getProjects()
       .pipe(take(nOfProjectsToLoad))
-      .subscribe((projects) => (this.possibleProjectsList = projects));
+      .subscribe((projects) => (this.allPossibleProjectsList = projects));
   }
 
   private getSkills(): void {
@@ -60,7 +60,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     this.skillService
       .getSkills()
       .pipe(take(nOfSkillsToLoad))
-      .subscribe((skills) => (this.possibleSkillsList = skills));
+      .subscribe((skills) => (this.allPossibleSkillsList = skills));
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -149,11 +149,37 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     });
   }
 
+  private determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+    allPossibleValues: string[],
+    formArray: FormArray,
+    additionalValue: string,
+  ) {
+    return allPossibleValues.filter(
+      (value) => !formArray.value.includes(value) || value === additionalValue,
+    );
+  }
+
+  determineListOfPossibleNewProjectsAndOneAlreadyAdded(usedProject: string) {
+    return this.determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+      this.allPossibleProjectsList,
+      this.employeeProfileForm.get('listOfProjects') as FormArray,
+      usedProject,
+    );
+  }
+
+  determineListOfPossibleNewSkillsAndOneAlreadyAdded(usedSkill: string) {
+    return this.determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+      this.allPossibleSkillsList,
+      this.employeeProfileForm.get('listOfSkills') as FormArray,
+      usedSkill,
+    );
+  }
+
   undoChangesInForm() {
     this.fillForm();
   }
 
-  checkIfLastElementsOfArraysInEmployeeFormAreNotEmpty(): boolean {
+  checkIfLastElementsOfProjectsAndSkillsInEmployeeFormAreNotEmpty(): boolean {
     return (
       this.listOfProjects.value.at(-1) != '' &&
       this.listOfSkills.value.at(-1) != ''
