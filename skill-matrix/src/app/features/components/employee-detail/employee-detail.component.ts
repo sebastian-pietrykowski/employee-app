@@ -34,8 +34,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   possibleSkillsList: string[] = [];
 
   constructor(
-    private projectService: ProjectService,
-    private skillService: SkillService,
+    private readonly projectService: ProjectService,
+    private readonly skillService: SkillService,
     private formBuilder: NonNullableFormBuilder,
   ) {
     this.employeeProfileForm = new FormGroup({});

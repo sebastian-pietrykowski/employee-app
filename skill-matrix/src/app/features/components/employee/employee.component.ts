@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee';
 import { EmployeeService } from '../../../core/services/employee.service';
+import { MessageService } from '../../../core/services/message.service';
 import { take } from 'rxjs';
 
 @Component({
@@ -12,7 +13,10 @@ export class EmployeeComponent implements OnInit {
   employeeList: Employee[] = [];
   selectedEmployee?: Employee;
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(
+    private readonly employeeService: EmployeeService,
+    private readonly messageService: MessageService,
+  ) {}
 
   ngOnInit(): void {
     this.getEmployees();
@@ -28,6 +32,9 @@ export class EmployeeComponent implements OnInit {
 
   onSelect(employee: Employee): void {
     this.selectedEmployee = employee;
+    this.messageService.add(
+      `EmployeeComponent: Selected employee id=${employee.id}`,
+    );
   }
 
   createEmptyEmployee(): Employee {

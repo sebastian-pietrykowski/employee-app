@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { EmployeeComponent } from './features/components/employee/employee.component';
 import { EmployeeDetailComponent } from './features/components/employee-detail/employee-detail.component';
 import { FormsModule } from '@angular/forms';
+import { MessagesComponent } from './features/components/messages/messages.component';
 import { NavbarComponent } from './features/components/navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -22,6 +23,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     EmployeeComponent,
     EmployeeDetailComponent,
     NavbarComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
