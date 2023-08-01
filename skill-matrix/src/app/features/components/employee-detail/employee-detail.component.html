@@ -57,7 +57,7 @@
         >
           <option
             *ngFor="
-              let possibleSkill of determineListOfPossibleNewSkillsAndOneAlreadyAdded(
+              let possibleSkill of createAvailableSkillListWithOther(
                 listOfSkills.value.at(index)
               )
             "
@@ -92,7 +92,7 @@
         >
           <option
             *ngFor="
-              let possibleProject of determineListOfPossibleNewProjectsAndOneAlreadyAdded(
+              let possibleProject of createAvailableProjectListWithOther(
                 listOfProjects.value.at(index)
               )
             "
@@ -120,7 +120,7 @@
         type="button"
         (click)="undoChangesInForm()"
         [disabled]="
-          checkIfLastElementsOfProjectsAndSkillsInEmployeeFormAreNotEmpty() &&
+          checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
         "
       >
