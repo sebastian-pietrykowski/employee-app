@@ -47,18 +47,16 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   }
 
   private getProjects(): void {
-    const nOfProjectsToLoad = 10;
     this.projectService
       .getProjects()
-      .pipe(take(nOfProjectsToLoad))
+      .pipe(take(1))
       .subscribe((projects) => (this.possibleProjectsList = projects));
   }
 
   private getSkills(): void {
-    const nOfSkillsToLoad = 24;
     this.skillService
       .getSkills()
-      .pipe(take(nOfSkillsToLoad))
+      .pipe(take(1))
       .subscribe((skills) => (this.possibleSkillsList = skills));
   }
 
