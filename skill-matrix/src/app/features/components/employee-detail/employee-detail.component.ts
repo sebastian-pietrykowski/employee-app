@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import {
   FormArray,
+  FormControl,
   FormGroup,
   NonNullableFormBuilder,
   Validators,
@@ -79,14 +80,24 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
           Validators.required,
         ],
         listOfSkills: this.formBuilder.array(
-          this.employee ? this.employee.listOfSkills : [''],
+          (this.employee ? this.employee.listOfSkills : ['']).map((skill) =>
+            this.createFormControlWithValidatorsForArrayFromValue(skill),
+          ),
         ),
         listOfProjects: this.formBuilder.array(
-          this.employee ? this.employee.listOfProjects : [''],
+          (this.employee ? this.employee.listOfProjects : ['']).map((project) =>
+            this.createFormControlWithValidatorsForArrayFromValue(project),
+          ),
         ),
         managerId: [this.employee ? this.employee.managerId : undefined],
       });
     }
+  }
+
+  private createFormControlWithValidatorsForArrayFromValue(
+    value: string,
+  ): FormControl {
+    return this.formBuilder.control(value, Validators.required);
   }
 
   updateEmployeeProfile(): void {
@@ -107,12 +118,13 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     return this.employeeProfileForm.get('listOfSkills') as FormArray;
   }
 
+  private addElementToFormArrayIfNeeded(formArray: FormArray) {
+    if (formArray.length < 1 || formArray.at(length - 1).value != '')
+      formArray.push(this.createFormControlWithValidatorsForArrayFromValue(''));
+  }
+
   addProjectControlIfNeeded(): void {
-    if (
-      this.listOfProjects.length < 1 ||
-      this.listOfProjects.at(length - 1).value != ''
-    )
-      this.listOfProjects.push(this.formBuilder.control(''));
+    this.addElementToFormArrayIfNeeded(this.listOfProjects);
   }
 
   removeProjectAt(index: number): void {
@@ -120,11 +132,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   }
 
   addSkillControlIfNeeded(): void {
-    if (
-      this.listOfSkills.length < 1 ||
-      this.listOfSkills.at(length - 1).value != ''
-    )
-      this.listOfSkills.push(this.formBuilder.control(''));
+    this.addElementToFormArrayIfNeeded(this.listOfSkills);
   }
 
   removeSkillAt(index: number): void {
