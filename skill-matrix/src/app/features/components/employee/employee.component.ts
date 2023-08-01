@@ -25,10 +25,9 @@ export class EmployeeComponent implements OnInit {
   }
 
   private getEmployees(): void {
-    const nOfEmployeesToLoad = 8;
     this.employeeService
       .getEmployees()
-      .pipe(take(nOfEmployeesToLoad))
+      .pipe(take(1))
       .subscribe((employees) => (this.employeeList = employees));
   }
 
