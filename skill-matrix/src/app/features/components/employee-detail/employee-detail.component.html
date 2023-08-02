@@ -56,7 +56,11 @@
           [formControlName]="index"
         >
           <option
-            *ngFor="let possibleSkill of possibleSkillsList"
+            *ngFor="
+              let possibleSkill of createAvailableSkillListWithOther(
+                listOfSkills.value.at(index)
+              )
+            "
             [ngValue]="possibleSkill"
           >
             {{ possibleSkill }}
@@ -87,7 +91,11 @@
           [formControlName]="index"
         >
           <option
-            *ngFor="let possibleProject of possibleProjectsList"
+            *ngFor="
+              let possibleProject of createAvailableProjectListWithOther(
+                listOfProjects.value.at(index)
+              )
+            "
             [ngValue]="possibleProject"
           >
             {{ possibleProject }}
@@ -102,8 +110,21 @@
       </button>
     </div>
     <div>
-      <button type="submit" [disabled]="employeeProfileForm.invalid">
+      <button
+        type="submit"
+        [disabled]="employeeProfileForm.invalid || employeeProfileForm.pristine"
+      >
         {{ "employee.detail.submit" | translate }}
+      </button>
+      <button
+        type="button"
+        (click)="undoChangesInForm()"
+        [disabled]="
+          checkIfLastProjectAndSkillAreNotEmpty() &&
+          employeeProfileForm.pristine
+        "
+      >
+        {{ "employee.detail.undo" | translate }}
       </button>
       <button type="button" (click)="removeEmployeeProfile(employee.id)">
         {{ "employee.detail.remove" | translate }}
