@@ -88,21 +88,19 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
       ],
       listOfSkills: this.formBuilder.array(
         (this.employee ? this.employee.listOfSkills : ['']).map((skill) =>
-          this.createFormControlWithValidatorsForArrayFromValue(skill),
+          this.createArrayFormControlWithValidators(skill),
         ),
       ),
       listOfProjects: this.formBuilder.array(
         (this.employee ? this.employee.listOfProjects : ['']).map((project) =>
-          this.createFormControlWithValidatorsForArrayFromValue(project),
+          this.createArrayFormControlWithValidators(project),
         ),
       ),
       managerId: [this.employee ? this.employee.managerId : undefined],
     });
   }
 
-  private createFormControlWithValidatorsForArrayFromValue(
-    value: string,
-  ): FormControl {
+  private createArrayFormControlWithValidators(value: string): FormControl {
     return this.formBuilder.control(value, Validators.required);
   }
 
@@ -132,7 +130,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
 
   private addElementToFormArrayIfNeeded(formArray: FormArray) {
     if (formArray.length < 1 || formArray.at(length - 1).value != '')
-      formArray.push(this.createFormControlWithValidatorsForArrayFromValue(''));
+      formArray.push(this.createArrayFormControlWithValidators(''));
   }
 
   addProjectControlIfNeeded(): void {
@@ -157,29 +155,29 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     });
   }
 
-  private determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+  private createExcludedListWithOtherElem(
     allPossibleValues: string[],
-    formArray: FormArray,
-    additionalValue: string,
+    exclusionList: FormArray,
+    otherElem: string,
   ) {
-    return allPossibleValues.filter(
-      (value) => !formArray.value.includes(value) || value === additionalValue,
-    );
+    return allPossibleValues
+      .filter((value) => !exclusionList.value.includes(value))
+      .concat(otherElem);
   }
 
-  determineListOfPossibleNewProjectsAndOneAlreadyAdded(usedProject: string) {
-    return this.determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+  createAvailableProjectListWithOther(otherProject: string) {
+    return this.createExcludedListWithOtherElem(
       this.allPossibleProjectsList,
       this.employeeProfileForm.get('listOfProjects') as FormArray,
-      usedProject,
+      otherProject,
     );
   }
 
-  determineListOfPossibleNewSkillsAndOneAlreadyAdded(usedSkill: string) {
-    return this.determineListOfElementsNotAddedToFormArrayWithOneAlreadyAdded(
+  createAvailableSkillListWithOther(otherSkill: string) {
+    return this.createExcludedListWithOtherElem(
       this.allPossibleSkillsList,
       this.employeeProfileForm.get('listOfSkills') as FormArray,
-      usedSkill,
+      otherSkill,
     );
   }
 
@@ -187,7 +185,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     this.fillForm();
   }
 
-  checkIfLastElementsOfProjectsAndSkillsInEmployeeFormAreNotEmpty(): boolean {
+  checkIfLastProjectAndSkillAreNotEmpty(): boolean {
     return (
       this.listOfProjects.value.at(-1) != '' &&
       this.listOfSkills.value.at(-1) != ''
