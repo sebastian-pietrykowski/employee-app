@@ -1,134 +1,136 @@
-<div class="employee-detail__info" *ngIf="employee">
-  <h2 class="employee-detail__full-name">
+<mat-card class="employee-detail__info" *ngIf="employee">
+  <mat-card-title class="employee-detail__full-name">
     {{ employee.name | uppercase }}
     {{ employee.surname | uppercase }}
     {{ "employee.detail.details" | translate }}
-  </h2>
-  <form
-    class="employee-detail__form"
-    [formGroup]="employeeProfileForm"
-    (ngSubmit)="updateEmployeeProfile()"
-  >
-    <div>
-      <label for="name"
+  </mat-card-title>
+  <mat-card-content>
+    <form
+      class="employee-detail__form"
+      [formGroup]="employeeProfileForm"
+      (ngSubmit)="updateEmployeeProfile()"
+    >
+      <div>
+        <label for="name"
         ><span>{{ "employee.detail.name" | translate }}: </span></label
-      >
-      <input id="name" type="text" formControlName="name" />
-    </div>
-    <div>
-      <label for="surname">{{ "employee.detail.surname" | translate }}: </label>
-      <input id="surname" type="text" formControlName="surname" />
-    </div>
-    <div>
-      <label for="employmentDate"
+        >
+        <input id="name" type="text" formControlName="name" />
+      </div>
+      <div>
+        <label for="surname">{{ "employee.detail.surname" | translate }}: </label>
+        <input id="surname" type="text" formControlName="surname" />
+      </div>
+      <div>
+        <label for="employmentDate"
         >{{ "employee.detail.employment.date" | translate }}:
-      </label>
-      <input id="employmentDate" type="date" formControlName="employmentDate" />
-    </div>
-    <div>
-      <label for="manager"
-        >{{ "employee.detail.manager.manager" | translate }}:
-      </label>
-      <select name="manager" id="manager" formControlName="managerId">
-        <option value="none" disabled>
-          {{ "employee.detail.manager.choose" | translate }}
-        </option>
-        <option value="null">-</option>
-        <option
-          *ngFor="let manager of determineListOfPossibleManagers()"
-          [ngValue]="manager.id"
-        >
-          {{ manager.name }} {{ manager.surname }}
-        </option>
-      </select>
-    </div>
-    <div formArrayName="listOfSkills">
-      <h3>{{ "employee.detail.skills.skills" | translate }}:</h3>
-      <div
-        *ngFor="let skillControl of listOfSkills.controls; let index = index"
-      >
-        <label for="skill-{{ index }}"
-          >{{ "employee.detail.skills.skill" | translate }}:
         </label>
-        <select
-          name="skill-{{ index }}"
-          id="skill-{{ index }}"
-          [formControlName]="index"
-        >
+        <input id="employmentDate" type="date" formControlName="employmentDate" />
+      </div>
+      <div>
+        <label for="manager"
+        >{{ "employee.detail.manager.manager" | translate }}:
+        </label>
+        <select name="manager" id="manager" formControlName="managerId">
+          <option value="none" disabled>
+            {{ "employee.detail.manager.choose" | translate }}
+          </option>
+          <option value="null">-</option>
           <option
-            *ngFor="
+            *ngFor="let manager of determineListOfPossibleManagers()"
+            [ngValue]="manager.id"
+          >
+            {{ manager.name }} {{ manager.surname }}
+          </option>
+        </select>
+      </div>
+      <div formArrayName="listOfSkills">
+        <h3>{{ "employee.detail.skills.skills" | translate }}:</h3>
+        <div
+          *ngFor="let skillControl of listOfSkills.controls; let index = index"
+        >
+          <label for="skill-{{ index }}"
+          >{{ "employee.detail.skills.skill" | translate }}:
+          </label>
+          <select
+            name="skill-{{ index }}"
+            id="skill-{{ index }}"
+            [formControlName]="index"
+          >
+            <option
+              *ngFor="
               let possibleSkill of createAvailableSkillListWithOther(
                 listOfSkills.value.at(index)
               )
             "
-            [ngValue]="possibleSkill"
-          >
-            {{ possibleSkill }}
-          </option>
-        </select>
-        <button type="button" (click)="removeSkillAt(index)">
-          - {{ "employee.detail.skills.remove" | translate }}
+              [ngValue]="possibleSkill"
+            >
+              {{ possibleSkill }}
+            </option>
+          </select>
+          <button type="button" (click)="removeSkillAt(index)">
+            - {{ "employee.detail.skills.remove" | translate }}
+          </button>
+        </div>
+        <button type="button" (click)="addSkillControlIfNeeded()">
+          + {{ "employee.detail.skills.add" | translate }}
         </button>
       </div>
-      <button type="button" (click)="addSkillControlIfNeeded()">
-        + {{ "employee.detail.skills.add" | translate }}
-      </button>
-    </div>
-    <div formArrayName="listOfProjects">
-      <h3>{{ "employee.detail.projects.projects" | translate }}:</h3>
-      <div
-        *ngFor="
+      <div formArrayName="listOfProjects">
+        <h3>{{ "employee.detail.projects.projects" | translate }}:</h3>
+        <div
+          *ngFor="
           let projectControl of listOfProjects.controls;
           let index = index
         "
-      >
-        <label for="project-{{ index }}"
-          >{{ "employee.detail.projects.project" | translate }}:
-        </label>
-        <select
-          name="project-{{ index }}"
-          id="project-{{ index }}"
-          [formControlName]="index"
         >
-          <option
-            *ngFor="
+          <label for="project-{{ index }}"
+          >{{ "employee.detail.projects.project" | translate }}:
+          </label>
+          <select
+            name="project-{{ index }}"
+            id="project-{{ index }}"
+            [formControlName]="index"
+          >
+            <option
+              *ngFor="
               let possibleProject of createAvailableProjectListWithOther(
                 listOfProjects.value.at(index)
               )
             "
-            [ngValue]="possibleProject"
-          >
-            {{ possibleProject }}
-          </option>
-        </select>
-        <button type="button" (click)="removeProjectAt(index)">
-          - {{ "employee.detail.projects.remove" | translate }}
+              [ngValue]="possibleProject"
+            >
+              {{ possibleProject }}
+            </option>
+          </select>
+          <button type="button" (click)="removeProjectAt(index)">
+            - {{ "employee.detail.projects.remove" | translate }}
+          </button>
+        </div>
+        <button type="button" (click)="addProjectControlIfNeeded()">
+          + {{ "employee.detail.projects.add" | translate }}
         </button>
       </div>
-      <button type="button" (click)="addProjectControlIfNeeded()">
-        + {{ "employee.detail.projects.add" | translate }}
-      </button>
-    </div>
-    <div>
-      <button
-        type="submit"
-        [disabled]="employeeProfileForm.invalid || employeeProfileForm.pristine"
-      >
-        {{ "employee.detail.submit" | translate }}
-      </button>
-      <button
-        type="button"
-        (click)="undoChangesInForm()"
-        [disabled]="
+      <div>
+        <button
+          type="submit"
+          [disabled]="employeeProfileForm.invalid || employeeProfileForm.pristine"
+        >
+          {{ "employee.detail.submit" | translate }}
+        </button>
+        <button
+          type="button"
+          (click)="undoChangesInForm()"
+          [disabled]="
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
         "
-      >
-        {{ "employee.detail.undo" | translate }}
-      </button>
-      <button type="button" (click)="removeEmployeeProfile(employee.id)">
-        {{ "employee.detail.remove" | translate }}
-      </button>
-    </div>
-  </form>
-</div>
+        >
+          {{ "employee.detail.undo" | translate }}
+        </button>
+        <button type="button" (click)="removeEmployeeProfile(employee.id)">
+          {{ "employee.detail.remove" | translate }}
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

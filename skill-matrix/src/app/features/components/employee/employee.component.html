@@ -4,7 +4,7 @@
   </header>
   <ul class="employee__list">
     <li class="employee__list-element" *ngFor="let employee of employeeList">
-      <button
+      <button mat-raised-button color="primary"
         class="employee__list-button"
         [class.employee__list-button--selected]="employee === selectedEmployee"
         type="button"
@@ -16,7 +16,7 @@
       </button>
     </li>
     <li class="employee__list-element">
-      <button
+      <button mat-raised-button color="primary"
         class="employee__list-button"
         type="button"
         (click)="onSelect(createEmptyEmployee())"
