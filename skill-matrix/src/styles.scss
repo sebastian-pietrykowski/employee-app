@@ -2,18 +2,10 @@
 @import "app/styles/buttons";
 @import "app/styles/headers";
 
-//* {
-//  font-family: Arial, Helvetica, sans-serif;
-//}
+$font-size: 10px;
+$body-margin: 8px;
 
 html {
-  font-size: 10px;
-  margin: 4rem;
+  font-size: $font-size;
+  margin: $body-margin;
 }
-//
-//body {
-//  margin: 2rem;
-//}
-//
-//html, body { height: 100%; }
-//body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

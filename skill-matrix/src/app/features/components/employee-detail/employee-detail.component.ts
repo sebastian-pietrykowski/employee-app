@@ -1,4 +1,12 @@
 import {
+  AbstractControl,
+  FormArray,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  Validators,
+} from '@angular/forms';
+import {
   Component,
   EventEmitter,
   Input,
@@ -7,13 +15,6 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import {
-  FormArray,
-  FormControl,
-  FormGroup,
-  NonNullableFormBuilder,
-  Validators,
-} from '@angular/forms';
 import { Employee } from '../../models/employee';
 import { MessageService } from '../../../core/services/message.service';
 import { ProjectService } from '../../../core/services/project.service';
@@ -82,10 +83,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
         this.employee?.surname,
         [Validators.required, Validators.minLength(3)],
       ],
-      employmentDate: [
-        this.employee?.employmentDate.toISOString().slice(0, 10),
-        Validators.required,
-      ],
+      employmentDate: [this.employee?.employmentDate, Validators.required],
       listOfSkills: this.formBuilder.array(
         (this.employee ? this.employee.listOfSkills : ['']).map((skill) =>
           this.createArrayFormControlWithValidators(skill),
@@ -106,7 +104,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
 
   updateEmployeeProfile(): void {
     const employee: Employee = this.employeeProfileForm.getRawValue();
-    employee.employmentDate = new Date(employee.employmentDate);
     this.updateEmployeeProfileEvent.emit(employee);
 
     const message = this.translationService.instant(
@@ -146,6 +143,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   }
 
   removeSkillAt(index: number): void {
+    console.log(this.listOfSkills.at(index));
     this.listOfSkills.removeAt(index);
   }
 
@@ -160,28 +158,49 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     exclusionList: FormArray,
     otherElem: string,
   ) {
-    return allPossibleValues
-      .filter((value) => !exclusionList.value.includes(value))
-      .concat(otherElem);
+    return allPossibleValues.filter(
+      (value) => !exclusionList.value.includes(value) || value === otherElem,
+    );
   }
 
-  createAvailableProjectListWithOther(otherProject: string) {
-    return this.createExcludedListWithOtherElem(
+  private findMatchingStrings(
+    sourceList: string[],
+    searchString: string,
+  ): string[] {
+    return sourceList.filter((elem) =>
+      elem.toLowerCase().includes(searchString.toLowerCase()),
+    );
+  }
+
+  findAvailableProjectsWithOtherForControl(
+    otherProject: string,
+    control: AbstractControl,
+  ): string[] {
+    const excludedList = this.createExcludedListWithOtherElem(
       this.allPossibleProjectsList,
       this.employeeProfileForm.get('listOfProjects') as FormArray,
       otherProject,
     );
+    const matchingList = this.findMatchingStrings(excludedList, control.value);
+
+    return matchingList;
   }
 
-  createAvailableSkillListWithOther(otherSkill: string) {
-    return this.createExcludedListWithOtherElem(
+  findAvailableSkillsWithOtherForControl(
+    otherSkill: string,
+    control: AbstractControl,
+  ): string[] {
+    const excludedList = this.createExcludedListWithOtherElem(
       this.allPossibleSkillsList,
       this.employeeProfileForm.get('listOfSkills') as FormArray,
       otherSkill,
     );
+    const matchingList = this.findMatchingStrings(excludedList, control.value);
+
+    return matchingList;
   }
 
-  undoChangesInForm() {
+  undoChangesInForm(): void {
     this.fillForm();
   }
 

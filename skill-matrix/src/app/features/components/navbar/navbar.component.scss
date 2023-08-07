@@ -1,6 +1,5 @@
 @import "../../../styles/colors";
-
-$navbar-height: 4rem;
+@import "../../../app.component";
 $navbar-padding: 3px;
 $navbar-border-bottom: 1px;
 
@@ -8,6 +7,7 @@ $element-margin: 3px;
 $button-width: 3.5rem;
 
 .navbar {
+  display: inline-block;
   position: fixed;
   top: 0;
   left: 0;
@@ -15,9 +15,8 @@ $button-width: 3.5rem;
   width: 100%;
   height: $navbar-height;
   padding: $navbar-padding;
-  background-color: $app-light-gray;
+  background-color: $app-dim-gray;
   border-bottom: $navbar-border-bottom solid $app-medium-gray;
-  display: block;
 
   &__list {
     width: 100%;
