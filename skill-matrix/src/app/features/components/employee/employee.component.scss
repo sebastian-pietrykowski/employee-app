@@ -88,7 +88,6 @@ $list-button-hover-left: 0.1rem;
   }
 
   &__detail {
-    width: calc(100% - $button-margin * 2);
-    padding: 5px;
+    padding: $button-margin;
   }
 }

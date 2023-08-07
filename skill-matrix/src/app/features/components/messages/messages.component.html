@@ -1,11 +1,25 @@
-<div class="messages" *ngIf="messageService.messages.length">
-  <h2>{{ "messages.header" | translate }}</h2>
-  <button
-    type="button"
-    class="messages__clear"
-    (click)="messageService.clear()"
-  >
-    {{ "messages.clear" | translate }}
-  </button>
-  <div *ngFor="let message of messageService.messages">{{ message }}</div>
-</div>
+<mat-card class="messages">
+  <mat-card-header>
+    <mat-card-title>
+      <h2>{{ "messages.header" | translate }}</h2>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div [hidden]="messageService.messages.length > 0">
+      {{ "messages.nothing.new" | translate }}
+    </div>
+    <ul>
+      <li *ngFor="let message of messageService.messages">{{ message }}</li>
+    </ul>
+  </mat-card-content>
+  <mat-card-actions>
+    <button
+      type="button"
+      class="messages__clear"
+      [disabled]="messageService.messages.length < 1"
+      (click)="messageService.clear()"
+    >
+      {{ "messages.clear" | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -2,12 +2,10 @@
 @import "../../../app.component";
 $navbar-padding: 3px;
 $navbar-border-bottom: 1px;
-
 $element-margin: 3px;
 $button-width: 3.5rem;
 
 .navbar {
-  display: inline-block;
   position: fixed;
   top: 0;
   left: 0;
@@ -18,17 +16,14 @@ $button-width: 3.5rem;
   background-color: $app-dim-gray;
   border-bottom: $navbar-border-bottom solid $app-medium-gray;
 
-  &__list {
-    width: 100%;
+  &__nav {
     height: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
   }
 
+  &__flex-expand {
+    flex: 1 1 auto;
+    text-align: center;
+  }
   &__element {
     margin: $element-margin;
   }

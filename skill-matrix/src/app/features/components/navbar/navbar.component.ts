@@ -1,6 +1,7 @@
 import { enUS, pl } from 'date-fns/locale';
 import { Component } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
+import { MessageService } from '../../../core/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -9,13 +10,15 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent {
+  languages = ['en', 'pl'];
   localsForLanguages = new Map<string, Locale>([
     ['en', enUS],
     ['pl', pl],
   ]);
   constructor(
-    private readonly translateService: TranslateService,
-    private dateAdapter: DateAdapter<never>,
+    readonly messageService: MessageService,
+    readonly translateService: TranslateService,
+    private readonly dateAdapter: DateAdapter<never>,
   ) {}
 
   setTranslationLanguage(language: string): void {

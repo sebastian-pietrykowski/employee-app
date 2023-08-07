@@ -9,6 +9,7 @@ import { EmployeeDetailComponent } from './features/components/employee-detail/e
 import { FormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
@@ -16,7 +17,9 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MessagesComponent } from './features/components/messages/messages.component';
 import { NavbarComponent } from './features/components/navbar/navbar.component';
 import { NgModule } from '@angular/core';
@@ -61,6 +64,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatSelectModule,
     MatDateFnsModule,
     MatDatepickerModule,
+    MatToolbarModule,
+    MatMenuModule,
+    MatBadgeModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS }],
   bootstrap: [AppComponent],

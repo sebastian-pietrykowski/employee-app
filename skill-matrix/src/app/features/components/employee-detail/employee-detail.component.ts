@@ -37,6 +37,9 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   allPossibleProjectsList: string[] = [];
   allPossibleSkillsList: string[] = [];
 
+  wasProjectControlRemoved = false;
+  wasSkillControlRemoved = false;
+
   constructor(
     private readonly messageService: MessageService,
     private readonly projectService: ProjectService,
@@ -106,6 +109,9 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     const employee: Employee = this.employeeProfileForm.getRawValue();
     this.updateEmployeeProfileEvent.emit(employee);
 
+    this.wasProjectControlRemoved = false;
+    this.wasSkillControlRemoved = false;
+
     const message = this.translationService.instant(
       'messages.employee.detail.component.updated',
       { id: employee.id },
@@ -136,6 +142,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
 
   removeProjectAt(index: number): void {
     this.listOfProjects.removeAt(index);
+    this.wasProjectControlRemoved = true;
   }
 
   addSkillControlIfNeeded(): void {
@@ -143,8 +150,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
   }
 
   removeSkillAt(index: number): void {
-    console.log(this.listOfSkills.at(index));
     this.listOfSkills.removeAt(index);
+    this.wasSkillControlRemoved = true;
   }
 
   determineListOfPossibleManagers(): Employee[] {
@@ -181,9 +188,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
       this.employeeProfileForm.get('listOfProjects') as FormArray,
       otherProject,
     );
-    const matchingList = this.findMatchingStrings(excludedList, control.value);
 
-    return matchingList;
+    return this.findMatchingStrings(excludedList, control.value);
   }
 
   findAvailableSkillsWithOtherForControl(
@@ -195,9 +201,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
       this.employeeProfileForm.get('listOfSkills') as FormArray,
       otherSkill,
     );
-    const matchingList = this.findMatchingStrings(excludedList, control.value);
 
-    return matchingList;
+    return this.findMatchingStrings(excludedList, control.value);
   }
 
   undoChangesInForm(): void {

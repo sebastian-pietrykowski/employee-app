@@ -29,6 +29,7 @@
   },
   "messages": {
     "header": "Komunikaty",
+    "nothing.new": "Nic nowego",
     "clear": "Wyczyść komunikaty",
     "employee": {
       "component": {

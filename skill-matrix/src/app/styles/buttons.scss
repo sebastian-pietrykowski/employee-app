@@ -1,13 +1,20 @@
 @import "./colors";
 
 $button-margin: 0.5rem;
+$button-border-radius: 4px;
+$button-font-size: 1.2rem;
+$button-padding: 1rem;
 
 button {
   margin: $button-margin;
   border: none;
-  border-radius: 4px;
+  border-radius: $button-border-radius;
   cursor: pointer;
   color: black;
-  font-size: 1.2rem;
-  padding: 1rem;
+  font-size: $button-font-size;
+  padding: $button-padding;
+
+  &:disabled {
+    cursor: auto;
+  }
 }
