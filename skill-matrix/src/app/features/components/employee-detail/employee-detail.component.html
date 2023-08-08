@@ -194,7 +194,12 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="employeeProfileForm.invalid || (!wasProjectControlRemoved && !wasSkillControlRemoved && employeeProfileForm.pristine)"
+        [disabled]="
+          employeeProfileForm.invalid ||
+          (!wasProjectControlRemoved &&
+            !wasSkillControlRemoved &&
+            employeeProfileForm.pristine)
+        "
         (click)="updateEmployeeProfile()"
       >
         {{ "employee.detail.submit" | translate }}
