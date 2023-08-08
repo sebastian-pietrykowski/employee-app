@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Employee } from '../../models/employee';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { MessageService } from '../../../core/services/message.service';
+import { TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
 @Component({
@@ -16,6 +17,7 @@ export class EmployeeComponent implements OnInit {
   constructor(
     private readonly employeeService: EmployeeService,
     private readonly messageService: MessageService,
+    private readonly translateService: TranslateService,
   ) {}
 
   ngOnInit(): void {
@@ -31,9 +33,12 @@ export class EmployeeComponent implements OnInit {
 
   onSelect(employee: Employee): void {
     this.selectedEmployee = employee;
-    this.messageService.add(
-      `EmployeeComponent: Selected employee id=${employee.id}`,
+
+    const message = this.translateService.instant(
+      'messages.employee.component.selected',
+      { id: employee.id },
     );
+    this.messageService.add(message);
   }
 
   createEmptyEmployee(): Employee {

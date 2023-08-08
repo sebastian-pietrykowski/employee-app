@@ -26,5 +26,30 @@
       "undo": "Cofnij zmiany",
       "remove": "Usuń"
     }
+  },
+  "messages": {
+    "header": "Komunikaty",
+    "clear": "Wyczyść komunikaty",
+    "employee": {
+      "component": {
+        "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
+      },
+      "detail.component": {
+        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
+      },
+      "service": {
+        "fetched": "EmployeeService: Pobrano pracowników"
+      }
+    },
+    "project": {
+      "service": {
+        "fetched": "ProjectService: Pobrano projekty"
+      }
+    },
+    "skill": {
+      "service": {
+        "fetched": "SkillService: Pobrano umiejętności"
+      }
+    }
   }
 }

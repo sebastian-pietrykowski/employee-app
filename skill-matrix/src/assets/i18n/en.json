@@ -29,6 +29,27 @@
   },
   "messages": {
     "header": "Messages",
-    "clear": "Clear messages"
+    "clear": "Clear messages",
+    "employee": {
+      "component": {
+        "selected": "EmployeeComponent: Selected employee id={{id}}"
+      },
+      "detail.component": {
+        "updated": "EmployeeDetailComponent: Updated employee id={{id}}"
+      },
+      "service": {
+        "fetched": "EmployeeService: fetched employees"
+      }
+    },
+    "project": {
+      "service": {
+        "fetched": "ProjectService: fetched projects"
+      }
+    },
+    "skill": {
+      "service": {
+        "fetched": "SkillService: fetched skills"
+      }
+    }
   }
 }
