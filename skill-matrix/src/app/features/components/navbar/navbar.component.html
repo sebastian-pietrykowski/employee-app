@@ -1,6 +1,6 @@
 <mat-toolbar class="navbar">
   <button mat-icon-button aria-label="Example icon-button with menu icon">
-    <mat-icon>menu</mat-icon>
+    <mat-icon class="material-symbols-outlined"> menu </mat-icon>
   </button>
 
   <a mat-button routerLink="/dashboard"
@@ -10,10 +10,10 @@
     ><span>{{ "nav.employee" | translate }}</span></a
   >
 
-  <span class="navbar__flex-expand"></span>
+  <span class="navbar__spacer"></span>
 
   <button mat-icon-button [matMenuTriggerFor]="languageMenu">
-    <span class="material-symbols-outlined"> language </span>
+    <mat-icon class="material-symbols-outlined"> language </mat-icon>
   </button>
   <mat-menu #languageMenu="matMenu">
     <button
@@ -27,12 +27,12 @@
   </mat-menu>
 
   <button mat-icon-button [matMenuTriggerFor]="messagesMenu">
-      <span
+      <mat-icon
         class="material-symbols-outlined"
         matBadge="{{ (messageService.count | async) || '' }}"
       >
         notifications
-      </span>
+      </mat-icon>
   </button>
   <mat-menu #messagesMenu="matMenu">
     <ng-template matMenuContent>

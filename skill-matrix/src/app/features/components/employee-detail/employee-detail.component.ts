@@ -54,8 +54,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getProjects();
-    this.getSkills();
+    this.loadProjects();
+    this.loadSkills();
   }
 
   ngOnDestroy() {
@@ -63,27 +63,21 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     this.$unsubscribe.complete();
   }
 
-  private getProjects(): void {
-    this.projectService
-      .getProjects()
-      .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((projects) => (this.allPossibleProjectsList = projects));
-  }
-
-  private getSkills(): void {
-    this.skillService
-      .getSkills()
-      .pipe(takeUntil(this.$unsubscribe))
-      .subscribe((skills) => (this.allPossibleSkillsList = skills));
-  }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['employee']) {
-      this.fillForm();
+      this.resetForm();
     }
   }
 
-  private fillForm(): void {
+  get listOfProjects() {
+    return this.employeeProfileForm.get('listOfProjects') as FormArray;
+  }
+
+  get listOfSkills() {
+    return this.employeeProfileForm.get('listOfSkills') as FormArray;
+  }
+
+  resetForm(): void {
     this.employeeProfileForm = this.formBuilder.group({
       id: [this.employee?.id],
       name: [
@@ -109,10 +103,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  private createArrayFormControlWithValidators(value: string): FormControl {
-    return this.formBuilder.control(value, Validators.required);
-  }
-
   updateEmployeeProfile(): void {
     const employee: Employee = this.employeeProfileForm.getRawValue();
     this.updateEmployeeProfileEvent.emit(employee);
@@ -129,19 +119,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   removeEmployeeProfile(employeeId: string): void {
     this.removeEmployeeEvent.emit(employeeId);
-  }
-
-  get listOfProjects() {
-    return this.employeeProfileForm.get('listOfProjects') as FormArray;
-  }
-
-  get listOfSkills() {
-    return this.employeeProfileForm.get('listOfSkills') as FormArray;
-  }
-
-  private addElementToFormArrayIfNeeded(formArray: FormArray) {
-    if (formArray.length < 1 || formArray.at(length - 1).value != '')
-      formArray.push(this.createArrayFormControlWithValidators(''));
   }
 
   addProjectControlIfNeeded(): void {
@@ -168,6 +145,62 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     });
   }
 
+  findProjectsForAutocomplete(
+    otherProject: string,
+    control: AbstractControl,
+  ): string[] {
+    const availableProjects = this.createExcludedListWithOtherElem(
+      this.allPossibleProjectsList,
+      this.employeeProfileForm.get('listOfProjects') as FormArray,
+      otherProject,
+    );
+
+    return this.findMatchingStrings(availableProjects, control.value);
+  }
+
+  findSkillsForAutocomplete(
+    otherSkill: string,
+    control: AbstractControl,
+  ): string[] {
+    const availableSkills = this.createExcludedListWithOtherElem(
+      this.allPossibleSkillsList,
+      this.employeeProfileForm.get('listOfSkills') as FormArray,
+      otherSkill,
+    );
+
+    return this.findMatchingStrings(availableSkills, control.value);
+  }
+
+  checkIfLastProjectAndSkillAreNotEmpty(): boolean {
+    return (
+      this.listOfProjects.value.at(-1) != '' &&
+      this.listOfSkills.value.at(-1) != ''
+    );
+  }
+
+  private loadProjects(): void {
+    this.projectService
+      .getProjects()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe((projects) => (this.allPossibleProjectsList = projects));
+  }
+
+  private loadSkills(): void {
+    this.skillService
+      .getSkills()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe((skills) => (this.allPossibleSkillsList = skills));
+  }
+
+  private createArrayFormControlWithValidators(value: string): FormControl {
+    return this.formBuilder.control(value, Validators.required);
+  }
+
+  private addElementToFormArrayIfNeeded(formArray: FormArray) {
+    if (formArray.length < 1 || formArray.at(length - 1).value != '')
+      formArray.push(this.createArrayFormControlWithValidators(''));
+  }
+
   private createExcludedListWithOtherElem(
     allPossibleValues: string[],
     exclusionList: FormArray,
@@ -184,43 +217,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   ): string[] {
     return sourceList.filter((elem) =>
       elem.toLowerCase().includes(searchString.toLowerCase()),
-    );
-  }
-
-  findAvailableProjectsWithOtherForControl(
-    otherProject: string,
-    control: AbstractControl,
-  ): string[] {
-    const excludedList = this.createExcludedListWithOtherElem(
-      this.allPossibleProjectsList,
-      this.employeeProfileForm.get('listOfProjects') as FormArray,
-      otherProject,
-    );
-
-    return this.findMatchingStrings(excludedList, control.value);
-  }
-
-  findAvailableSkillsWithOtherForControl(
-    otherSkill: string,
-    control: AbstractControl,
-  ): string[] {
-    const excludedList = this.createExcludedListWithOtherElem(
-      this.allPossibleSkillsList,
-      this.employeeProfileForm.get('listOfSkills') as FormArray,
-      otherSkill,
-    );
-
-    return this.findMatchingStrings(excludedList, control.value);
-  }
-
-  undoChangesInForm(): void {
-    this.fillForm();
-  }
-
-  checkIfLastProjectAndSkillAreNotEmpty(): boolean {
-    return (
-      this.listOfProjects.value.at(-1) != '' &&
-      this.listOfSkills.value.at(-1) != ''
     );
   }
 }

@@ -71,10 +71,13 @@
             id="skill-{{ index }}"
             class="employee-detail__form-field"
           >
+            <mat-label
+              >{{ "employee.detail.skills.skill" | translate }}
+              {{ index + 1 }}</mat-label
+            >
             <input
               type="text"
               placeholder="{{ 'employee.detail.skills.skill' | translate }}"
-              attr.aria-label="{{ 'employee.detail.skills.skill' | translate }}"
               matInput
               [formControlName]="index"
               [matAutocomplete]="skillAuto"
@@ -82,7 +85,7 @@
             <mat-autocomplete #skillAuto="matAutocomplete">
               <mat-option
                 *ngFor="
-                  let possibleSkill of findAvailableSkillsWithOtherForControl(
+                  let possibleSkill of findSkillsForAutocomplete(
                     employee.listOfSkills[index],
                     skillControl
                   )
@@ -133,12 +136,14 @@
             id="project-{{ index }}"
             class="employee-detail__form-field"
           >
+            <mat-label for="project-index"
+              >{{ "employee.detail.projects.project" | translate }}
+              {{ index + 1 }}</mat-label
+            >
             <input
+              id="project-index"
               type="text"
               placeholder="{{ 'employee.detail.projects.project' | translate }}"
-              attr.aria-label="{{
-                'employee.detail.projects.project' | translate
-              }}"
               matInput
               [formControlName]="index"
               [matAutocomplete]="projectAuto"
@@ -147,7 +152,7 @@
             <mat-autocomplete #projectAuto="matAutocomplete">
               <mat-option
                 *ngFor="
-                  let possibleProject of findAvailableProjectsWithOtherForControl(
+                  let possibleProject of findProjectsForAutocomplete(
                     employee.listOfProjects[index],
                     projectControl
                   )
@@ -208,7 +213,7 @@
         mat-raised-button
         color="accent"
         type="button"
-        (click)="undoChangesInForm()"
+        (click)="resetForm()"
         [disabled]="
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
