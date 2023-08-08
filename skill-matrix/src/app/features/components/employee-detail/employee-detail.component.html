@@ -85,7 +85,7 @@
             <mat-autocomplete #skillAuto="matAutocomplete">
               <mat-option
                 *ngFor="
-                  let possibleSkill of findAvailableSkillsWithOtherForControl(
+                  let possibleSkill of findSkillsForAutocomplete(
                     employee.listOfSkills[index],
                     skillControl
                   )
@@ -152,7 +152,7 @@
             <mat-autocomplete #projectAuto="matAutocomplete">
               <mat-option
                 *ngFor="
-                  let possibleProject of findAvailableProjectsWithOtherForControl(
+                  let possibleProject of findProjectsForAutocomplete(
                     employee.listOfProjects[index],
                     projectControl
                   )

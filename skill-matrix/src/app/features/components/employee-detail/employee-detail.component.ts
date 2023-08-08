@@ -137,30 +137,30 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     });
   }
 
-  findAvailableProjectsWithOtherForControl(
+  findProjectsForAutocomplete(
     otherProject: string,
     control: AbstractControl,
   ): string[] {
-    const availableProjectsWithOther = this.createExcludedListWithOtherElem(
+    const availableProjects = this.createExcludedListWithOtherElem(
       this.allPossibleProjectsList,
       this.employeeProfileForm.get('listOfProjects') as FormArray,
       otherProject,
     );
 
-    return this.findMatchingStrings(availableProjectsWithOther, control.value);
+    return this.findMatchingStrings(availableProjects, control.value);
   }
 
-  findAvailableSkillsWithOtherForControl(
+  findSkillsForAutocomplete(
     otherSkill: string,
     control: AbstractControl,
   ): string[] {
-    const availableSkillsWithOther = this.createExcludedListWithOtherElem(
+    const availableSkills = this.createExcludedListWithOtherElem(
       this.allPossibleSkillsList,
       this.employeeProfileForm.get('listOfSkills') as FormArray,
       otherSkill,
     );
 
-    return this.findMatchingStrings(availableSkillsWithOther, control.value);
+    return this.findMatchingStrings(availableSkills, control.value);
   }
 
   checkIfLastProjectAndSkillAreNotEmpty(): boolean {
