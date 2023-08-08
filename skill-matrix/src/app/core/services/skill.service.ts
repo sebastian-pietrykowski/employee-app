@@ -1,8 +1,8 @@
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { MOCK_SKILLS } from '../../features/mocks/mock-skills';
-import { TranslateService } from '@ngx-translate/core';
 import { MessageService } from './message.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',

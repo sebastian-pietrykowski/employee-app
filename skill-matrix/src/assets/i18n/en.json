@@ -29,6 +29,7 @@
   },
   "messages": {
     "header": "Messages",
+    "nothing.new": "Nothing new",
     "clear": "Clear messages",
     "employee": {
       "component": {

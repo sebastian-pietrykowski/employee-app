@@ -5,6 +5,8 @@
   <ul class="employee__list">
     <li class="employee__list-element" *ngFor="let employee of employeeList">
       <button
+        mat-raised-button
+        color="primary"
         class="employee__list-button"
         [class.employee__list-button--selected]="employee === selectedEmployee"
         type="button"
@@ -17,6 +19,8 @@
     </li>
     <li class="employee__list-element">
       <button
+        mat-raised-button
+        color="primary"
         class="employee__list-button"
         type="button"
         (click)="onSelect(createEmptyEmployee())"
@@ -26,6 +30,7 @@
     </li>
   </ul>
   <app-employee-detail
+    class="employee__detail"
     [employee]="selectedEmployee"
     [employeeList]="employeeList"
     (updateEmployeeProfileEvent)="updateEmployee($event)"

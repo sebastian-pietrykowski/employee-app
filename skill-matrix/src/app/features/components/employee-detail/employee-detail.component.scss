@@ -1,0 +1,7 @@
+$form-field-width: 60%;
+
+.employee-detail {
+  &__form-field {
+    width: $form-field-width;
+  }
+}

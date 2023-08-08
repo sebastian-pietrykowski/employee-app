@@ -2,15 +2,19 @@
 @import "app/styles/buttons";
 @import "app/styles/headers";
 
-* {
-  font-family: Arial, Helvetica, sans-serif;
-}
+$font-size: 10px;
+$body-margin: 8px;
 
 html {
-  font-size: 10px;
-  margin: 2rem;
+  font-size: $font-size;
+  margin: $body-margin;
+  color: $app-white;
 }
 
-body {
-  margin: 2rem;
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 48;
 }
