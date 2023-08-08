@@ -11,23 +11,24 @@ import {
   EventEmitter,
   Input,
   OnChanges,
+  OnDestroy,
   OnInit,
   Output,
   SimpleChanges,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { Employee } from '../../models/employee';
 import { MessageService } from '../../../core/services/message.service';
 import { ProjectService } from '../../../core/services/project.service';
 import { SkillService } from '../../../core/services/skill.service';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employee-detail',
   templateUrl: './employee-detail.component.html',
   styleUrls: ['./employee-detail.component.scss'],
 })
-export class EmployeeDetailComponent implements OnChanges, OnInit {
+export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   @Input({ required: true }) employee?: Employee;
   @Input({ required: true }) employeeList!: Employee[];
   @Output() removeEmployeeEvent = new EventEmitter<string>();
@@ -39,6 +40,8 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
 
   wasProjectControlRemoved = false;
   wasSkillControlRemoved = false;
+
+  private $unsubscribe = new Subject();
 
   constructor(
     private readonly messageService: MessageService,
@@ -55,17 +58,22 @@ export class EmployeeDetailComponent implements OnChanges, OnInit {
     this.getSkills();
   }
 
+  ngOnDestroy() {
+    this.$unsubscribe.next(undefined);
+    this.$unsubscribe.complete();
+  }
+
   private getProjects(): void {
     this.projectService
       .getProjects()
-      .pipe(take(1))
+      .pipe(takeUntil(this.$unsubscribe))
       .subscribe((projects) => (this.allPossibleProjectsList = projects));
   }
 
   private getSkills(): void {
     this.skillService
       .getSkills()
-      .pipe(take(1))
+      .pipe(takeUntil(this.$unsubscribe))
       .subscribe((skills) => (this.allPossibleSkillsList = skills));
   }
 

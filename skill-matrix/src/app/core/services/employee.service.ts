@@ -16,8 +16,12 @@ export class EmployeeService {
     private readonly messageService: MessageService,
   ) {}
 
-  getEmployees(): Observable<Employee[]> {
-    const employees = of(this.employees);
+  getCount(): Observable<number> {
+    return of(this.employees.length);
+  }
+
+  getEmployees(startIndex: number, endIndex: number): Observable<Employee[]> {
+    const employees = of(this.employees.slice(startIndex, endIndex));
 
     this.translateService
       .get('messages.employee.service.fetched')

@@ -1,6 +1,11 @@
 {
+  "nav": {
+    "dashboard": "Dashboard",
+    "employee": "Employees"
+  },
   "employee": {
     "header": "Employee info",
+    "top": "Top employees",
     "detail": {
       "details": "Details",
       "name": "Name",

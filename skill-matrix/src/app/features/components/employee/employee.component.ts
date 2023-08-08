@@ -1,18 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { Employee } from '../../models/employee';
 import { EmployeeService } from '../../../core/services/employee.service';
 import { MessageService } from '../../../core/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-employee',
   templateUrl: './employee.component.html',
   styleUrls: ['./employee.component.scss'],
 })
-export class EmployeeComponent implements OnInit {
+export class EmployeeComponent implements OnInit, OnDestroy {
   employeeList: Employee[] = [];
   selectedEmployee?: Employee;
+  private $unsubscribe = new Subject();
 
   constructor(
     private readonly employeeService: EmployeeService,
@@ -24,11 +25,21 @@ export class EmployeeComponent implements OnInit {
     this.getEmployees();
   }
 
+  ngOnDestroy(): void {
+    this.$unsubscribe.next(undefined);
+    this.$unsubscribe.complete();
+  }
+
   private getEmployees(): void {
     this.employeeService
-      .getEmployees()
-      .pipe(take(1))
-      .subscribe((employees) => (this.employeeList = employees));
+      .getCount()
+      .pipe(takeUntil(this.$unsubscribe))
+      .subscribe((count: number) => {
+        this.employeeService
+          .getEmployees(0, count)
+          .pipe(takeUntil(this.$unsubscribe))
+          .subscribe((employees) => (this.employeeList = employees));
+      });
   }
 
   onSelect(employee: Employee): void {

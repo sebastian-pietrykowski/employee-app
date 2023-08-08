@@ -1,6 +1,11 @@
 {
+  "nav": {
+    "dashboard": "Panel",
+    "employee": "Pracownicy"
+  },
   "employee": {
     "header": "Informacje o pracownikach",
+    "top": "Najlepsi pracownicy",
     "detail": {
       "details": "Szczegóły",
       "name": "Imię",
