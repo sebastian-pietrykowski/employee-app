@@ -71,10 +71,13 @@
             id="skill-{{ index }}"
             class="employee-detail__form-field"
           >
+            <mat-label
+              >{{ "employee.detail.skills.skill" | translate }}
+              {{ index + 1 }}</mat-label
+            >
             <input
               type="text"
               placeholder="{{ 'employee.detail.skills.skill' | translate }}"
-              attr.aria-label="{{ 'employee.detail.skills.skill' | translate }}"
               matInput
               [formControlName]="index"
               [matAutocomplete]="skillAuto"
@@ -133,12 +136,14 @@
             id="project-{{ index }}"
             class="employee-detail__form-field"
           >
+            <mat-label for="project-index"
+              >{{ "employee.detail.projects.project" | translate }}
+              {{ index + 1 }}</mat-label
+            >
             <input
+              id="project-index"
               type="text"
               placeholder="{{ 'employee.detail.projects.project' | translate }}"
-              attr.aria-label="{{
-                'employee.detail.projects.project' | translate
-              }}"
               matInput
               [formControlName]="index"
               [matAutocomplete]="projectAuto"
@@ -194,7 +199,12 @@
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="employeeProfileForm.invalid || (!wasProjectControlRemoved && !wasSkillControlRemoved && employeeProfileForm.pristine)"
+        [disabled]="
+          employeeProfileForm.invalid ||
+          (!wasProjectControlRemoved &&
+            !wasSkillControlRemoved &&
+            employeeProfileForm.pristine)
+        "
         (click)="updateEmployeeProfile()"
       >
         {{ "employee.detail.submit" | translate }}
@@ -203,7 +213,7 @@
         mat-raised-button
         color="accent"
         type="button"
-        (click)="undoChangesInForm()"
+        (click)="resetForm()"
         [disabled]="
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine

@@ -18,7 +18,7 @@ export class NavbarComponent {
   constructor(
     readonly messageService: MessageService,
     readonly translateService: TranslateService,
-    private readonly dateAdapter: DateAdapter<never>,
+    private readonly dateAdapter: DateAdapter<Date>,
   ) {}
 
   setTranslationLanguage(language: string): void {
