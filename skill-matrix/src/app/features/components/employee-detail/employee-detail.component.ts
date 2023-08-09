@@ -8,16 +8,16 @@ import {
 } from '@angular/forms';
 import {
   Component,
-  EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../models/employee';
+import { EmployeeService } from '../../../core/services/employee.service';
+import { Location } from '@angular/common';
 import { MessageService } from '../../../core/services/message.service';
 import { ProjectService } from '../../../core/services/project.service';
 import { SkillService } from '../../../core/services/skill.service';
@@ -29,10 +29,8 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./employee-detail.component.scss'],
 })
 export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
-  @Input({ required: true }) employee?: Employee;
-  @Input({ required: true }) employeeList!: Employee[];
-  @Output() removeEmployeeEvent = new EventEmitter<string>();
-  @Output() updateEmployeeProfileEvent = new EventEmitter<Employee>();
+  employee?: Employee;
+  possibleManagers?: Employee[];
 
   employeeProfileForm: FormGroup;
   allPossibleProjectsList: string[] = [];
@@ -41,26 +39,33 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   wasProjectControlRemoved = false;
   wasSkillControlRemoved = false;
 
-  private $unsubscribe = new Subject();
+  private isEmployeeToBeAdded = false;
+  private unsubscribe$ = new Subject();
 
   constructor(
+    private readonly employeeService: EmployeeService,
     private readonly messageService: MessageService,
     private readonly projectService: ProjectService,
     private readonly skillService: SkillService,
     private readonly translationService: TranslateService,
     private formBuilder: NonNullableFormBuilder,
+    private readonly route: ActivatedRoute,
+    readonly location: Location,
   ) {
     this.employeeProfileForm = new FormGroup({});
   }
 
   ngOnInit(): void {
-    this.loadProjects();
-    this.loadSkills();
+    this.loadEmployee();
+    this.loadPossibleManagers();
+
+    this.loadPossibleProjects();
+    this.loadPossibleSkills();
   }
 
   ngOnDestroy() {
-    this.$unsubscribe.next(undefined);
-    this.$unsubscribe.complete();
+    this.unsubscribe$.next(undefined);
+    this.unsubscribe$.complete();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -103,22 +108,20 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     });
   }
 
-  updateEmployeeProfile(): void {
+  deleteEmployee(): void {
+    const id = this.employee?.id as string;
+    this.employeeService.deleteEmployee(id);
+  }
+
+  updateEmployee(): void {
     const employee: Employee = this.employeeProfileForm.getRawValue();
-    this.updateEmployeeProfileEvent.emit(employee);
+    this.employee = employee;
+    this.employeeService.updateEmployee(employee);
 
     this.wasProjectControlRemoved = false;
     this.wasSkillControlRemoved = false;
 
-    const message = this.translationService.instant(
-      'messages.employee.detail.component.updated',
-      { id: employee.id },
-    );
-    this.messageService.add(message);
-  }
-
-  removeEmployeeProfile(employeeId: string): void {
-    this.removeEmployeeEvent.emit(employeeId);
+    this.resetForm();
   }
 
   addProjectControlIfNeeded(): void {
@@ -137,12 +140,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   removeSkillAt(index: number): void {
     this.listOfSkills.removeAt(index);
     this.wasSkillControlRemoved = true;
-  }
-
-  determineListOfPossibleManagers(): Employee[] {
-    return this.employeeList?.filter((e) => {
-      return e.id !== this.employee?.id;
-    });
   }
 
   findProjectsForAutocomplete(
@@ -178,17 +175,55 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
-  private loadProjects(): void {
+  private loadEmployee(): void {
+    const isEmployeeToBeAdded =
+      (this.route.snapshot.url?.at(1) || '').toString() === 'add';
+    if (isEmployeeToBeAdded) {
+      this.employee = this.createEmptyEmployee();
+      this.resetForm();
+    } else {
+      const id = this.route.snapshot.paramMap.get('id') as string;
+      this.employeeService.getEmployee(id).subscribe((employee) => {
+        this.employee = employee;
+        this.resetForm();
+      });
+    }
+  }
+
+  private createEmptyEmployee(): Employee {
+    return {
+      id: this.employeeService.getNewId(),
+      name: '',
+      surname: '',
+      employmentDate: new Date(),
+      managerId: undefined,
+      listOfSkills: [],
+      listOfProjects: [],
+    };
+  }
+
+  private loadPossibleManagers(): void {
+    this.employeeService.getCount().subscribe((count: number) => {
+      this.employeeService
+        .getEmployeesExceptOne(0, count, this.employee?.id as string)
+        .subscribe(
+          (possibleManagers: Employee[]) =>
+            (this.possibleManagers = possibleManagers),
+        );
+    });
+  }
+
+  private loadPossibleProjects(): void {
     this.projectService
       .getProjects()
-      .pipe(takeUntil(this.$unsubscribe))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((projects) => (this.allPossibleProjectsList = projects));
   }
 
-  private loadSkills(): void {
+  private loadPossibleSkills(): void {
     this.skillService
       .getSkills()
-      .pipe(takeUntil(this.$unsubscribe))
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((skills) => (this.allPossibleSkillsList = skills));
   }
 

@@ -29,7 +29,8 @@
       },
       "submit": "Zatwierdź",
       "undo": "Cofnij zmiany",
-      "remove": "Usuń"
+      "delete": "Usuń",
+      "back": "Wróć"
     }
   },
   "messages": {
@@ -40,11 +41,10 @@
       "component": {
         "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
       },
-      "detail.component": {
-        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
-      },
       "service": {
-        "fetched": "EmployeeService: Pobrano pracowników"
+        "deleted": "EmployeeDetailComponent: Usunięto pracownika id={{id}}",
+        "fetched": "EmployeeService: Pobrano pracowników",
+        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
       }
     },
     "project": {

@@ -29,7 +29,8 @@
       },
       "submit": "Submit",
       "undo": "Undo changes",
-      "remove": "Remove"
+      "delete": "Delete",
+      "back": "Back"
     }
   },
   "messages": {
@@ -40,11 +41,10 @@
       "component": {
         "selected": "EmployeeComponent: Selected employee id={{id}}"
       },
-      "detail.component": {
-        "updated": "EmployeeDetailComponent: Updated employee id={{id}}"
-      },
       "service": {
-        "fetched": "EmployeeService: fetched employees"
+        "deleted": "EmployeeService: Deleted employee id={{id}}",
+        "fetched": "EmployeeService: fetched employees",
+        "updated": "EmployeeService: Updated employee id={{id}}"
       }
     },
     "project": {

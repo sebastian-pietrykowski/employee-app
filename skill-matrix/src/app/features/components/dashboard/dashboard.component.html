@@ -7,7 +7,9 @@
   <mat-card-content>
     <ol>
       <li *ngFor="let employee of employees">
-        <a>{{ employee.name }} {{ employee.surname }}</a>
+        <a routerLink="/employee/{{ employee.id }}"
+          >{{ employee.name }} {{ employee.surname }}</a
+        >
       </li>
     </ol>
   </mat-card-content>

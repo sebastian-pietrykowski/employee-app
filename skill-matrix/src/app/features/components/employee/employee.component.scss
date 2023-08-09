@@ -62,21 +62,6 @@ $list-button-hover-left: 0.1rem;
     color: $app-white;
   }
 
-  &__list-button--selected {
-    background-color: $app-black;
-    color: $app-white;
-  }
-
-  &__list-button--selected:hover {
-    background-color: $app-charcoal-gray;
-    color: $app-white;
-  }
-
-  &__list-button--selected:active {
-    background-color: $app-black;
-    color: $app-white;
-  }
-
   &__employee_list {
     display: inline-block;
     color: $app-white;
