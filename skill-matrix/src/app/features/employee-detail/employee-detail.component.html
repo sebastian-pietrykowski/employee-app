@@ -1,11 +1,19 @@
-<mat-card class="employee-detail" *ngIf="employee">
+<mat-card class="employee-detail">
   <mat-card-header>
     <mat-card-title class="employee-detail__full-name">
-      <h1>
-        {{ employee.name | uppercase }}
-        {{ employee.surname | uppercase }}
-        {{ "employee.detail.details" | translate }}
+      <h1 *ngIf="employee; else employeeNotPresentHeader">
+        {{
+          "employee.detail.header.show"
+            | translate
+              : {
+                  name: employee.name | uppercase,
+                  surname: employee.surname | uppercase
+                }
+        }}
       </h1>
+      <ng-template #employeeNotPresentHeader>
+        <h1>{{ "employee.detail.header.add" | translate }}</h1>
+      </ng-template>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -111,7 +119,7 @@
                   <mat-option
                     *ngFor="
                       let possibleSkill of findSkillsForAutocomplete(
-                        employee.listOfSkills[index],
+                        employee?.listOfSkills?.at(index) || '',
                         skillControl
                       )
                     "
@@ -191,7 +199,7 @@
                   <mat-option
                     *ngFor="
                       let possibleProject of findProjectsForAutocomplete(
-                        employee.listOfProjects[index],
+                        employee?.listOfProjects?.at(index) || '',
                         projectControl
                       )
                     "
@@ -238,7 +246,7 @@
     </form>
   </mat-card-content>
   <mat-card-actions class="employee-detail__action-buttons-container">
-    <button
+    <a
       mat-raised-button
       color="primary"
       type="submit"
@@ -248,10 +256,11 @@
           !wasSkillControlRemoved &&
           employeeProfileForm.pristine)
       "
+      routerLink=".."
       (click)="updateEmployee()"
     >
       {{ "employee.detail.submit" | translate }}
-    </button>
+    </a>
     <button
       mat-raised-button
       color="accent"

@@ -7,7 +7,10 @@
     "header": "Employee info",
     "top": "Top employees",
     "detail": {
-      "details": "Details",
+      "header": {
+        "add": "Add new employee",
+        "show": "{{name}} {{surname}} Details"
+      },
       "name": "Name",
       "surname": "Surname",
       "employment.date": "Employment date",

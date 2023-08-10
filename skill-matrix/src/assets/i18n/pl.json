@@ -7,7 +7,10 @@
     "header": "Informacje o pracownikach",
     "top": "Najlepsi pracownicy",
     "detail": {
-      "details": "Szczegóły",
+      "header": {
+        "add": "Dodaj nowego pracownika",
+        "show": "{{name}} {{surname}} Szczegóły"
+      },
       "name": "Imię",
       "surname": "Nazwisko",
       "employment.date": "Data zatrudnienia",

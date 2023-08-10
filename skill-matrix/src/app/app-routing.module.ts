@@ -1,15 +1,40 @@
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './features/components/dashboard/dashboard.component';
-import { EmployeeComponent } from './features/components/employee/employee.component';
-import { EmployeeDetailComponent } from './features/components/employee-detail/employee-detail.component';
 import { NgModule } from '@angular/core';
+import { ROUTE_PATHS } from './route-paths';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: 'employee', component: EmployeeComponent },
-  { path: 'employee/:id', component: EmployeeDetailComponent },
-  { path: 'employee/add', component: EmployeeDetailComponent },
-  { path: 'dashboard', component: DashboardComponent },
+  { path: '', redirectTo: ROUTE_PATHS.DASHBOARD, pathMatch: 'full' },
+  {
+    path: ROUTE_PATHS.DASHBOARD,
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule,
+      ),
+  },
+  {
+    path: ROUTE_PATHS.EMPLOYEES,
+    loadChildren: () =>
+      import('./features/employee/employee.module').then(
+        (m) => m.EmployeeModule,
+      ),
+  },
+  {
+    path: ROUTE_PATHS.ADD_EMPLOYEE,
+    loadChildren: () =>
+      import('./features/employee-detail/employee-detail.module').then(
+        (m) => m.EmployeeDetailModule,
+      ),
+    data: { behavior: 'add' },
+  },
+  {
+    path: ROUTE_PATHS.SHOW_EMPLOYEE + '/:id',
+    loadChildren: () =>
+      import('./features/employee-detail/employee-detail.module').then(
+        (m) => m.EmployeeDetailModule,
+      ),
+    data: { behavior: 'load' },
+  },
+  { path: '**', redirectTo: '/dashboard' },
 ];
 
 @NgModule({

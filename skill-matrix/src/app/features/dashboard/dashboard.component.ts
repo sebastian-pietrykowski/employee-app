@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { Employee } from '../../models/employee';
-import { EmployeeService } from '../../../core/services/employee.service';
+import { Employee } from '../../core/models/employee';
+import { EmployeeService } from '../../core/services/employee.service';
 
 @Component({
   selector: 'app-dashboard',

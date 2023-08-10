@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { MOCK_PROJECTS } from '../../features/mocks/mock-projects';
+import { MOCK_PROJECTS } from '../mocks/mock-projects';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
 

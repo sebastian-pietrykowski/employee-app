@@ -1,7 +1,7 @@
 import { EMPTY, Observable, of } from 'rxjs';
-import { Employee } from '../../features/models/employee';
+import { Employee } from '../models/employee';
 import { Injectable } from '@angular/core';
-import { MOCK_EMPLOYEES } from '../../features/mocks/mock-employees';
+import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -16,8 +16,8 @@ export class EmployeeService {
     private readonly messageService: MessageService,
   ) {}
 
-  containsEmployee(id: string) {
-    return this.employees.some((employee: Employee) => employee.id === id);
+  containsEmployee(id: string): Observable<boolean> {
+    return of(this.employees.some((employee: Employee) => employee.id === id));
   }
 
   deleteEmployee(id: string): void {
@@ -34,9 +34,9 @@ export class EmployeeService {
     return of(this.employees.length);
   }
 
-  getNewId(): string {
+  getNewId(): Observable<string> {
     const lastIndex = this.employees.length - 1;
-    return (Number(this.employees.at(lastIndex)?.id || 0) + 1).toString();
+    return of((Number(this.employees.at(lastIndex)?.id || 0) + 1).toString());
   }
 
   getEmployee(id: string): Observable<Employee> {
