@@ -45,9 +45,9 @@
         "selected": "EmployeeComponent: Selected employee id={{id}}"
       },
       "service": {
-        "deleted": "EmployeeService: Deleted employee id={{id}}",
-        "fetched": "EmployeeService: fetched employees",
-        "updated": "EmployeeService: Updated employee id={{id}}"
+        "deleted": "Deleted employee id={{id}}",
+        "fetched": "Fetched employees",
+        "updated": "Updated employee id={{id}}"
       }
     },
     "project": {

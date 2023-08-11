@@ -45,9 +45,9 @@
         "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
       },
       "service": {
-        "deleted": "EmployeeDetailComponent: Usunięto pracownika id={{id}}",
-        "fetched": "EmployeeService: Pobrano pracowników",
-        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
+        "deleted": "Usunięto pracownika id={{id}}",
+        "fetched": "Pobrano pracowników",
+        "updated": "Zaktualizowano pracownika id={{id}}"
       }
     },
     "project": {

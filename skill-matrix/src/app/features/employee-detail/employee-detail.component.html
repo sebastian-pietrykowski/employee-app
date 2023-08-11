@@ -119,7 +119,7 @@
                   <mat-option
                     *ngFor="
                       let possibleSkill of findSkillsForAutocomplete(
-                        employee?.listOfSkills?.at(index) || '',
+                        employee?.listOfSkills?.at(index) ?? '',
                         skillControl
                       )
                     "
@@ -199,7 +199,7 @@
                   <mat-option
                     *ngFor="
                       let possibleProject of findProjectsForAutocomplete(
-                        employee?.listOfProjects?.at(index) || '',
+                        employee?.listOfProjects?.at(index) ?? '',
                         projectControl
                       )
                     "

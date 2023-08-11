@@ -1,5 +1,6 @@
-import { EMPTY, Observable, of } from 'rxjs';
+import { catchError, EMPTY, Observable, of } from 'rxjs';
 import { Employee } from '../models/employee';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
@@ -9,11 +10,13 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class EmployeeService {
-  employees: Employee[] = MOCK_EMPLOYEES;
+  private employees: Employee[] = MOCK_EMPLOYEES;
+  private employeesUrl = 'api/employees';
 
   constructor(
-    private readonly translateService: TranslateService,
     private readonly messageService: MessageService,
+    private readonly translateService: TranslateService,
+    private readonly http: HttpClient,
   ) {}
 
   containsEmployee(id: string): Observable<boolean> {
@@ -27,16 +30,16 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.deleted', { id: id })
-      .subscribe((translated: string) => this.messageService.add(translated));
+      .subscribe((translated: string) => this.log(translated));
   }
 
   getCount(): Observable<number> {
     return of(this.employees.length);
   }
 
-  getNewId(): Observable<string> {
+  generateId(): Observable<string> {
     const lastIndex = this.employees.length - 1;
-    return of((Number(this.employees.at(lastIndex)?.id || 0) + 1).toString());
+    return of((Number(this.employees.at(lastIndex)?.id ?? 0) + 1).toString());
   }
 
   getEmployee(id: string): Observable<Employee> {
@@ -46,19 +49,21 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.messageService.add(translated));
+      .subscribe((translated: string) => this.log(translated));
 
     return employee ? of(employee) : EMPTY;
   }
 
   getEmployees(startIndex: number, endIndex: number): Observable<Employee[]> {
-    const employees = this.employees.slice(startIndex, endIndex);
+    const url = `${this.employeesUrl}/list/from/${startIndex}/to/${endIndex}`;
 
     this.translateService
       .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.messageService.add(translated));
+      .subscribe((translated: string) => this.log(translated));
 
-    return employees ? of(employees) : EMPTY;
+    return this.http
+      .get<Employee[]>(url)
+      .pipe(catchError(this.handleError<Employee[]>('getEmployees', [])));
   }
 
   getEmployeesExceptOne(
@@ -66,17 +71,15 @@ export class EmployeeService {
     endIndex: number,
     exceptionEmployeeId: string,
   ): Observable<Employee[]> {
-    const employees = of(
-      this.employees
-        .slice(startIndex, endIndex)
-        .filter((employee) => employee.id !== exceptionEmployeeId),
-    );
+    const url = `${this.employeesUrl}/list/from/${startIndex}/to/${endIndex}/except/${exceptionEmployeeId}`;
 
     this.translateService
       .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.messageService.add(translated));
+      .subscribe((translated: string) => this.log(translated));
 
-    return employees;
+    return this.http
+      .get<Employee[]>(url)
+      .pipe(catchError(this.handleError<Employee[]>('getEmployeesExceptOne')));
   }
 
   updateEmployee(employeeToUpdate: Employee) {
@@ -93,6 +96,19 @@ export class EmployeeService {
       'messages.employee.service.updated',
       { id: employeeToUpdate.id },
     );
-    this.messageService.add(message);
+    this.log(message);
+  }
+
+  private log(message: string): void {
+    this.messageService.add(`EmployeeService: ${message}`);
+  }
+
+  private handleError<T>(operation: string, result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(error);
+      this.log(`${operation} failed: ${error.message}`);
+
+      return of(result as T);
+    };
   }
 }

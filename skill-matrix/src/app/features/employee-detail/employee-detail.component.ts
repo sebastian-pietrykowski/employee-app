@@ -83,7 +83,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   resetForm(): void {
     this.employeeProfileForm = this.formBuilder.group({
-      id: [this.employee?.id || ''],
+      id: [this.employee?.id ?? ''],
       name: [
         this.employee?.name,
         [Validators.required, Validators.minLength(3)],
@@ -93,7 +93,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
         [Validators.required, Validators.minLength(3)],
       ],
       employmentDate: [
-        this.employee?.employmentDate || new Date(),
+        this.employee?.employmentDate ?? new Date(),
         Validators.required,
       ],
       listOfSkills: this.formBuilder.array(
@@ -120,7 +120,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
     if (employee.id == '') {
       this.employeeService
-        .getNewId()
+        .generateId()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((id: string) => {
           employee.id = id;
