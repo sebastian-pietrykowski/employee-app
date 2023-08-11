@@ -1,6 +1,6 @@
-import { EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable, Subject, of, takeUntil } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Employee } from '../models/employee';
-import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -8,13 +8,19 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService {
-  employees: Employee[] = MOCK_EMPLOYEES;
+export class EmployeeService implements OnDestroy {
+  private employees: Employee[] = MOCK_EMPLOYEES;
+  private unsubscribe$ = new Subject();
 
   constructor(
     private readonly translateService: TranslateService,
     private readonly messageService: MessageService,
   ) {}
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(undefined);
+    this.unsubscribe$.complete();
+  }
 
   containsEmployee(id: string): Observable<boolean> {
     return of(this.employees.some((employee: Employee) => employee.id === id));
@@ -27,6 +33,7 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.deleted', { id: id })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated: string) => this.messageService.add(translated));
   }
 
@@ -46,34 +53,18 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.fetched')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated: string) => this.messageService.add(translated));
 
     return employee ? of(employee) : EMPTY;
   }
 
-  getEmployees(startIndex: number, endIndex: number): Observable<Employee[]> {
-    const employees = this.employees.slice(startIndex, endIndex);
+  getEmployees(): Observable<Employee[]> {
+    const employees = this.employees ? of(this.employees) : EMPTY;
 
     this.translateService
       .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.messageService.add(translated));
-
-    return employees ? of(employees) : EMPTY;
-  }
-
-  getEmployeesExceptOne(
-    startIndex: number,
-    endIndex: number,
-    exceptionEmployeeId: string,
-  ): Observable<Employee[]> {
-    const employees = of(
-      this.employees
-        .slice(startIndex, endIndex)
-        .filter((employee) => employee.id !== exceptionEmployeeId),
-    );
-
-    this.translateService
-      .get('messages.employee.service.fetched')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated: string) => this.messageService.add(translated));
 
     return employees;

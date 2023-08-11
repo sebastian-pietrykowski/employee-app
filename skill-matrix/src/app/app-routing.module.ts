@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { ROUTE_PATHS } from './route-paths';
+import { ROUTE_PATHS } from './config/route-paths';
 
 const routes: Routes = [
   { path: '', redirectTo: ROUTE_PATHS.DASHBOARD, pathMatch: 'full' },
@@ -24,7 +24,6 @@ const routes: Routes = [
       import('./features/employee-detail/employee-detail.module').then(
         (m) => m.EmployeeDetailModule,
       ),
-    data: { behavior: 'add' },
   },
   {
     path: ROUTE_PATHS.SHOW_EMPLOYEE + '/:id',
@@ -32,7 +31,6 @@ const routes: Routes = [
       import('./features/employee-detail/employee-detail.module').then(
         (m) => m.EmployeeDetailModule,
       ),
-    data: { behavior: 'load' },
   },
   { path: '**', redirectTo: '/dashboard' },
 ];

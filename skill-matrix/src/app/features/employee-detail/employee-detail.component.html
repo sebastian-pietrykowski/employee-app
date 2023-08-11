@@ -22,9 +22,9 @@
       [formGroup]="employeeProfileForm"
       (ngSubmit)="updateEmployee()"
     >
-      <div class="employee-detail__form-inner-container">
-        <div class="employee-detail__form-fields-container">
-          <div class="employee-detail__form-field-container">
+      <div class="employee-detail__inner-form">
+        <div class="employee-detail__form-fields">
+          <div class="employee-detail__form-field">
             <mat-form-field class="employee-detail__form-field">
               <mat-label for="name"
                 ><span
@@ -35,7 +35,7 @@
             </mat-form-field>
           </div>
 
-          <div class="employee-detail__form-field-container">
+          <div class="employee-detail__form-field">
             <mat-form-field class="employee-detail__form-field">
               <mat-label for="surname"
                 >{{ "employee.detail.surname" | translate }}:
@@ -49,7 +49,7 @@
             </mat-form-field>
           </div>
 
-          <div class="employee-detail__form-field-container">
+          <div class="employee-detail__form-field">
             <mat-form-field class="employee-detail__form-field">
               <mat-label for="employmentDatePicker"
                 ><span
@@ -70,7 +70,7 @@
             </mat-form-field>
           </div>
 
-          <div class="employee-detail__form-field-container">
+          <div class="employee-detail__form-field">
             <mat-form-field class="employee-detail__form-field">
               <mat-label for="managerSelect">
                 {{ "employee.detail.manager.manager" | translate }}
@@ -89,12 +89,12 @@
         </div>
 
         <div formArrayName="listOfSkills" class="employee-detail__list">
-          <div class="employee-detail__subheader-container">
+          <div class="employee-detail__subheader">
             <h2>{{ "employee.detail.skills.skills" | translate }}:</h2>
           </div>
-          <div class="employee-detail__form-fields-container">
+          <div class="employee-detail__form-fields">
             <div
-              class="employee-detail__form-field-container"
+              class="employee-detail__form-field"
               *ngFor="
                 let skillControl of listOfSkills.controls;
                 let index = index
@@ -146,7 +146,7 @@
               </button>
             </div>
 
-            <div class="employee-detail__form-field-container">
+            <div class="employee-detail__form-field">
               <button
                 mat-icon-button
                 color="accent"
@@ -165,12 +165,12 @@
         </div>
 
         <div formArrayName="listOfProjects" class="employee-detail__list">
-          <div class="employee-detail__subheader-container">
+          <div class="employee-detail__subheader">
             <h2>{{ "employee.detail.projects.projects" | translate }}:</h2>
           </div>
-          <div class="employee-detail__form-fields-container">
+          <div class="employee-detail__form-fields">
             <div
-              class="employee-detail__form-field-container"
+              class="employee-detail__form-field"
               *ngFor="
                 let projectControl of listOfProjects.controls;
                 let index = index
@@ -225,7 +225,7 @@
                 >
               </button>
             </div>
-            <div class="employee-detail__form-field-container">
+            <div class="employee-detail__form-field">
               <button
                 mat-icon-button
                 color="accent"
@@ -245,7 +245,7 @@
       </div>
     </form>
   </mat-card-content>
-  <mat-card-actions class="employee-detail__action-buttons-container">
+  <mat-card-actions class="employee-detail__action-buttons">
     <a
       mat-raised-button
       color="primary"

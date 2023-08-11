@@ -2,7 +2,7 @@ $form-field-width: 80%;
 $subheader-side-margin: 6%;
 
 .employee-detail {
-  &__form-inner-container {
+  &__inner-form {
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -16,7 +16,7 @@ $subheader-side-margin: 6%;
     flex-grow: 1;
   }
 
-  &__form-fields-container {
+  &__form-fields {
     width: $form-field-width;
     display: flex;
     align-items: center;
@@ -24,18 +24,18 @@ $subheader-side-margin: 6%;
     margin: 0 auto;
   }
 
-  &__form-field-container {
+  &__form-field {
     width: 100%;
     display: flex;
   }
 
-  &__action-buttons-container {
+  &__action-buttons {
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  &__subheader-container {
+  &__subheader {
     margin: 0 $subheader-side-margin;
   }
 }
