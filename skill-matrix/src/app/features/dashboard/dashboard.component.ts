@@ -25,13 +25,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private loadEmployees(): void {
     this.employeeService
-      .getCount()
+      .getEmployees()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((count) => {
-        this.employeeService
-          .getEmployees(0, count)
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((employees) => (this.employees = employees));
-      });
+      .subscribe((employees) => (this.employees = employees));
   }
 }

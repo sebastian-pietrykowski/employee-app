@@ -13,13 +13,14 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../core/models/employee';
 import { EmployeeService } from '../../core/services/employee.service';
 import { Location } from '@angular/common';
 import { MessageService } from '../../core/services/message.service';
 import { ProjectService } from '../../core/services/project.service';
+import { ROUTE_PATHS } from '../../config/route-paths';
 import { SkillService } from '../../core/services/skill.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -49,7 +50,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     private readonly translationService: TranslateService,
     private formBuilder: NonNullableFormBuilder,
     private readonly route: ActivatedRoute,
-    readonly location: Location,
+    private readonly location: Location,
   ) {
     this.employeeProfileForm = new FormGroup({});
   }
@@ -183,27 +184,38 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private loadEmployee(): void {
-    const isEmployeeToBeAdded = this.route.snapshot.data['behavior'] === 'add';
+    const isEmployeeToBeAdded = this.location
+      .path()
+      .endsWith(ROUTE_PATHS.ADD_EMPLOYEE);
     if (isEmployeeToBeAdded) {
       this.resetForm();
     } else {
       const id = this.route.snapshot.paramMap.get('id') as string;
-      this.employeeService.getEmployee(id).subscribe((employee) => {
-        this.employee = employee;
-        this.resetForm();
-      });
+      this.employeeService
+        .getEmployee(id)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((employee) => {
+          this.employee = employee;
+          this.resetForm();
+        });
     }
   }
 
   private loadPossibleManagers(): void {
-    this.employeeService.getCount().subscribe((count: number) => {
-      this.employeeService
-        .getEmployeesExceptOne(0, count, this.employee?.id as string)
-        .subscribe(
-          (possibleManagers: Employee[]) =>
-            (this.possibleManagers = possibleManagers),
-        );
-    });
+    this.employeeService
+      .getEmployees()
+      .pipe(
+        map((employees: Employee[]) =>
+          employees.filter(
+            (employee: Employee) => employee.id !== this.employee?.id,
+          ),
+        ),
+        takeUntil(this.unsubscribe$),
+      )
+      .subscribe(
+        (possibleManagers: Employee[]) =>
+          (this.possibleManagers = possibleManagers),
+      );
   }
 
   private loadPossibleProjects(): void {

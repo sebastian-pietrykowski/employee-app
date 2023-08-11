@@ -1,7 +1,7 @@
-import { catchError, EMPTY, Observable, of } from 'rxjs';
+import { EMPTY, Observable, Subject, of, takeUntil } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Employee } from '../models/employee';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,15 +9,21 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService {
+export class EmployeeService implements OnDestroy {
   private employees: Employee[] = MOCK_EMPLOYEES;
   private employeesUrl = 'api/employees';
+  private unsubscribe$ = new Subject();
 
   constructor(
     private readonly messageService: MessageService,
     private readonly translateService: TranslateService,
     private readonly http: HttpClient,
   ) {}
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(undefined);
+    this.unsubscribe$.complete();
+  }
 
   containsEmployee(id: string): Observable<boolean> {
     return of(this.employees.some((employee: Employee) => employee.id === id));
@@ -30,6 +36,7 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.deleted', { id: id })
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated: string) => this.log(translated));
   }
 
@@ -49,37 +56,23 @@ export class EmployeeService {
 
     this.translateService
       .get('messages.employee.service.fetched')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated: string) => this.log(translated));
 
     return employee ? of(employee) : EMPTY;
   }
 
-  getEmployees(startIndex: number, endIndex: number): Observable<Employee[]> {
-    const url = `${this.employeesUrl}/list/from/${startIndex}/to/${endIndex}`;
+  getEmployees(): Observable<Employee[]> {
+    const url = `${this.employeesUrl}`;
 
     this.translateService
       .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.log(translated));
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((translated: string) => this.messageService.add(translated));
 
     return this.http
       .get<Employee[]>(url)
       .pipe(catchError(this.handleError<Employee[]>('getEmployees', [])));
-  }
-
-  getEmployeesExceptOne(
-    startIndex: number,
-    endIndex: number,
-    exceptionEmployeeId: string,
-  ): Observable<Employee[]> {
-    const url = `${this.employeesUrl}/list/from/${startIndex}/to/${endIndex}/except/${exceptionEmployeeId}`;
-
-    this.translateService
-      .get('messages.employee.service.fetched')
-      .subscribe((translated: string) => this.log(translated));
-
-    return this.http
-      .get<Employee[]>(url)
-      .pipe(catchError(this.handleError<Employee[]>('getEmployeesExceptOne')));
   }
 
   updateEmployee(employeeToUpdate: Employee) {
