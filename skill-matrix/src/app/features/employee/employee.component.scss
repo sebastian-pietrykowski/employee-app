@@ -1,5 +1,5 @@
-@import "../../../styles/buttons";
-@import "../../../styles/colors";
+@import "../../styles/buttons";
+@import "../../styles/colors";
 
 $font-size: 1.6rem;
 $flex-gap: 1.5rem;
@@ -59,21 +59,6 @@ $list-button-hover-left: 0.1rem;
 
   &__list-button:active {
     background-color: $app-dim-gray;
-    color: $app-white;
-  }
-
-  &__list-button--selected {
-    background-color: $app-black;
-    color: $app-white;
-  }
-
-  &__list-button--selected:hover {
-    background-color: $app-charcoal-gray;
-    color: $app-white;
-  }
-
-  &__list-button--selected:active {
-    background-color: $app-black;
     color: $app-white;
   }
 

@@ -4,8 +4,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { EmployeeComponent } from './features/components/employee/employee.component';
-import { EmployeeDetailComponent } from './features/components/employee-detail/employee-detail.component';
 import { FormsModule } from '@angular/forms';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -20,8 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MessagesComponent } from './features/components/messages/messages.component';
-import { NavbarComponent } from './features/components/navbar/navbar.component';
+import { NavigationModule } from './features/navigation/navigation.module';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -33,13 +30,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    EmployeeComponent,
-    EmployeeDetailComponent,
-    NavbarComponent,
-    MessagesComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -67,6 +58,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatToolbarModule,
     MatMenuModule,
     MatBadgeModule,
+    NavigationModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS }],
   bootstrap: [AppComponent],

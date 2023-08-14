@@ -1,8 +1,16 @@
 {
+  "nav": {
+    "dashboard": "Panel",
+    "employee": "Pracownicy"
+  },
   "employee": {
     "header": "Informacje o pracownikach",
+    "top": "Najlepsi pracownicy",
     "detail": {
-      "details": "Szczegóły",
+      "header": {
+        "add": "Dodaj nowego pracownika",
+        "show": "{{name}} {{surname}} Szczegóły"
+      },
       "name": "Imię",
       "surname": "Nazwisko",
       "employment.date": "Data zatrudnienia",
@@ -24,7 +32,8 @@
       },
       "submit": "Zatwierdź",
       "undo": "Cofnij zmiany",
-      "remove": "Usuń"
+      "delete": "Usuń",
+      "back": "Wróć"
     }
   },
   "messages": {
@@ -35,11 +44,10 @@
       "component": {
         "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
       },
-      "detail.component": {
-        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
-      },
       "service": {
-        "fetched": "EmployeeService: Pobrano pracowników"
+        "deleted": "EmployeeDetailComponent: Usunięto pracownika id={{id}}",
+        "fetched": "EmployeeService: Pobrano pracowników",
+        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
       }
     },
     "project": {

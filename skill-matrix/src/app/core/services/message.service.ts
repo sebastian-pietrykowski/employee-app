@@ -1,3 +1,4 @@
+import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -6,8 +7,8 @@ import { Injectable } from '@angular/core';
 export class MessageService {
   messages: string[] = [];
 
-  get count(): number {
-    return this.messages.length;
+  get count(): Observable<number> {
+    return of(this.messages.length);
   }
 
   add(message: string) {

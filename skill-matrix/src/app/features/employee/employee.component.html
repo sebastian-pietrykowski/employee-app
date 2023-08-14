@@ -4,36 +4,28 @@
   </header>
   <ul class="employee__list">
     <li class="employee__list-element" *ngFor="let employee of employeeList">
-      <button
+      <a
         mat-raised-button
         color="primary"
         class="employee__list-button"
-        [class.employee__list-button--selected]="employee === selectedEmployee"
         type="button"
-        (click)="onSelect(employee)"
+        routerLink="/employee/show/{{ employee.id }}"
       >
         <span class="employee__full-name-select"
           >{{ employee.name }} {{ employee.surname }}</span
         >
-      </button>
+      </a>
     </li>
     <li class="employee__list-element">
-      <button
+      <a
         mat-raised-button
         color="primary"
         class="employee__list-button"
         type="button"
-        (click)="onSelect(createEmptyEmployee())"
+        routerLink="/employee/add"
       >
         <span class="employee__full-name-select">+</span>
-      </button>
+      </a>
     </li>
   </ul>
-  <app-employee-detail
-    class="employee__detail"
-    [employee]="selectedEmployee"
-    [employeeList]="employeeList"
-    (updateEmployeeProfileEvent)="updateEmployee($event)"
-    (removeEmployeeEvent)="removeEmployee($event)"
-  ></app-employee-detail>
 </article>

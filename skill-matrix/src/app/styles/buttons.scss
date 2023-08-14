@@ -5,7 +5,8 @@ $button-border-radius: 4px;
 $button-font-size: 1.2rem;
 $button-padding: 1rem;
 
-button {
+button,
+a {
   margin: $button-margin;
   border: none;
   border-radius: $button-border-radius;

@@ -1,14 +1,20 @@
-import { Observable, of } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { MOCK_SKILLS } from '../../features/mocks/mock-skills';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, Subject, of, takeUntil } from 'rxjs';
+import { MOCK_SKILLS } from '../mocks/mock-skills';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class SkillService {
-  skills: string[] = MOCK_SKILLS;
+export class SkillService implements OnDestroy {
+  private skills: string[] = MOCK_SKILLS;
+  private unsubscribe$ = new Subject();
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(undefined);
+    this.unsubscribe$.complete();
+  }
 
   constructor(
     private readonly translateService: TranslateService,
@@ -20,6 +26,7 @@ export class SkillService {
 
     this.translateService
       .get('messages.skill.service.fetched')
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe((translated) => this.messageService.add(translated));
 
     return skills;
