@@ -4,6 +4,7 @@ import { EmployeeRoutingModule } from './employee-routing.module';
 import { MatButtonModule } from '@angular/material/button';
 import { NgModule } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [EmployeeComponent],
@@ -12,6 +13,7 @@ import { TranslateModule } from '@ngx-translate/core';
     EmployeeRoutingModule,
     TranslateModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class EmployeeModule {}

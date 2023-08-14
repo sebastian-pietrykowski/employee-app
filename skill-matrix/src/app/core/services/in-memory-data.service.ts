@@ -1,3 +1,4 @@
+import { Employee } from '../models/employee';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
@@ -11,16 +12,17 @@ export class InMemoryDataService implements InMemoryDbService {
   createDb() {
     const db = {
       employees: MOCK_EMPLOYEES,
-      generateEmployeeId: (): string => {
-        const lastIndex = db.employees.length - 1;
-        const idAtLastIndex = db.employees.at(lastIndex)?.id ?? '0';
-
-        return (Number(idAtLastIndex) + 1).toString();
-      },
       projects: MOCK_PROJECTS,
       skills: MOCK_SKILLS,
     };
 
     return db;
+  }
+
+  genId(employees: Employee[]): string {
+    const lastIndex = employees.length - 1;
+    const idAtLastIndex = employees.at(lastIndex)?.id ?? '0';
+
+    return (Number(idAtLastIndex) + 1).toString();
   }
 }

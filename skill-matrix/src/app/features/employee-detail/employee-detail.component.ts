@@ -17,6 +17,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../core/models/employee';
 import { EmployeeService } from '../../core/services/employee.service';
+import { Location } from '@angular/common';
 import { MessageService } from '../../core/services/message.service';
 import { ProjectService } from '../../core/services/project.service';
 import { SkillService } from '../../core/services/skill.service';
@@ -28,13 +29,12 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./employee-detail.component.scss'],
 })
 export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
-  employee?: Employee;
-  possibleManagers?: Employee[];
-
-  employeeProfileForm: FormGroup;
   allPossibleProjectsList: string[] = [];
   allPossibleSkillsList: string[] = [];
-
+  employee?: Employee;
+  employeeProfileForm: FormGroup;
+  isLoading = true;
+  possibleManagers?: Employee[];
   wasProjectControlRemoved = false;
   wasSkillControlRemoved = false;
 
@@ -47,6 +47,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     private readonly skillService: SkillService,
     private readonly translationService: TranslateService,
     private formBuilder: NonNullableFormBuilder,
+    private readonly location: Location,
     private readonly route: ActivatedRoute,
   ) {
     this.employeeProfileForm = new FormGroup({});
@@ -82,7 +83,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   resetForm(): void {
     this.employeeProfileForm = this.formBuilder.group({
-      id: [this.employee?.id ?? ''],
       name: [
         this.employee?.name,
         [Validators.required, Validators.minLength(3)],
@@ -111,21 +111,20 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   deleteEmployee(): void {
     const id = this.employee?.id as string;
-    this.employeeService.deleteEmployee(id);
+    this.employeeService.deleteEmployee(id).subscribe();
   }
 
   updateEmployee(): void {
-    const employee: Employee = this.employeeProfileForm.getRawValue();
+    const employee: Employee =
+      this.employeeProfileForm.getRawValue() as Employee;
 
-    if (employee.id == '') {
-      this.employeeService
-        .generateId()
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((id: string) => {
-          employee.id = id;
-          this.handleEmployeeUpdate(employee);
-        });
+    const isEmployeeNewlyCreated = this.employee?.id === undefined;
+    if (isEmployeeNewlyCreated) {
+      this.employeeService.addEmployee(employee).subscribe();
+      this.handleEmployeeUpdate(employee);
     } else {
+      employee.id = this.employee?.id as string;
+      this.employeeService.updateEmployee(employee).subscribe();
       this.handleEmployeeUpdate(employee);
     }
   }
@@ -181,6 +180,14 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     );
   }
 
+  isEmployeeNewlyCreated(): boolean {
+    return this.employee?.id === undefined;
+  }
+
+  goBack() {
+    this.location.back();
+  }
+
   private loadEmployee(): void {
     const employeeId = this.route.snapshot.paramMap.get('id');
     const doEmployeeExist = employeeId !== null;
@@ -190,9 +197,11 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((employee) => {
           this.employee = employee;
+          this.isLoading = false;
           this.resetForm();
         });
     } else {
+      this.isLoading = false;
       this.resetForm();
     }
   }
@@ -230,7 +239,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   private handleEmployeeUpdate(employee: Employee): void {
     this.employee = employee;
-    this.employeeService.updateEmployee(employee).subscribe(() => {});
 
     this.wasProjectControlRemoved = false;
     this.wasSkillControlRemoved = false;

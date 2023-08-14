@@ -10,6 +10,8 @@ import { EmployeeService } from '../../core/services/employee.service';
 })
 export class EmployeeComponent implements OnInit, OnDestroy {
   employeeList: Employee[] = [];
+  isLoading = true;
+
   private unsubscribe$ = new Subject();
 
   constructor(private readonly employeeService: EmployeeService) {}
@@ -27,6 +29,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
     this.employeeService
       .getEmployees()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((employees) => (this.employeeList = employees));
+      .subscribe((employees) => {
+        this.employeeList = employees;
+        this.isLoading = false;
+      });
   }
 }

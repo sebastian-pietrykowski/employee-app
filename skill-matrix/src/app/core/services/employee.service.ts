@@ -1,8 +1,8 @@
-import { catchError, EMPTY, Observable, of, tap } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { Employee } from '../models/employee';
 import { ErrorLoggingService } from './error-logging-service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -25,16 +25,16 @@ export class EmployeeService extends ErrorLoggingService {
     super(EmployeeService.name, messageService, translateService);
   }
 
-  addEmployee(employeeToAdd: Employee): Observable<any> {
+  addEmployee(employeeToAdd: Employee): Observable<Employee> {
     return this.http
-      .put<Employee>(this.employeesUrl, employeeToAdd, this.httpOptions)
+      .post<Employee>(this.employeesUrl, employeeToAdd, this.httpOptions)
       .pipe(
-        catchError(super.handleError<any>('addEmployee')),
-        tap(() =>
+        tap((newEmployee: Employee) =>
           super.log('messages.employee.service.added', {
-            id: employeeToAdd.id,
+            id: newEmployee.id,
           }),
         ),
+        catchError(super.handleError<Employee>('addEmployee')),
       );
   }
 
@@ -49,12 +49,16 @@ export class EmployeeService extends ErrorLoggingService {
   //     .subscribe((employee: Employee) => employee != undefined);
   // }
 
-  deleteEmployee(id: string): void {
-    // this.employees = this.employees.filter(
-    //   (employee: Employee) => employee.id !== id,
-    // );
-
-    super.log('messages.employee.service.deleted', { id: id });
+  deleteEmployee(id: string): Observable<Employee> {
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.delete<Employee>(url).pipe(
+      tap(() =>
+        super.log('messages.employee.service.deleted', {
+          id: id,
+        }),
+      ),
+      catchError(super.handleError<Employee>('deleteEmployee')),
+    );
   }
 
   getCount(): Observable<number> {
@@ -67,29 +71,50 @@ export class EmployeeService extends ErrorLoggingService {
   }
 
   getEmployee(id: string): Observable<Employee> {
-    return this.http.get<Employee>(`${this.employeesUrl}/${id}`).pipe(
-      catchError(super.handleError<Employee>('getEmployee')),
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.get<Employee>(url).pipe(
       tap(() => super.log('messages.employee.service.fetched')),
+      catchError(super.handleError<Employee>('getEmployee')),
     );
   }
 
   getEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.employeesUrl).pipe(
-      catchError(super.handleError<Employee[]>('getEmployees', [])),
       tap(() => super.log('messages.employee.service.fetched')),
+      catchError(super.handleError<Employee[]>('getEmployees', [])),
     );
   }
 
-  updateEmployee(employeeToUpdate: Employee): Observable<any> {
+  searchHeroes(term: string): Observable<Employee[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    const url = `${this.employeesUrl}/?name=${term}`;
+
+    return this.http.get<Employee[]>(url).pipe(
+      tap((employees: Employee[]) => {
+        if (employees.length) {
+          this.log('messages.employee.service.search.success', {
+            term: term,
+          });
+        } else {
+          this.log('messages.employee.service.search.failure');
+        }
+      }),
+    );
+  }
+
+  updateEmployee(employeeToUpdate: Employee): Observable<Employee> {
     return this.http
       .put<Employee>(this.employeesUrl, employeeToUpdate, this.httpOptions)
       .pipe(
-        catchError(super.handleError<any>('updateEmployee')),
         tap(() =>
           super.log('messages.employee.service.updated', {
             id: employeeToUpdate.id,
           }),
         ),
+        catchError(super.handleError<Employee>('updateEmployee')),
       );
   }
 }

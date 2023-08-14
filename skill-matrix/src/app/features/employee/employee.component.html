@@ -1,3 +1,8 @@
+<mat-spinner *ngIf="isLoading; else employeeDetailContent" class="spinner">
+
+</mat-spinner>
+<ng-template #employeeDetailContent>
+
 <article class="employee">
   <header class="employee__header">
     <h1>{{ "employee.header" | translate }}</h1>
@@ -29,3 +34,4 @@
     </li>
   </ul>
 </article>
+</ng-template>

@@ -5,6 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './core/services/in-memory-data.service';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
 import { NavigationModule } from './features/navigation/navigation.module';
@@ -12,8 +14,6 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { enUS } from 'date-fns/locale';
-import {HttpClientInMemoryWebApiModule} from "angular-in-memory-web-api";
-import {InMemoryDataService} from "./core/services/in-memory-data.service";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -45,7 +45,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       passThruUnknownUrl: true,
     }),
   ],
-  providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS,  }],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

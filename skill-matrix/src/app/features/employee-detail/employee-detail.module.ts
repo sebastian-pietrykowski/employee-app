@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 
 @NgModule({
   declarations: [EmployeeDetailComponent],
@@ -28,6 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatAutocompleteModule,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class EmployeeDetailModule {}

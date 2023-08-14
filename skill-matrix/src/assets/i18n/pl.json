@@ -48,6 +48,10 @@
         "added": "Dodano pracownika id={{id}}",
         "deleted": "Usunięto pracownika id={{id}}",
         "fetched": "Pobrano pracowników",
+        "search": {
+          "failure": "Nie znaleziono pracowników pasujących do '{{term}}'",
+          "success": "Znaleziono pracowników pasujących do '{{term}}'"
+        },
         "updated": "Zaktualizowano pracownika id={{id}}"
       }
     },
