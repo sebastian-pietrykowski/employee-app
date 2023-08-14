@@ -56,6 +56,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.resetForm();
     this.loadEmployee();
     this.loadPossibleManagers();
 
@@ -234,7 +235,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   private handleEmployeeUpdate(employee: Employee): void {
     this.employee = employee;
-    this.employeeService.updateEmployee(employee);
+    this.employeeService.updateEmployee(employee).subscribe(() => {});
 
     this.wasProjectControlRemoved = false;
     this.wasSkillControlRemoved = false;

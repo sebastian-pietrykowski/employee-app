@@ -1,7 +1,8 @@
-import { EMPTY, Observable, Subject, of, takeUntil } from 'rxjs';
-import { Injectable, OnDestroy } from '@angular/core';
+import { catchError, EMPTY, Observable, of, tap } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee';
-import { HttpClient } from '@angular/common/http';
+import { ErrorLoggingService } from './error-logging-service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,35 +10,51 @@ import { TranslateService } from '@ngx-translate/core';
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService implements OnDestroy {
-  private employees: Employee[] = MOCK_EMPLOYEES;
-  private employeesUrl = 'api/employees';
-  private unsubscribe$ = new Subject();
+export class EmployeeService extends ErrorLoggingService {
+  private readonly employees: Employee[] = MOCK_EMPLOYEES;
+  private readonly employeesUrl = 'api/employees';
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
 
   constructor(
-    private readonly messageService: MessageService,
-    private readonly translateService: TranslateService,
+    messageService: MessageService,
+    translateService: TranslateService,
     private readonly http: HttpClient,
-  ) {}
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(undefined);
-    this.unsubscribe$.complete();
+  ) {
+    super(EmployeeService.name, messageService, translateService);
   }
 
-  containsEmployee(id: string): Observable<boolean> {
-    return of(this.employees.some((employee: Employee) => employee.id === id));
+  addEmployee(employeeToAdd: Employee): Observable<any> {
+    return this.http
+      .put<Employee>(this.employeesUrl, employeeToAdd, this.httpOptions)
+      .pipe(
+        catchError(super.handleError<any>('addEmployee')),
+        tap(() =>
+          super.log('messages.employee.service.added', {
+            id: employeeToAdd.id,
+          }),
+        ),
+      );
   }
+
+  // containsEmployee(id: string): Observable<boolean> {
+  //   let employee;
+  //   this.http
+  //     .get<Employee>(`${this.employeesUrl}/${id}`)
+  //     .pipe(
+  //       catchError(super.handleError<Employee>('getEmployee')),
+  //       tap(() => super.log('messages.employee.service.fetched')),
+  //     )
+  //     .subscribe((employee: Employee) => employee != undefined);
+  // }
 
   deleteEmployee(id: string): void {
-    this.employees = this.employees.filter(
-      (employee: Employee) => employee.id !== id,
-    );
+    // this.employees = this.employees.filter(
+    //   (employee: Employee) => employee.id !== id,
+    // );
 
-    this.translateService
-      .get('messages.employee.service.deleted', { id: id })
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.log(translated));
+    super.log('messages.employee.service.deleted', { id: id });
   }
 
   getCount(): Observable<number> {
@@ -50,58 +67,29 @@ export class EmployeeService implements OnDestroy {
   }
 
   getEmployee(id: string): Observable<Employee> {
-    const employee = this.employees.find(
-      (employee: Employee) => employee.id === id,
+    return this.http.get<Employee>(`${this.employeesUrl}/${id}`).pipe(
+      catchError(super.handleError<Employee>('getEmployee')),
+      tap(() => super.log('messages.employee.service.fetched')),
     );
-
-    this.translateService
-      .get('messages.employee.service.fetched')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.log(translated));
-
-    return employee ? of(employee) : EMPTY;
   }
 
   getEmployees(): Observable<Employee[]> {
-    const url = `${this.employeesUrl}`;
+    return this.http.get<Employee[]>(this.employeesUrl).pipe(
+      catchError(super.handleError<Employee[]>('getEmployees', [])),
+      tap(() => super.log('messages.employee.service.fetched')),
+    );
+  }
 
-    this.translateService
-      .get('messages.employee.service.fetched')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.messageService.add(translated));
-
+  updateEmployee(employeeToUpdate: Employee): Observable<any> {
     return this.http
-      .get<Employee[]>(url)
-      .pipe(catchError(this.handleError<Employee[]>('getEmployees', [])));
-  }
-
-  updateEmployee(employeeToUpdate: Employee) {
-    const indexOfElemToChange = this.employees.findIndex(
-      (employee: Employee) => employee.id === employeeToUpdate.id,
-    );
-    if (indexOfElemToChange !== -1) {
-      this.employees.splice(indexOfElemToChange, 1, employeeToUpdate);
-    } else {
-      this.employees.push(employeeToUpdate);
-    }
-
-    const message = this.translateService.instant(
-      'messages.employee.service.updated',
-      { id: employeeToUpdate.id },
-    );
-    this.log(message);
-  }
-
-  private log(message: string): void {
-    this.messageService.add(`EmployeeService: ${message}`);
-  }
-
-  private handleError<T>(operation: string, result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(error);
-      this.log(`${operation} failed: ${error.message}`);
-
-      return of(result as T);
-    };
+      .put<Employee>(this.employeesUrl, employeeToUpdate, this.httpOptions)
+      .pipe(
+        catchError(super.handleError<any>('updateEmployee')),
+        tap(() =>
+          super.log('messages.employee.service.updated', {
+            id: employeeToUpdate.id,
+          }),
+        ),
+      );
   }
 }

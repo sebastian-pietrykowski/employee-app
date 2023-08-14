@@ -5,7 +5,7 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [{ path: '', component: EmployeeComponent }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
+  imports: [RouterModule.forChild(routes), ],
   exports: [RouterModule],
 })
 export class EmployeeRoutingModule {}
