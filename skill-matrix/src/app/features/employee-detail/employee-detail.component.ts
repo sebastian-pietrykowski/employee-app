@@ -17,10 +17,8 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { Employee } from '../../core/models/employee';
 import { EmployeeService } from '../../core/services/employee.service';
-import { Location } from '@angular/common';
 import { MessageService } from '../../core/services/message.service';
 import { ProjectService } from '../../core/services/project.service';
-import { ROUTE_PATHS } from '../../config/route-paths';
 import { SkillService } from '../../core/services/skill.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -50,7 +48,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     private readonly translationService: TranslateService,
     private formBuilder: NonNullableFormBuilder,
     private readonly route: ActivatedRoute,
-    private readonly location: Location,
   ) {
     this.employeeProfileForm = new FormGroup({});
   }
@@ -184,20 +181,18 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   private loadEmployee(): void {
-    const isEmployeeToBeAdded = this.location
-      .path()
-      .endsWith(ROUTE_PATHS.ADD_EMPLOYEE);
-    if (isEmployeeToBeAdded) {
-      this.resetForm();
-    } else {
-      const id = this.route.snapshot.paramMap.get('id') as string;
+    const employeeId = this.route.snapshot.paramMap.get('id');
+    const doEmployeeExist = employeeId !== null;
+    if (doEmployeeExist) {
       this.employeeService
-        .getEmployee(id)
+        .getEmployee(employeeId)
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe((employee) => {
           this.employee = employee;
           this.resetForm();
         });
+    } else {
+      this.resetForm();
     }
   }
 
