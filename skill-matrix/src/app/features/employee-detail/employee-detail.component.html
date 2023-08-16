@@ -1,7 +1,4 @@
-<mat-spinner
-  *ngIf="isLoading; else employeeDetailContent"
-  class="spinner"
->
+<mat-spinner *ngIf="isLoading; else employeeDetailContent" class="spinner">
 </mat-spinner>
 <ng-template #employeeDetailContent>
   <mat-card class="employee-detail">
