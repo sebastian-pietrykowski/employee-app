@@ -30,8 +30,8 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       .getEmployees()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((employees) => {
-        this.isLoading = false;
         this.employeeList = employees;
+        this.isLoading = false;
       });
   }
 }

@@ -8,7 +8,10 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './core/services/in-memory-data.service';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { NavigationModule } from './features/navigation/navigation.module';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -44,6 +47,9 @@ export function HttpLoaderFactory(http: HttpClient) {
       dataEncapsulation: false,
       passThruUnknownUrl: true,
     }),
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS }],
   bootstrap: [AppComponent],

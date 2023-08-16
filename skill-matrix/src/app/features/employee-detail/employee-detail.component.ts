@@ -114,18 +114,20 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     this.employeeService.deleteEmployee(id).subscribe();
   }
 
-  updateEmployee(): void {
+  submitForm(): void {
     const employee: Employee =
       this.employeeProfileForm.getRawValue() as Employee;
 
     const isEmployeeNewlyCreated = this.employee?.id === undefined;
     if (isEmployeeNewlyCreated) {
-      this.employeeService.addEmployee(employee).subscribe();
-      this.handleEmployeeUpdate(employee);
+      this.employeeService
+        .addEmployee(employee)
+        .subscribe(() => this.handleFormSubmit(employee));
     } else {
       employee.id = this.employee?.id as string;
-      this.employeeService.updateEmployee(employee).subscribe();
-      this.handleEmployeeUpdate(employee);
+      this.employeeService
+        .updateEmployee(employee)
+        .subscribe(() => this.handleFormSubmit(employee));
     }
   }
 
@@ -237,7 +239,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
       .subscribe((skills) => (this.allPossibleSkillsList = skills));
   }
 
-  private handleEmployeeUpdate(employee: Employee): void {
+  private handleFormSubmit(employee: Employee): void {
     this.employee = employee;
 
     this.wasProjectControlRemoved = false;

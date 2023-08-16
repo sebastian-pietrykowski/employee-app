@@ -3,7 +3,6 @@ import { Observable, catchError, of, tap } from 'rxjs';
 import { Employee } from '../models/employee';
 import { ErrorLoggingService } from './error-logging-service';
 import { Injectable } from '@angular/core';
-import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -11,7 +10,6 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class EmployeeService extends ErrorLoggingService {
-  private readonly employees: Employee[] = MOCK_EMPLOYEES;
   private readonly employeesUrl = 'api/employees';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -38,17 +36,6 @@ export class EmployeeService extends ErrorLoggingService {
       );
   }
 
-  // containsEmployee(id: string): Observable<boolean> {
-  //   let employee;
-  //   this.http
-  //     .get<Employee>(`${this.employeesUrl}/${id}`)
-  //     .pipe(
-  //       catchError(super.handleError<Employee>('getEmployee')),
-  //       tap(() => super.log('messages.employee.service.fetched')),
-  //     )
-  //     .subscribe((employee: Employee) => employee != undefined);
-  // }
-
   deleteEmployee(id: string): Observable<Employee> {
     const url = `${this.employeesUrl}/${id}`;
     return this.http.delete<Employee>(url).pipe(
@@ -59,15 +46,6 @@ export class EmployeeService extends ErrorLoggingService {
       ),
       catchError(super.handleError<Employee>('deleteEmployee')),
     );
-  }
-
-  getCount(): Observable<number> {
-    return of(this.employees.length);
-  }
-
-  generateId(): Observable<string> {
-    const lastIndex = this.employees.length - 1;
-    return of((Number(this.employees.at(lastIndex)?.id ?? 0) + 1).toString());
   }
 
   getEmployee(id: string): Observable<Employee> {
@@ -85,7 +63,7 @@ export class EmployeeService extends ErrorLoggingService {
     );
   }
 
-  searchHeroes(term: string): Observable<Employee[]> {
+  searchEmployees(term: string): Observable<Employee[]> {
     if (!term.trim()) {
       return of([]);
     }

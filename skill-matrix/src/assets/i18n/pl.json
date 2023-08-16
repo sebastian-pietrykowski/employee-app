@@ -6,6 +6,7 @@
   "employee": {
     "header": "Informacje o pracownikach",
     "top": "Najlepsi pracownicy",
+    "search": "Szukaj pracowników",
     "detail": {
       "header": {
         "add": "Dodaj nowego pracownika",
@@ -57,12 +58,20 @@
     },
     "project": {
       "service": {
-        "fetched": "ProjectService: Pobrano projekty"
+        "fetched": "Pobrano projekty",
+        "search": {
+          "failure": "Nie znaleziono projektów pasujących do '{{term}}'",
+          "success": "Znaleziono projekty pasujące do '{{term}}'"
+        }
       }
     },
     "skill": {
       "service": {
-        "fetched": "SkillService: Pobrano umiejętności"
+        "fetched": "Pobrano umiejętności",
+        "search": {
+          "failure": "Nie znaleziono umiejętności pasujących do '{{term}}'",
+          "success": "Znaleziono umiejętności pasujące do '{{term}}'"
+        }
       }
     }
   }

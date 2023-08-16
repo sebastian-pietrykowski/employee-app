@@ -6,6 +6,7 @@
   "employee": {
     "header": "Employee info",
     "top": "Top employees",
+    "search": "Search for employees",
     "detail": {
       "header": {
         "add": "Add new employee",
@@ -57,12 +58,20 @@
     },
     "project": {
       "service": {
-        "fetched": "ProjectService: fetched projects"
+        "fetched": "Fetched projects",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
       }
     },
     "skill": {
       "service": {
-        "fetched": "SkillService: fetched skills"
+        "fetched": "Fetched skills",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
       }
     }
   }

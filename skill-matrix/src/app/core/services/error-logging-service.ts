@@ -27,11 +27,13 @@ export abstract class ErrorLoggingService implements OnDestroy {
     this.translateService
       .get(messageKey, params)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.messageService.add(translated));
+      .subscribe((translated: string) =>
+        this.messageService.add(this.derivedClassName + ': ' + translated),
+      );
   }
 
   protected handleError<T>(operation: string, result?: T) {
-    return (error: any): Observable<T> => {
+    return (error: ErrorEvent): Observable<T> => {
       console.error(error);
       this.log(`${operation} failed: ${error.message}`);
 
