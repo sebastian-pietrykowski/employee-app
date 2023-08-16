@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class SkillService extends ErrorLoggingService implements OnDestroy {
-  // TODO: searchSkills
+  // TODO: In the future, it would be nice to create searchSkills function to remove this functionality from EmployeeDetailComponent
   private readonly skillsUrl = 'api/skills';
 
   constructor(

@@ -111,7 +111,10 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   deleteEmployee(): void {
     const id = this.employee?.id as string;
-    this.employeeService.deleteEmployee(id).subscribe();
+    this.employeeService
+      .deleteEmployee(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
   }
 
   submitForm(): void {
@@ -122,11 +125,13 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     if (isEmployeeNewlyCreated) {
       this.employeeService
         .addEmployee(employee)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(() => this.handleFormSubmit(employee));
     } else {
       employee.id = this.employee?.id as string;
       this.employeeService
         .updateEmployee(employee)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe(() => this.handleFormSubmit(employee));
     }
   }

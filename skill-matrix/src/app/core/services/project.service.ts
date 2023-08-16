@@ -9,7 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   providedIn: 'root',
 })
 export class ProjectService extends ErrorLoggingService implements OnDestroy {
-  // TODO: searchProjects
+  // TODO: In the future, it would be nice to create searchProjects function to remove this functionality from EmployeeDetailComponent
   private readonly projectsUrl = 'api/projects';
 
   constructor(
