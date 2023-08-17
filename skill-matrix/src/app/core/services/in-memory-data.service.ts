@@ -20,8 +20,7 @@ export class InMemoryDataService implements InMemoryDbService {
   }
 
   genId(employees: Employee[]): string {
-    const lastIndex = employees.length - 1;
-    const idAtLastIndex = employees.at(lastIndex)?.id ?? '0';
+    const idAtLastIndex = employees.at(-1)?.id ?? '0';
 
     return (Number(idAtLastIndex) + 1).toString();
   }

@@ -11,11 +11,18 @@ a {
   border: none;
   border-radius: $button-border-radius;
   cursor: pointer;
-  color: black;
-  font-size: $button-font-size;
   padding: $button-padding;
 
   &:disabled {
     cursor: auto;
   }
+}
+
+a {
+  color: $app-white;
+}
+
+button {
+  color: $app-black;
+  font-size: $button-font-size;
 }
