@@ -1,11 +1,15 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MessageService } from './message.service';
 import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('MessageService', () => {
   let service: MessageService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule, TranslateModule.forRoot()],
+    });
     service = TestBed.inject(MessageService);
   });
 
