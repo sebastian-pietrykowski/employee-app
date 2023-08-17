@@ -6,6 +6,7 @@
   "employee": {
     "header": "Informacje o pracownikach",
     "top": "Najlepsi pracownicy",
+    "search": "Szukaj pracowników",
     "detail": {
       "header": {
         "add": "Dodaj nowego pracownika",
@@ -45,19 +46,32 @@
         "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
       },
       "service": {
-        "deleted": "EmployeeDetailComponent: Usunięto pracownika id={{id}}",
-        "fetched": "EmployeeService: Pobrano pracowników",
-        "updated": "EmployeeDetailComponent: Zaktualizowano pracownika id={{id}}"
+        "added": "Dodano pracownika id={{id}}",
+        "deleted": "Usunięto pracownika id={{id}}",
+        "fetched": "Pobrano pracowników",
+        "search": {
+          "failure": "Nie znaleziono pracowników pasujących do '{{term}}'",
+          "success": "Znaleziono pracowników pasujących do '{{term}}'"
+        },
+        "updated": "Zaktualizowano pracownika id={{id}}"
       }
     },
     "project": {
       "service": {
-        "fetched": "ProjectService: Pobrano projekty"
+        "fetched": "Pobrano projekty",
+        "search": {
+          "failure": "Nie znaleziono projektów pasujących do '{{term}}'",
+          "success": "Znaleziono projekty pasujące do '{{term}}'"
+        }
       }
     },
     "skill": {
       "service": {
-        "fetched": "SkillService: Pobrano umiejętności"
+        "fetched": "Pobrano umiejętności",
+        "search": {
+          "failure": "Nie znaleziono umiejętności pasujących do '{{term}}'",
+          "success": "Znaleziono umiejętności pasujące do '{{term}}'"
+        }
       }
     }
   }

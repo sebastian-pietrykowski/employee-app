@@ -1,288 +1,304 @@
-<mat-card class="employee-detail">
-  <mat-card-header>
-    <mat-card-title class="employee-detail__full-name">
-      <h1 *ngIf="employee; else employeeNotPresentHeader">
-        {{
-          "employee.detail.header.show"
-            | translate
-              : {
-                  name: employee.name | uppercase,
-                  surname: employee.surname | uppercase
-                }
-        }}
-      </h1>
-      <ng-template #employeeNotPresentHeader>
-        <h1>{{ "employee.detail.header.add" | translate }}</h1>
-      </ng-template>
-    </mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <form
-      class="employee-detail__form"
-      [formGroup]="employeeProfileForm"
-      (ngSubmit)="updateEmployee()"
-    >
-      <div class="employee-detail__inner-form">
-        <div class="employee-detail__form-fields">
-          <div class="employee-detail__form-field">
-            <mat-form-field class="employee-detail__form-field">
-              <mat-label for="name"
-                ><span
-                  >{{ "employee.detail.name" | translate }}:
-                </span></mat-label
-              >
-              <input matInput id="name" type="text" formControlName="name" />
-            </mat-form-field>
-          </div>
-
-          <div class="employee-detail__form-field">
-            <mat-form-field class="employee-detail__form-field">
-              <mat-label for="surname"
-                >{{ "employee.detail.surname" | translate }}:
-              </mat-label>
-              <input
-                matInput
-                id="surname"
-                type="text"
-                formControlName="surname"
-              />
-            </mat-form-field>
-          </div>
-
-          <div class="employee-detail__form-field">
-            <mat-form-field class="employee-detail__form-field">
-              <mat-label for="employmentDatePicker"
-                ><span
-                  >{{ "employee.detail.employment.date" | translate }}:
-                </span></mat-label
-              >
-              <input
-                matInput
-                [matDatepicker]="picker"
-                formControlName="employmentDate"
-                id="employmentDatePicker"
-              />
-              <mat-datepicker-toggle
-                matIconSuffix
-                [for]="picker"
-              ></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-          </div>
-
-          <div class="employee-detail__form-field">
-            <mat-form-field class="employee-detail__form-field">
-              <mat-label for="managerSelect">
-                {{ "employee.detail.manager.manager" | translate }}
-              </mat-label>
-              <mat-select formControlName="managerId" id="managerSelect">
-                <mat-option [value]="undefined">-</mat-option>
-                <mat-option
-                  *ngFor="let manager of possibleManagers"
-                  [value]="manager.id"
-                >
-                  {{ manager.name }} {{ manager.surname }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </div>
-
-        <div formArrayName="listOfSkills" class="employee-detail__list">
-          <div class="employee-detail__subheader">
-            <h2>{{ "employee.detail.skills.skills" | translate }}:</h2>
-          </div>
+<mat-spinner *ngIf="isLoading; else employeeDetailContent" class="spinner">
+</mat-spinner>
+<ng-template #employeeDetailContent>
+  <mat-card class="employee-detail">
+    <mat-card-header>
+      <mat-card-title class="employee-detail__full-name">
+        <ng-container *ngIf="employee; else employeeNotPresentHeader">
+          <h1>
+            {{
+              "employee.detail.header.show"
+                | translate
+                  : {
+                      name: employee.name | uppercase,
+                      surname: employee.surname | uppercase
+                    }
+            }}
+          </h1>
+        </ng-container>
+        <ng-template #employeeNotPresentHeader>
+          <h1>{{ "employee.detail.header.add" | translate }}</h1>
+        </ng-template>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form
+        class="employee-detail__form"
+        [formGroup]="employeeProfileForm"
+        (ngSubmit)="submitForm()"
+      >
+        <div class="employee-detail__inner-form">
           <div class="employee-detail__form-fields">
-            <div
-              class="employee-detail__form-field"
-              *ngFor="
-                let skillControl of listOfSkills.controls;
-                let index = index
-              "
-            >
-              <mat-form-field
-                class="employee-detail__form-field"
-                id="skill-{{ index }}"
-              >
-                <mat-label
-                  >{{ "employee.detail.skills.skill" | translate }}
-                  {{ index + 1 }}</mat-label
+            <div class="employee-detail__form-field">
+              <mat-form-field class="employee-detail__form-field">
+                <mat-label for="name"
+                  ><span
+                    >{{ "employee.detail.name" | translate }}:
+                  </span></mat-label
                 >
-                <input
-                  type="text"
-                  placeholder="{{ 'employee.detail.skills.skill' | translate }}"
-                  matInput
-                  [formControlName]="index"
-                  [matAutocomplete]="skillAuto"
-                />
-                <mat-autocomplete #skillAuto="matAutocomplete">
-                  <mat-option
-                    *ngFor="
-                      let possibleSkill of findSkillsForAutocomplete(
-                        employee?.listOfSkills?.at(index) || '',
-                        skillControl
-                      )
-                    "
-                    [value]="possibleSkill"
-                  >
-                    {{ possibleSkill }}
-                  </mat-option>
-                </mat-autocomplete>
+                <input matInput id="name" type="text" formControlName="name" />
               </mat-form-field>
-              <button
-                mat-icon-button
-                color="accent"
-                type="button"
-                attr.aria-label="- {{
-                  'employee.detail.skills.remove' | translate
-                }}"
-                (click)="removeSkillAt(index)"
-              >
-                <mat-icon
-                  ><span class="material-symbols-outlined">
-                    do_not_disturb_on
-                  </span></mat-icon
-                >
-              </button>
             </div>
 
             <div class="employee-detail__form-field">
-              <button
-                mat-icon-button
-                color="accent"
-                type="button"
-                attr.aria-label="+ {{
-                  'employee.detail.skills.add' | translate
-                }}"
-                (click)="addSkillControlIfNeeded()"
-              >
-                <mat-icon>
-                  <span class="material-symbols-outlined"> add_circle </span>
-                </mat-icon>
-              </button>
+              <mat-form-field class="employee-detail__form-field">
+                <mat-label for="surname"
+                  >{{ "employee.detail.surname" | translate }}:
+                </mat-label>
+                <input
+                  matInput
+                  id="surname"
+                  type="text"
+                  formControlName="surname"
+                />
+              </mat-form-field>
             </div>
-          </div>
-        </div>
 
-        <div formArrayName="listOfProjects" class="employee-detail__list">
-          <div class="employee-detail__subheader">
-            <h2>{{ "employee.detail.projects.projects" | translate }}:</h2>
-          </div>
-          <div class="employee-detail__form-fields">
-            <div
-              class="employee-detail__form-field"
-              *ngFor="
-                let projectControl of listOfProjects.controls;
-                let index = index
-              "
-            >
-              <mat-form-field
-                class="employee-detail__form-field"
-                id="project-{{ index }}"
-              >
-                <mat-label for="project-index"
-                  >{{ "employee.detail.projects.project" | translate }}
-                  {{ index + 1 }}</mat-label
+            <div class="employee-detail__form-field">
+              <mat-form-field class="employee-detail__form-field">
+                <mat-label for="employmentDatePicker"
+                  ><span
+                    >{{ "employee.detail.employment.date" | translate }}:
+                  </span></mat-label
                 >
                 <input
-                  id="project-index"
-                  type="text"
-                  placeholder="{{
-                    'employee.detail.projects.project' | translate
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="employmentDate"
+                  id="employmentDatePicker"
+                />
+                <mat-datepicker-toggle
+                  matIconSuffix
+                  [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="employee-detail__form-field">
+              <mat-form-field class="employee-detail__form-field">
+                <mat-label for="managerSelect">
+                  {{ "employee.detail.manager.manager" | translate }}
+                </mat-label>
+                <mat-select formControlName="managerId" id="managerSelect">
+                  <mat-option [value]="undefined">-</mat-option>
+                  <mat-option
+                    *ngFor="let manager of possibleManagers"
+                    [value]="manager.id"
+                  >
+                    {{ manager.name }} {{ manager.surname }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div formArrayName="listOfSkills" class="employee-detail__list">
+            <div class="employee-detail__subheader">
+              <h2>{{ "employee.detail.skills.skills" | translate }}:</h2>
+            </div>
+            <div class="employee-detail__form-fields">
+              <div
+                class="employee-detail__form-field"
+                *ngFor="
+                  let skillControl of listOfSkills.controls;
+                  let index = index
+                "
+              >
+                <mat-form-field
+                  class="employee-detail__form-field"
+                  id="skill-{{ index }}"
+                >
+                  <mat-label
+                    >{{ "employee.detail.skills.skill" | translate }}
+                    {{ index + 1 }}</mat-label
+                  >
+                  <input
+                    type="text"
+                    placeholder="{{
+                      'employee.detail.skills.skill' | translate
+                    }}"
+                    matInput
+                    [formControlName]="index"
+                    [matAutocomplete]="skillAuto"
+                  />
+                  <mat-autocomplete #skillAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="
+                        let possibleSkill of findSkillsForAutocomplete(
+                          employee?.listOfSkills?.at(index) ?? '',
+                          skillControl
+                        )
+                      "
+                      [value]="possibleSkill"
+                    >
+                      {{ possibleSkill }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  attr.aria-label="- {{
+                    'employee.detail.skills.remove' | translate
                   }}"
-                  matInput
-                  [formControlName]="index"
-                  [matAutocomplete]="projectAuto"
-                />
-
-                <mat-autocomplete #projectAuto="matAutocomplete">
-                  <mat-option
-                    *ngFor="
-                      let possibleProject of findProjectsForAutocomplete(
-                        employee?.listOfProjects?.at(index) || '',
-                        projectControl
-                      )
-                    "
-                    [value]="possibleProject"
-                  >
-                    {{ possibleProject }}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-              <button
-                mat-icon-button
-                color="accent"
-                type="button"
-                attr.aria-label="- {{
-                  'employee.detail.projects.remove' | translate
-                }}"
-                (click)="removeProjectAt(index)"
-              >
-                <mat-icon
-                  ><span class="material-symbols-outlined">
-                    do_not_disturb_on
-                  </span></mat-icon
+                  (click)="removeSkillAt(index)"
                 >
-              </button>
+                  <mat-icon
+                    ><span class="material-symbols-outlined">
+                      do_not_disturb_on
+                    </span></mat-icon
+                  >
+                </button>
+              </div>
+
+              <div class="employee-detail__form-field">
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  attr.aria-label="+ {{
+                    'employee.detail.skills.add' | translate
+                  }}"
+                  (click)="addSkillControlIfNeeded()"
+                >
+                  <mat-icon>
+                    <span class="material-symbols-outlined"> add_circle </span>
+                  </mat-icon>
+                </button>
+              </div>
             </div>
-            <div class="employee-detail__form-field">
-              <button
-                mat-icon-button
-                color="accent"
-                type="button"
-                attr.aria-label="+ {{
-                  'employee.detail.projects.add' | translate
-                }}"
-                (click)="addProjectControlIfNeeded()"
+          </div>
+
+          <div formArrayName="listOfProjects" class="employee-detail__list">
+            <div class="employee-detail__subheader">
+              <h2>{{ "employee.detail.projects.projects" | translate }}:</h2>
+            </div>
+            <div class="employee-detail__form-fields">
+              <div
+                class="employee-detail__form-field"
+                *ngFor="
+                  let projectControl of listOfProjects.controls;
+                  let index = index
+                "
               >
-                <mat-icon>
-                  <span class="material-symbols-outlined"> add_circle </span>
-                </mat-icon>
-              </button>
+                <mat-form-field
+                  class="employee-detail__form-field"
+                  id="project-{{ index }}"
+                >
+                  <mat-label for="project-index"
+                    >{{ "employee.detail.projects.project" | translate }}
+                    {{ index + 1 }}</mat-label
+                  >
+                  <input
+                    id="project-index"
+                    type="text"
+                    placeholder="{{
+                      'employee.detail.projects.project' | translate
+                    }}"
+                    matInput
+                    [formControlName]="index"
+                    [matAutocomplete]="projectAuto"
+                  />
+
+                  <mat-autocomplete #projectAuto="matAutocomplete">
+                    <mat-option
+                      *ngFor="
+                        let possibleProject of findProjectsForAutocomplete(
+                          employee?.listOfProjects?.at(index) ?? '',
+                          projectControl
+                        )
+                      "
+                      [value]="possibleProject"
+                    >
+                      {{ possibleProject }}
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  attr.aria-label="- {{
+                    'employee.detail.projects.remove' | translate
+                  }}"
+                  (click)="removeProjectAt(index)"
+                >
+                  <mat-icon
+                    ><span class="material-symbols-outlined">
+                      do_not_disturb_on
+                    </span></mat-icon
+                  >
+                </button>
+              </div>
+              <div class="employee-detail__form-field">
+                <button
+                  mat-icon-button
+                  color="accent"
+                  type="button"
+                  attr.aria-label="+ {{
+                    'employee.detail.projects.add' | translate
+                  }}"
+                  (click)="addProjectControlIfNeeded()"
+                >
+                  <mat-icon>
+                    <span class="material-symbols-outlined"> add_circle </span>
+                  </mat-icon>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </mat-card-content>
-  <mat-card-actions class="employee-detail__action-buttons">
-    <a
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="
-        employeeProfileForm.invalid ||
-        (!wasProjectControlRemoved &&
-          !wasSkillControlRemoved &&
-          employeeProfileForm.pristine)
-      "
-      routerLink=".."
-      (click)="updateEmployee()"
-    >
-      {{ "employee.detail.submit" | translate }}
-    </a>
-    <button
-      mat-raised-button
-      color="accent"
-      type="button"
-      (click)="resetForm()"
-      [disabled]="
-        checkIfLastProjectAndSkillAreNotEmpty() && employeeProfileForm.pristine
-      "
-    >
-      {{ "employee.detail.undo" | translate }}
-    </button>
-    <a
-      mat-raised-button
-      color="accent"
-      type="button"
-      routerLink=".."
-      (click)="deleteEmployee()"
-    >
-      {{ "employee.detail.delete" | translate }}
-    </a>
-    <a mat-raised-button color="accent" type="button" routerLink="..">
-      {{ "employee.detail.back" | translate }}
-    </a>
-  </mat-card-actions>
-</mat-card>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="employee-detail__action-buttons">
+      <a
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="
+          employeeProfileForm.invalid ||
+          (!wasProjectControlRemoved &&
+            !wasSkillControlRemoved &&
+            employeeProfileForm.pristine)
+        "
+        routerLink=""
+        (click)="submitForm(); this.goBack()"
+      >
+        {{ "employee.detail.submit" | translate }}
+      </a>
+      <button
+        mat-raised-button
+        color="accent"
+        type="button"
+        (click)="resetForm()"
+        [disabled]="
+          checkIfLastProjectAndSkillAreNotEmpty() &&
+          employeeProfileForm.pristine
+        "
+      >
+        {{ "employee.detail.undo" | translate }}
+      </button>
+      <a
+        mat-raised-button
+        color="accent"
+        type="button"
+        routerLink=""
+        (click)="deleteEmployee(); this.goBack()"
+        [disabled]="isEmployeeNewlyCreated()"
+      >
+        {{ "employee.detail.delete" | translate }}
+      </a>
+      <a
+        mat-raised-button
+        color="accent"
+        type="button"
+        routerLink=""
+        (click)="this.goBack()"
+      >
+        {{ "employee.detail.back" | translate }}
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</ng-template>

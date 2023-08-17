@@ -6,6 +6,7 @@
   "employee": {
     "header": "Employee info",
     "top": "Top employees",
+    "search": "Search for employees",
     "detail": {
       "header": {
         "add": "Add new employee",
@@ -45,19 +46,32 @@
         "selected": "EmployeeComponent: Selected employee id={{id}}"
       },
       "service": {
-        "deleted": "EmployeeService: Deleted employee id={{id}}",
-        "fetched": "EmployeeService: fetched employees",
-        "updated": "EmployeeService: Updated employee id={{id}}"
+        "added": "Added employee id={{id}}",
+        "deleted": "Deleted employee id={{id}}",
+        "fetched": "Fetched employees",
+        "search": {
+          "failure": "No employees matching term '{{term}}'",
+          "success": "Found employees matching '{{term}}'"
+        },
+        "updated": "Updated employee id={{id}}"
       }
     },
     "project": {
       "service": {
-        "fetched": "ProjectService: fetched projects"
+        "fetched": "Fetched projects",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
       }
     },
     "skill": {
       "service": {
-        "fetched": "SkillService: fetched skills"
+        "fetched": "Fetched skills",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
       }
     }
   }

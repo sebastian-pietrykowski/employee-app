@@ -1,0 +1,11 @@
+$bar-width: 50%;
+
+.employee-search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  &__bar {
+    width: $bar-width;
+    margin: 0 auto;
+  }
+}

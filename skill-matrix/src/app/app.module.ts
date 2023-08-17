@@ -5,19 +5,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './core/services/in-memory-data.service';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
-import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatSelectModule } from '@angular/material/select';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationModule } from './features/navigation/navigation.module';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -46,19 +40,16 @@ export function HttpLoaderFactory(http: HttpClient) {
       },
     }),
     BrowserAnimationsModule,
-    MatButtonModule,
-    MatCardModule,
-    MatAutocompleteModule,
+    MatDateFnsModule,
+    NavigationModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
+      dataEncapsulation: false,
+      passThruUnknownUrl: true,
+    }),
     MatFormFieldModule,
     MatInputModule,
-    MatIconModule,
-    MatSelectModule,
-    MatDateFnsModule,
-    MatDatepickerModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatBadgeModule,
-    NavigationModule,
+    MatAutocompleteModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: enUS }],
   bootstrap: [AppComponent],

@@ -8,6 +8,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +29,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatAutocompleteModule,
     MatIconModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class EmployeeDetailModule {}

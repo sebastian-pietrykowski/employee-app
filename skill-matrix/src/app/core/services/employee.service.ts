@@ -1,89 +1,98 @@
-import { EMPTY, Observable, Subject, of, takeUntil } from 'rxjs';
-import { Injectable, OnDestroy } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { Employee } from '../models/employee';
-import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
+import { ErrorLoggingService } from './error-logging-service';
+import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeeService implements OnDestroy {
-  private employees: Employee[] = MOCK_EMPLOYEES;
-  private unsubscribe$ = new Subject();
+export class EmployeeService extends ErrorLoggingService {
+  private readonly employeesUrl = 'api/employees';
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+  };
 
   constructor(
-    private readonly translateService: TranslateService,
-    private readonly messageService: MessageService,
-  ) {}
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next(undefined);
-    this.unsubscribe$.complete();
+    messageService: MessageService,
+    translateService: TranslateService,
+    private readonly http: HttpClient,
+  ) {
+    super(EmployeeService.name, messageService, translateService);
   }
 
-  containsEmployee(id: string): Observable<boolean> {
-    return of(this.employees.some((employee: Employee) => employee.id === id));
+  addEmployee(employeeToAdd: Employee): Observable<Employee> {
+    return this.http
+      .post<Employee>(this.employeesUrl, employeeToAdd, this.httpOptions)
+      .pipe(
+        tap((newEmployee: Employee) =>
+          super.log('messages.employee.service.added', {
+            id: newEmployee.id,
+          }),
+        ),
+        catchError(super.handleError<Employee>('addEmployee')),
+      );
   }
 
-  deleteEmployee(id: string): void {
-    this.employees = this.employees.filter(
-      (employee: Employee) => employee.id !== id,
+  deleteEmployee(id: string): Observable<Employee> {
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.delete<Employee>(url).pipe(
+      tap(() =>
+        super.log('messages.employee.service.deleted', {
+          id: id,
+        }),
+      ),
+      catchError(super.handleError<Employee>('deleteEmployee')),
     );
-
-    this.translateService
-      .get('messages.employee.service.deleted', { id: id })
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.messageService.add(translated));
-  }
-
-  getCount(): Observable<number> {
-    return of(this.employees.length);
-  }
-
-  getNewId(): Observable<string> {
-    const lastIndex = this.employees.length - 1;
-    return of((Number(this.employees.at(lastIndex)?.id || 0) + 1).toString());
   }
 
   getEmployee(id: string): Observable<Employee> {
-    const employee = this.employees.find(
-      (employee: Employee) => employee.id === id,
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.get<Employee>(url).pipe(
+      tap(() => super.log('messages.employee.service.fetched')),
+      catchError(super.handleError<Employee>('getEmployee')),
     );
-
-    this.translateService
-      .get('messages.employee.service.fetched')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.messageService.add(translated));
-
-    return employee ? of(employee) : EMPTY;
   }
 
   getEmployees(): Observable<Employee[]> {
-    const employees = this.employees ? of(this.employees) : EMPTY;
-
-    this.translateService
-      .get('messages.employee.service.fetched')
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((translated: string) => this.messageService.add(translated));
-
-    return employees;
+    return this.http.get<Employee[]>(this.employeesUrl).pipe(
+      tap(() => super.log('messages.employee.service.fetched')),
+      catchError(super.handleError<Employee[]>('getEmployees', [])),
+    );
   }
 
-  updateEmployee(employeeToUpdate: Employee) {
-    const indexOfElemToChange = this.employees.findIndex(
-      (employee: Employee) => employee.id === employeeToUpdate.id,
-    );
-    if (indexOfElemToChange !== -1) {
-      this.employees.splice(indexOfElemToChange, 1, employeeToUpdate);
-    } else {
-      this.employees.push(employeeToUpdate);
+  searchEmployees(term: string): Observable<Employee[]> {
+    if (!term.trim()) {
+      return of([]);
     }
 
-    const message = this.translateService.instant(
-      'messages.employee.service.updated',
-      { id: employeeToUpdate.id },
+    const url = `${this.employeesUrl}/?name=${term}`;
+
+    return this.http.get<Employee[]>(url).pipe(
+      tap((employees: Employee[]) => {
+        if (employees.length) {
+          this.log('messages.employee.service.search.success', {
+            term: term,
+          });
+        } else {
+          this.log('messages.employee.service.search.failure');
+        }
+      }),
     );
-    this.messageService.add(message);
+  }
+
+  updateEmployee(employeeToUpdate: Employee): Observable<Employee> {
+    return this.http
+      .put<Employee>(this.employeesUrl, employeeToUpdate, this.httpOptions)
+      .pipe(
+        tap(() =>
+          super.log('messages.employee.service.updated', {
+            id: employeeToUpdate.id,
+          }),
+        ),
+        catchError(super.handleError<Employee>('updateEmployee')),
+      );
   }
 }
