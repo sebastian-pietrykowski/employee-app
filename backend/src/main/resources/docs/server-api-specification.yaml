@@ -6,17 +6,17 @@ info:
 servers:
   - url: localhost:8080/api
 tags:
-  - name: employee
+  - name: employees
     description: Everything about Employees
-  - name: project
+  - name: projects
     description: Access to projects
-  - name: skill
+  - name: skills
     description: Access to skills
 paths:
-  /employee:
+  /employees:
     post:
       tags:
-        - employee
+        - employees
       summary: Add a new employee
       description: Add a new employee
       operationId: addEmployee
@@ -40,7 +40,7 @@ paths:
           description: Employee already exists
     get:
       tags:
-        - employee
+        - employees
       summary: Get all employees
       description: Get all employees
       operationId: getEmployees
@@ -55,10 +55,10 @@ paths:
                   $ref: '#/components/schemas/Employee'
         '400':
           description: Invalid status value
-  /employee/{employeeId}:
+  /employees/{employeeId}:
     get:
       tags:
-        - employee
+        - employees
       summary: Find employee by ID
       description: Returns a single employee with specific ID
       operationId: getEmployeeById
@@ -82,7 +82,7 @@ paths:
           description: Employee not found
     put:
       tags:
-        - employee
+        - employees
       summary: Updates an employee by ID
       description: Updates an employee with specific ID
       operationId: updateEmployee
@@ -111,7 +111,7 @@ paths:
           description: IDs don't match
     delete:
       tags:
-        - employee
+        - employees
       summary: Deletes an employee by ID
       description: Deletes an employee with specific ID
       operationId: deleteEmployee
@@ -127,10 +127,10 @@ paths:
           description: Successfully deleted
         '404':
           description: Employee not found
-  /employee/search/{term}:
+  /employees/search/{term}:
     get:
       tags:
-        - employee
+        - employees
       summary: Find matching employees
       description: Returns employees matching name and surname
       operationId: searchEmployees
@@ -152,10 +152,10 @@ paths:
                   $ref: '#/components/schemas/Employee'
         '404':
           description: Employee not found
-  /project:
+  /projects:
     get:
       tags:
-        - project
+        - projects
       summary: Get all projects
       description: Get all projects
       operationId: getProjects
@@ -168,10 +168,10 @@ paths:
                 $ref: '#/components/schemas/Project'
         '400':
           description: Invalid status value
-  /project/search/{term}:
+  /projects/search/{term}:
     get:
       tags:
-        - project
+        - projects
       summary: Find matching projects
       description: Returns matching projects
       operationId: searchProjects
@@ -193,10 +193,10 @@ paths:
                   $ref: '#/components/schemas/Project'
         '404':
           description: Project not found
-  /skill:
+  /skills:
     get:
       tags:
-        - skill
+        - skills
       summary: Get all skills
       description: Get all skills
       operationId: getSkills
@@ -209,10 +209,10 @@ paths:
                 $ref: '#/components/schemas/Skill'
         '400':
           description: Invalid status value
-  /skill/search/{term}:
+  /skills/search/{term}:
     get:
       tags:
-        - skill
+        - skills
       summary: Find matching skills
       description: Returns matching skills
       operationId: searchSkills
