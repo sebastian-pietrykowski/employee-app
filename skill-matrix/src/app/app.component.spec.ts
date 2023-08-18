@@ -1,12 +1,20 @@
 import { AppComponent } from './app.component';
+import { DateAdapter } from '@angular/material/core';
+import { NavigationModule } from './features/navigation/navigation.module';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TestBed } from '@angular/core/testing';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('AppComponent', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [
+        RouterTestingModule,
+        TranslateModule.forRoot(),
+        NavigationModule,
+      ],
       declarations: [AppComponent],
+      providers: [DateAdapter],
     }),
   );
 
@@ -20,14 +28,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('skill-matrix');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain(
-      'skill-matrix app is running!',
-    );
   });
 });
