@@ -117,7 +117,7 @@ paths:
         '404':
           description: Employee not found
         '409':
-          description: IDs don't match
+          description: IDs from path and body don't match
     delete:
       tags:
         - employees
