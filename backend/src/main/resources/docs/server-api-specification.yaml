@@ -34,7 +34,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Employee'
-        '405':
+        '400':
           description: Invalid input
         '409':
           description: Employee already exists
@@ -44,6 +44,13 @@ paths:
       summary: Get all employees
       description: Get all employees
       operationId: getEmployees
+      parameters:
+        - name: term
+          in: query
+          required: false
+          description: Term matching name and surname
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -55,6 +62,8 @@ paths:
                   $ref: '#/components/schemas/Employee'
         '400':
           description: Invalid status value
+        '404':
+          description: Employee not found
   /employees/{employeeId}:
     get:
       tags:
@@ -103,10 +112,10 @@ paths:
       responses:
         '204':
           description: Successfully modified
+        '400':
+          description: Invalid input
         '404':
           description: Employee not found
-        '405':
-          description: Invalid input
         '409':
           description: IDs don't match
     delete:
@@ -127,31 +136,6 @@ paths:
           description: Successfully deleted
         '404':
           description: Employee not found
-  /employees/search/{term}:
-    get:
-      tags:
-        - employees
-      summary: Find matching employees
-      description: Returns employees matching name and surname
-      operationId: searchEmployees
-      parameters:
-        - name: term
-          in: path
-          description: Term containing part of name or surname
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Employee'
-        '404':
-          description: Employee not found
   /projects:
     get:
       tags:
@@ -159,6 +143,13 @@ paths:
       summary: Get all projects
       description: Get all projects
       operationId: getProjects
+      parameters:
+        - name: term
+          in: query
+          description: Term matching project name
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -168,29 +159,6 @@ paths:
                 $ref: '#/components/schemas/Project'
         '400':
           description: Invalid status value
-  /projects/search/{term}:
-    get:
-      tags:
-        - projects
-      summary: Find matching projects
-      description: Returns matching projects
-      operationId: searchProjects
-      parameters:
-        - name: term
-          in: path
-          description: Term containing part of project name
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Project'
         '404':
           description: Project not found
   /skills:
@@ -200,6 +168,13 @@ paths:
       summary: Get all skills
       description: Get all skills
       operationId: getSkills
+      parameters:
+        - name: term
+          in: query
+          description: Term matching skill name
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -209,29 +184,6 @@ paths:
                 $ref: '#/components/schemas/Skill'
         '400':
           description: Invalid status value
-  /skills/search/{term}:
-    get:
-      tags:
-        - skills
-      summary: Find matching skills
-      description: Returns matching skills
-      operationId: searchSkills
-      parameters:
-        - name: term
-          in: path
-          description: Term containing part of skill name
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Skill'
         '404':
           description: Skill not found
 components:
