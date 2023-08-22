@@ -12,7 +12,7 @@ import java.util.TreeSet;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Project implements Comparable<Project>{
+public class Project implements Comparable<Project> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
