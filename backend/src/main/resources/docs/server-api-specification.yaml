@@ -1,0 +1,242 @@
+openapi: 3.0.3
+info:
+  title: Skill matrix
+  description: Server storing information about Employees.
+  version: 1.0.11
+servers:
+  - url: localhost:8080/api
+tags:
+  - name: employees
+    description: Everything about Employees
+  - name: projects
+    description: Access to projects
+  - name: skills
+    description: Access to skills
+paths:
+  /employees:
+    post:
+      tags:
+        - employees
+      summary: Add a new employee
+      description: Add a new employee
+      operationId: addEmployee
+      requestBody:
+        description: Create a new employee
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid input
+        '409':
+          description: Employee already exists
+    get:
+      tags:
+        - employees
+      summary: Get all employees
+      description: Get all employees
+      operationId: getEmployees
+      parameters:
+        - name: term
+          in: query
+          required: false
+          description: Term matching name and surname
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Employee not found
+  /employees/{employeeId}:
+    get:
+      tags:
+        - employees
+      summary: Find employee by ID
+      description: Returns a single employee with specific ID
+      operationId: getEmployeeById
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employee to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Employee not found
+    put:
+      tags:
+        - employees
+      summary: Updates an employee by ID
+      description: Updates an employee with specific ID
+      operationId: updateEmployee
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employee that needs to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Modify an employee
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Employee'
+        required: true
+      responses:
+        '204':
+          description: Successfully modified
+        '400':
+          description: Invalid input
+        '404':
+          description: Employee not found
+        '409':
+          description: IDs from path and body don't match
+    delete:
+      tags:
+        - employees
+      summary: Deletes an employee by ID
+      description: Deletes an employee with specific ID
+      operationId: deleteEmployee
+      parameters:
+        - name: employeeId
+          in: path
+          description: Employee id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: Employee not found
+  /projects:
+    get:
+      tags:
+        - projects
+      summary: Get all projects
+      description: Get all projects
+      operationId: getProjects
+      parameters:
+        - name: term
+          in: query
+          description: Term matching project name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Project not found
+  /skills:
+    get:
+      tags:
+        - skills
+      summary: Get all skills
+      description: Get all skills
+      operationId: getSkills
+      parameters:
+        - name: term
+          in: query
+          description: Term matching skill name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Skill not found
+components:
+  schemas:
+    Employee:
+      required:
+        - name
+        - surname
+        - employmentDate
+        - listOfSkills
+        - listOfProjects
+      type: object
+      properties:
+        id:
+          type: string
+          example: 1
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Kowalski
+        employmentDate:
+          type: string
+          format: date
+          example: 2023-7-17
+        listOfProjects:
+          $ref: '#/components/schemas/Project'
+        listOfSkills:
+          $ref: '#/components/schemas/Skill'
+        managerId:
+          type: string
+          example: 1
+    Project:
+      type: array
+      items:
+        type: string
+      example:
+        - DataTrackr
+        - eHealthPlus
+    Skill:
+      type: array
+      items:
+        type: string
+      example:
+        - Angular
+        - HTML
+        - CSS
+        - TypeScript
+  requestBodies:
+    Employee:
+      description: Employee object that needs to be added
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Employee'
