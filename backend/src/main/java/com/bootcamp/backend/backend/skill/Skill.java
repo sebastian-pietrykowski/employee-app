@@ -1,15 +1,13 @@
 package com.bootcamp.backend.backend.skill;
 
-import com.bootcamp.backend.backend.project.Project;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 @Entity(name = "skill")
+@Table(name = "skill")
 @NoArgsConstructor
 @Getter
 @Setter
@@ -20,14 +18,15 @@ public class Skill implements Comparable<Skill> {
     private Long id;
 
     @Column(name = "name")
+    @NotEmpty
     private String name;
 
+// TODO Have to wait with this until mapping from DTO is implemented in order not to have to pass a whole object in JSON
+/*
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinTable(
-            name = "skill_holders",
-            joinColumns = @JoinColumn(name = "skill_id"),
-            inverseJoinColumns = @JoinColumn(name = "holder_id"))
     private Set<Project> holders = new TreeSet<>();
+
+ */
 
     @Override
     public int compareTo(Skill thatSkill) {

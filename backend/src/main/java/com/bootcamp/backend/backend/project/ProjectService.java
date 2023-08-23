@@ -1,5 +1,6 @@
 package com.bootcamp.backend.backend.project;
 
+import com.bootcamp.backend.backend.employee.EmployeeAlreadyExistsException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,14 +15,27 @@ public class ProjectService {
     }
 
     public Project addProject(Project project) {
+        if (project.getId() != null && projectRepository.existsById(project.getId())) {
+            throw new EmployeeAlreadyExistsException();
+        }
+
         return projectRepository.save(project);
     }
 
     public void deleteProjectById(Long id) {
+        Optional<Project> foundProject = projectRepository.findById(id);
+        if (foundProject.isEmpty()) {
+            throw new ProjectNotFoundException();
+        }
         projectRepository.deleteById(id);
     }
 
     public Optional<Project> getProjectById(Long id) {
+        Optional<Project> foundProject = projectRepository.findById(id);
+        if (foundProject.isEmpty()) {
+            throw new ProjectNotFoundException();
+        }
+
         return projectRepository.findById(id);
     }
 
@@ -33,7 +47,14 @@ public class ProjectService {
         return projectRepository.findByNameContainingIgnoreCase(term);
     }
 
-    public Project updateProject(Project project) {
+    public Project updateProject(Long idFromPath, Project project) {
+        if (!project.getId().equals(idFromPath)) {
+            throw new DifferentProjectIdInDatabaseException();
+        }
+        if (!projectRepository.existsById(project.getId())) {
+            throw new ProjectNotFoundException();
+        }
+
         return projectRepository.save(project);
     }
 }
