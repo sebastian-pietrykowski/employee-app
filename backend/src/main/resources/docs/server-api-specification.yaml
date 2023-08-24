@@ -110,8 +110,8 @@ paths:
               $ref: '#/components/schemas/Employee'
         required: true
       responses:
-        '204':
-          description: Successfully modified
+        '200':
+          description: Successful operation
         '400':
           description: Invalid input
         '404':

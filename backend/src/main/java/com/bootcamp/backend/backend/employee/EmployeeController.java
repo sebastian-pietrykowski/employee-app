@@ -79,13 +79,12 @@ public class EmployeeController {
             @RequestBody @Valid Employee employeeToUpdate
     ) {
         try {
-            employeeService.updateEmployee(id, employeeToUpdate);
-
+            Employee updatedEmployee = employeeService.updateEmployee(id, employeeToUpdate);
+            return ResponseEntity.status(HttpStatus.OK).body(updatedEmployee);
         } catch (DifferentEmployeeIdInDatabaseException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } catch (EmployeeNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
