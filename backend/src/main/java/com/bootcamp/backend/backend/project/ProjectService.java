@@ -1,6 +1,8 @@
 package com.bootcamp.backend.backend.project;
 
-import com.bootcamp.backend.backend.employee.EmployeeAlreadyExistsException;
+import com.bootcamp.backend.backend.employee.exception.EmployeeAlreadyExistsException;
+import com.bootcamp.backend.backend.project.exception.DifferentProjectIdInDatabaseException;
+import com.bootcamp.backend.backend.project.exception.ProjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

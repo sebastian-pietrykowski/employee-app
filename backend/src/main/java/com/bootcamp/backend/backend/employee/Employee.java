@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -36,13 +37,14 @@ public class Employee implements Comparable<Employee> {
 
     @Column(name = "employment_date")
     @NotNull
+    @DateTimeFormat
     private Date employmentDate;
 
     @ManyToMany
-    private Set<Project> listOfProjects = new TreeSet<>();
+    private Set<Project> projects = new TreeSet<>();
 
     @ManyToMany
-    private Set<Skill> listOfSkills = new TreeSet<>();
+    private Set<Skill> skills = new TreeSet<>();
 
     /*
     // TODO Have to wait with this until mapping from DTO is implemented in order not to have to pass a whole manager object in JSON

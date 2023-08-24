@@ -1,5 +1,6 @@
 package com.bootcamp.backend.backend.project;
 
+import com.bootcamp.backend.backend.project.exception.ProjectAlreadyExistsException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

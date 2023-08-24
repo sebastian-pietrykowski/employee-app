@@ -1,5 +1,6 @@
 package com.bootcamp.backend.backend.skill;
 
+import com.bootcamp.backend.backend.skill.exception.SkillAlreadyExistsException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
