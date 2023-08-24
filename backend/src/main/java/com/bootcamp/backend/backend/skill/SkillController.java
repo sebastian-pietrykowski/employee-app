@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("skills")
+@RequestMapping(path = "skills", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class SkillController {
     private final SkillService skillService;
 
@@ -17,7 +17,7 @@ public class SkillController {
         this.skillService = skillService;
     }
 
-    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<Skill> addSkill(
             @RequestBody @Valid Skill skill
     ) {
@@ -29,7 +29,7 @@ public class SkillController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Skill>> getSkills() {
         List<Skill> skills = skillService.getSkills();
         return ResponseEntity.status(HttpStatus.OK).body(skills);

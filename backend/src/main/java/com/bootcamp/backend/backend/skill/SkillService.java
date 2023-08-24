@@ -47,7 +47,7 @@ public class SkillService {
     }
 
     public Skill updateSkill(Long idFromPath, Skill skill) {
-        if (!skill.getId().equals(idFromPath)) {
+        if (areIdsNotEqual(idFromPath, skill.getId())) {
             throw new DifferentSkillIdInDatabaseException();
         }
         if (!skillRepository.existsById(skill.getId())) {
@@ -55,5 +55,9 @@ public class SkillService {
         }
 
         return skillRepository.save(skill);
+    }
+
+    private boolean areIdsNotEqual(Long idFromPath, Long idFromBody) {
+        return !idFromBody.equals(idFromPath);
     }
 }

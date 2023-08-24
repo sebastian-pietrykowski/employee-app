@@ -48,7 +48,7 @@ public class ProjectService {
     }
 
     public Project updateProject(Long idFromPath, Project project) {
-        if (!project.getId().equals(idFromPath)) {
+        if (areIdsNotEqual(idFromPath, project.getId())) {
             throw new DifferentProjectIdInDatabaseException();
         }
         if (!projectRepository.existsById(project.getId())) {
@@ -56,5 +56,9 @@ public class ProjectService {
         }
 
         return projectRepository.save(project);
+    }
+
+    private boolean areIdsNotEqual(Long idFromPath, Long idFromBody) {
+        return !idFromBody.equals(idFromPath);
     }
 }
