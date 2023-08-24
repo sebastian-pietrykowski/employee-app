@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("projects")
+@RequestMapping(path = "projects", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class ProjectController {
     private final ProjectService projectService;
 
@@ -18,7 +18,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<Project> addProject(
             @RequestBody @Valid Project project
     ) {
@@ -30,7 +30,7 @@ public class ProjectController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Project>> getProjects() {
         List<Project> projects = projectService.getProjects();
         return ResponseEntity.status(HttpStatus.OK).body(projects);

@@ -45,8 +45,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
-    public List<Employee> getEmployeesByNameOrSurnameStartingWith(String term) {
-        List<Employee> employeeList = employeeRepository.findByNameOrSurnameStartingWithIgnoreCase(term);
+    public List<Employee> getEmployeesByNameOrSurnameContaining(String term) {
+        List<Employee> employeeList = employeeRepository.findByNameOrSurnameContainingIgnoreCase(term);
         if (employeeList.isEmpty()) {
             throw new EmployeeNotFoundException();
         }
@@ -55,7 +55,7 @@ public class EmployeeService {
     }
 
     public Employee updateEmployee(String idFromPath, Employee employee) {
-        if (!employee.getId().equals(idFromPath)) {
+        if (areIdsNotEqual(idFromPath, employee.getId())) {
             throw new DifferentEmployeeIdInDatabaseException();
         }
         if (!employeeRepository.existsById(employee.getId())) {
@@ -63,5 +63,9 @@ public class EmployeeService {
         }
 
         return employeeRepository.save(employee);
+    }
+
+    private boolean areIdsNotEqual(String idFromPath, String idFromBody) {
+        return !idFromBody.equals(idFromPath);
     }
 }

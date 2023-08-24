@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("employees")
+@RequestMapping(path = "employees", consumes = MediaType.APPLICATION_JSON_VALUE)
 public class EmployeeController {
     private final EmployeeService employeeService;
 
@@ -20,7 +20,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping(path = "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping
     public ResponseEntity<Employee> addEmployee(
             @RequestBody @Valid Employee employeeToAdd
     ) {
@@ -59,7 +59,7 @@ public class EmployeeController {
         }
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<List<Employee>> getEmployees(
             @RequestParam(value = "term", required = false) String term
     ) {
@@ -68,7 +68,7 @@ public class EmployeeController {
             employees = employeeService.getEmployees();
         } else {
             try {
-                employees = employeeService.getEmployeesByNameOrSurnameStartingWith(term);
+                employees = employeeService.getEmployeesByNameOrSurnameContaining(term);
             } catch (EmployeeNotFoundException e) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of());
             }
@@ -76,7 +76,7 @@ public class EmployeeController {
         return ResponseEntity.status(HttpStatus.OK).body(employees);
     }
 
-    @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping("/{id}")
     public ResponseEntity<Employee> updateEmployee(
             @PathVariable("id") String id,
             @RequestBody @Valid Employee employeeToUpdate

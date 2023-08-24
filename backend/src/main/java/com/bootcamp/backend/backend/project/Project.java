@@ -21,12 +21,6 @@ public class Project implements Comparable<Project> {
     @NotEmpty
     private String name;
 
-// TODO Have to wait with this until mapping from DTO is implemented in order not to have to pass a whole object in JSON
-/*
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private Set<Project> members = new TreeSet<>();
- */
-
     @Override
     public int compareTo(Project thatProject) {
         return this.name.compareTo(thatProject.name);
