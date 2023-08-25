@@ -1,8 +1,11 @@
 package com.bootcamp.backend.backend.employee;
 
+import com.bootcamp.backend.backend.employee.dtos.EmployeeRequest;
+import com.bootcamp.backend.backend.employee.dtos.EmployeeResponse;
 import com.bootcamp.backend.backend.employee.exception.DifferentEmployeeIdInDatabaseException;
 import com.bootcamp.backend.backend.employee.exception.EmployeeAlreadyExistsException;
 import com.bootcamp.backend.backend.employee.exception.EmployeeNotFoundException;
+import com.bootcamp.backend.backend.employee.exception.ManagerDoesntExistException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "employees", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -21,22 +25,25 @@ public class EmployeeController {
     }
 
     @PostMapping
-    public ResponseEntity<Employee> addEmployee(
-            @RequestBody @Valid Employee employeeToAdd
+    public ResponseEntity<EmployeeResponse> addEmployee(
+            @RequestBody @Valid EmployeeRequest employeeToAdd
     ) {
         try {
-            Employee addedEmployee = employeeService.addEmployee(employeeToAdd);
+            EmployeeResponse addedEmployee = employeeService.addEmployee(employeeToAdd);
             return ResponseEntity.status(HttpStatus.CREATED).body(addedEmployee);
         } catch (EmployeeAlreadyExistsException e) {
             // TODO Have to wait for ControllerAdvice in order to return ResponseEntity<ApiError>
             // ApiError apiError = new ApiError(HttpStatus.CONFLICT, "Employee already exists");
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }
+        catch (ManagerDoesntExistException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Employee> deleteEmployeeById(
-            @PathVariable("id") String id
+    public ResponseEntity deleteEmployeeById(
+            @PathVariable("id") UUID id
     ) {
         try {
             employeeService.deleteEmployeeById(id);
@@ -47,11 +54,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(
-            @PathVariable("id") String id
+    public ResponseEntity<EmployeeResponse> getEmployeeById(
+            @PathVariable("id") UUID id
     ) {
         try {
-            Employee employee = employeeService.getEmployeeById(id);
+            EmployeeResponse employee = employeeService.getEmployeeById(id);
             return ResponseEntity.status(HttpStatus.OK).body(employee);
 
         } catch (EmployeeNotFoundException e) {
@@ -60,10 +67,10 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Employee>> getEmployees(
+    public ResponseEntity<List<EmployeeResponse>> getEmployees(
             @RequestParam(value = "term", required = false) String term
     ) {
-        List<Employee> employees;
+        List<EmployeeResponse> employees;
         if (term == null) {
             employees = employeeService.getEmployees();
         } else {
@@ -77,12 +84,12 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Employee> updateEmployee(
-            @PathVariable("id") String id,
-            @RequestBody @Valid Employee employeeToUpdate
+    public ResponseEntity<EmployeeResponse> updateEmployee(
+            @PathVariable("id") UUID id,
+            @RequestBody @Valid EmployeeRequest employeeToUpdate
     ) {
         try {
-            Employee updatedEmployee = employeeService.updateEmployee(id, employeeToUpdate);
+            EmployeeResponse updatedEmployee = employeeService.updateEmployee(id, employeeToUpdate);
             return ResponseEntity.status(HttpStatus.OK).body(updatedEmployee);
         } catch (DifferentEmployeeIdInDatabaseException e) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();

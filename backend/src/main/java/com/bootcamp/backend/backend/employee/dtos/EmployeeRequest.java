@@ -1,7 +1,5 @@
 package com.bootcamp.backend.backend.employee.dtos;
 
-import com.bootcamp.backend.backend.project.Project;
-import com.bootcamp.backend.backend.skill.Skill;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -9,12 +7,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
+import java.util.UUID;
 
-public record EmployeePostDto(
-        @NotEmpty
+public record EmployeeRequest(
         @JsonProperty("id")
-        String id,
+        UUID id,
 
         @NotEmpty
         @JsonProperty("name")
@@ -31,14 +29,13 @@ public record EmployeePostDto(
 
         @NotNull
         @JsonProperty("projectIds")
-        List<Long> projectIds,
+        List<UUID> projectIds,
 
         @NotNull
         @JsonProperty("skillIds")
-        List<Long> skillIds,
+        List<UUID> skillIds,
 
-        @NotNull
         @JsonProperty("managerId")
-        String managerId
+        Optional<UUID> managerId
 ) {
 }

@@ -19,11 +19,11 @@ public class SkillController {
     }
 
     @PostMapping
-    public ResponseEntity<Skill> addSkill(
-            @RequestBody @Valid Skill skill
+    public ResponseEntity<SkillDto> addSkill(
+            @RequestBody @Valid SkillDto skillDto
     ) {
         try {
-            Skill addedSkill = skillService.addSkill(skill);
+            SkillDto addedSkill = skillService.addSkill(skillDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(addedSkill);
         } catch (SkillAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -31,8 +31,8 @@ public class SkillController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Skill>> getSkills() {
-        List<Skill> skills = skillService.getSkills();
+    public ResponseEntity<List<SkillDto>> getSkills() {
+        List<SkillDto> skills = skillService.getSkills();
         return ResponseEntity.status(HttpStatus.OK).body(skills);
     }
 }

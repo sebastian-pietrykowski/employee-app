@@ -19,11 +19,11 @@ public class ProjectController {
     }
 
     @PostMapping
-    public ResponseEntity<Project> addProject(
-            @RequestBody @Valid Project project
+    public ResponseEntity<ProjectDto> addProject(
+            @RequestBody @Valid ProjectDto project
     ) {
         try {
-            Project addedProject = projectService.addProject(project);
+            ProjectDto addedProject = projectService.addProject(project);
             return ResponseEntity.status(HttpStatus.CREATED).body(addedProject);
         } catch (ProjectAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -31,8 +31,8 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Project>> getProjects() {
-        List<Project> projects = projectService.getProjects();
+    public ResponseEntity<List<ProjectDto>> getProjects() {
+        List<ProjectDto> projects = projectService.getProjects();
         return ResponseEntity.status(HttpStatus.OK).body(projects);
     }
 }

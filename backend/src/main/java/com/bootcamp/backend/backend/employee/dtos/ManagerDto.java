@@ -3,10 +3,12 @@ package com.bootcamp.backend.backend.employee.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotEmpty;
 
-public record ManagerDTO(
+import java.util.UUID;
+
+public record ManagerDto(
         @NotEmpty
         @JsonProperty("id")
-        String id,
+        UUID id,
 
         @NotEmpty
         @JsonProperty("name")

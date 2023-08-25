@@ -8,12 +8,14 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
-public record EmployeeGetDto(
+public record EmployeeResponse(
         @NotEmpty
         @JsonProperty("id")
-        String id,
+        UUID id,
 
         @NotEmpty
         @JsonProperty("name")
@@ -38,6 +40,6 @@ public record EmployeeGetDto(
 
         @NotNull
         @JsonProperty("manager")
-        ManagerDTO manager
+        Optional<ManagerDto> manager
 ) {
 }
