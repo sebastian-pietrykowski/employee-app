@@ -110,8 +110,8 @@ paths:
               $ref: '#/components/schemas/Employee'
         required: true
       responses:
-        '204':
-          description: Successfully modified
+        '200':
+          description: Successful operation
         '400':
           description: Invalid input
         '404':
@@ -137,6 +137,30 @@ paths:
         '404':
           description: Employee not found
   /projects:
+    post:
+      tags:
+        - projects
+      summary: Add a new project
+      description: Add a new project
+      operationId: addProject
+      requestBody:
+        description: Create a new project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid input
+        '409':
+          description: Project already exists
     get:
       tags:
         - projects
@@ -162,6 +186,30 @@ paths:
         '404':
           description: Project not found
   /skills:
+    post:
+      tags:
+        - skills
+      summary: Add a new skill
+      description: Add a new skill
+      operationId: addSkill
+      requestBody:
+        description: Create a new skill
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '400':
+          description: Invalid input
+        '409':
+          description: Skill already exists
     get:
       tags:
         - skills
