@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "projects", consumes = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin()
 public class ProjectController {
     private final ProjectService projectService;
 

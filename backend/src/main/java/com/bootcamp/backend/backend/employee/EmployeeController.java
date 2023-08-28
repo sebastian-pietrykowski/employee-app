@@ -16,7 +16,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "employees", consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "employees")
+@CrossOrigin()
 public class EmployeeController {
     private final EmployeeService employeeService;
 

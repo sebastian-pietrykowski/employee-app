@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "skills", consumes = MediaType.APPLICATION_JSON_VALUE)
+@CrossOrigin()
 public class SkillController {
     private final SkillService skillService;
 
