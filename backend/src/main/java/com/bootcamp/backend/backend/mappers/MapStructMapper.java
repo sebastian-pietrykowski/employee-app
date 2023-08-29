@@ -56,12 +56,10 @@ public abstract class MapStructMapper {
             @Context MapperEmployeeServiceContext mapperEmployeeServiceContext
     ) {
         Optional<UUID> managerId = employeeRequest.managerId();
-        if (managerId.isEmpty()) {
-            return;
+        if (managerId.isPresent()) {
+            Optional<Employee> foundManager = managerId.map(mapperEmployeeServiceContext::employeeIdToEmployee);
+            mappedEmployee.setManager(foundManager.orElse(null));
         }
-
-        Optional<Employee> foundManager = mapperEmployeeServiceContext.employeeIdToEmployee(managerId);
-        mappedEmployee.setManager(foundManager.orElse(null));
     }
 
     @Mapping(source = "employee.manager", target = "manager", qualifiedByName = "employeeToManagerDto")

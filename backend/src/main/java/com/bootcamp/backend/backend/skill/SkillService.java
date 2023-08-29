@@ -1,7 +1,7 @@
 package com.bootcamp.backend.backend.skill;
 
 import com.bootcamp.backend.backend.mappers.MapStructMapper;
-import com.bootcamp.backend.backend.skill.exception.DifferentSkillIdInDatabaseException;
+import com.bootcamp.backend.backend.skill.exception.DifferentSkillIdInPathAndBodyException;
 import com.bootcamp.backend.backend.skill.exception.SkillAlreadyExistsException;
 import com.bootcamp.backend.backend.skill.exception.SkillNotFoundException;
 import lombok.AllArgsConstructor;
@@ -19,34 +19,24 @@ public class SkillService {
 
     public SkillDto addSkill(SkillDto skillDto) {
         Skill skill = mapStructMapper.skillDtotoSkill(skillDto);
-        if (skill.getId() != null && skillRepository.existsById(skill.getId())) {
-            throw new SkillAlreadyExistsException();
-        }
-
+        checkIfSkillExists(skill);
         Skill savedSkill = skillRepository.save(skill);
 
         return mapStructMapper.skillToSkillDto(savedSkill);
     }
 
     public void deleteSkillById(UUID id) {
-        Optional<Skill> foundSkill = skillRepository.findById(id);
-        if (foundSkill.isEmpty()) {
-            throw new SkillNotFoundException();
-        }
+        skillRepository.findById(id).orElseThrow(() -> new SkillNotFoundException(id));
         skillRepository.deleteById(id);
     }
 
-    public Optional<SkillDto> getSkillById(UUID id) {
-        return getSkillModelById(id).map(mapStructMapper::skillToSkillDto);
+    public SkillDto getSkillById(UUID id) {
+        Skill foundSkill = getSkillModelById(id);
+        return mapStructMapper.skillToSkillDto(foundSkill);
     }
 
-    public Optional<Skill> getSkillModelById(UUID id) {
-        Optional<Skill> foundSkill = skillRepository.findById(id);
-        if (foundSkill.isEmpty()) {
-            throw new SkillNotFoundException();
-        }
-
-        return Optional.ofNullable(foundSkill.get());
+    public Skill getSkillModelById(UUID id) {
+        return skillRepository.findById(id).orElseThrow(() -> new SkillNotFoundException(id));
     }
 
     public List<SkillDto> getSkills() {
@@ -60,20 +50,23 @@ public class SkillService {
     }
 
     public SkillDto updateSkill(UUID idFromPath, SkillDto skillDto) {
-        Skill skill = mapStructMapper.skillDtotoSkill(skillDto);
-        if (areIdsNotEqual(idFromPath, skill.getId())) {
-            throw new DifferentSkillIdInDatabaseException();
-        }
-        if (!skillRepository.existsById(skill.getId())) {
-            throw new SkillNotFoundException();
-        }
-
-        Skill savedSkill = skillRepository.save(skill);
+        Skill skillWithUpdates = mapStructMapper.skillDtotoSkill(skillDto);
+        checkIfIdsFromPathAndBodyMatch(idFromPath, skillWithUpdates.getId());
+        checkIfSkillExists(skillWithUpdates);
+        Skill savedSkill = skillRepository.save(skillWithUpdates);
 
         return mapStructMapper.skillToSkillDto(savedSkill);
     }
 
-    private boolean areIdsNotEqual(UUID idFromPath, UUID idFromBody) {
-        return !idFromBody.equals(idFromPath);
+    private void checkIfIdsFromPathAndBodyMatch(UUID idFromPath, UUID idFromBody) {
+        if (!idFromBody.equals(idFromPath)) {
+            throw new DifferentSkillIdInPathAndBodyException(idFromPath, idFromBody);
+        }
+    }
+
+    private void checkIfSkillExists(Skill skill) {
+        if (skill.getId() != null && skillRepository.existsById(skill.getId())) {
+            throw new SkillAlreadyExistsException(skill.getId());
+        }
     }
 }

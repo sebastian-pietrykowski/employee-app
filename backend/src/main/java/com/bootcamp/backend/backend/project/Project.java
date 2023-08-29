@@ -1,7 +1,7 @@
 package com.bootcamp.backend.backend.project;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,7 +20,7 @@ public class Project implements Comparable<Project> {
     private UUID id;
 
     @Column(name = "name")
-    @NotEmpty
+    @NotBlank(message = "Property 'name' is not defined")
     private String name;
 
     @Override

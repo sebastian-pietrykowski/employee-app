@@ -6,15 +6,15 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.UUID;
 
 public record ManagerDto(
-        @NotEmpty
+        @NotEmpty(message = "Property 'id' is not defined")
         @JsonProperty("id")
         UUID id,
 
-        @NotEmpty
+        @NotEmpty(message = "Property 'name' is not defined")
         @JsonProperty("name")
         String name,
 
-        @NotEmpty
+        @NotEmpty(message = "Property 'surname' is not defined")
         @JsonProperty("surname")
         String surname
 ) {

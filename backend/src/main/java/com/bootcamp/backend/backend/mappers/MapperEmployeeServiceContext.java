@@ -8,7 +8,6 @@ import com.bootcamp.backend.backend.skill.Skill;
 import com.bootcamp.backend.backend.skill.SkillService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,18 +20,16 @@ public record MapperEmployeeServiceContext(
     Set<Project> projectIdsToProjects(List<UUID> projectIds) {
         return projectIds.stream()
                 .map(projectService::getProjectModelById)
-                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
     }
 
     Set<Skill> skillIdsToSkills(List<UUID> skillIds) {
         return skillIds.stream()
                 .map(skillService::getSkillModelById)
-                .flatMap(Optional::stream)
                 .collect(Collectors.toSet());
     }
 
-    Optional<Employee> employeeIdToEmployee(Optional<UUID> employeeId) {
-        return employeeId.map(employeeService::getEmployeeModelById);
+    Employee employeeIdToEmployee(UUID employeeId) {
+        return employeeService.getEmployeeModelById(employeeId);
     }
 }

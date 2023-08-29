@@ -2,10 +2,10 @@ package com.bootcamp.backend.backend.employee;
 
 import com.bootcamp.backend.backend.employee.dtos.EmployeeRequest;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeResponse;
-import com.bootcamp.backend.backend.employee.exception.DifferentEmployeeIdInDatabaseException;
+import com.bootcamp.backend.backend.employee.exception.DifferentEmployeeIdInPathAndBodyException;
 import com.bootcamp.backend.backend.employee.exception.EmployeeAlreadyExistsException;
 import com.bootcamp.backend.backend.employee.exception.EmployeeNotFoundException;
-import com.bootcamp.backend.backend.employee.exception.ManagerDoesntExistException;
+import com.bootcamp.backend.backend.employee.exception.ManagerWasNotFoundException;
 import com.bootcamp.backend.backend.mappers.MapStructMapper;
 import com.bootcamp.backend.backend.mappers.MapperEmployeeServiceContext;
 import com.bootcamp.backend.backend.project.ProjectService;
@@ -37,78 +37,68 @@ public class EmployeeService {
 
     public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
         Employee employee = mapStructMapper.employeeRequestToEmployee(employeeRequest, mapperEmployeeServiceContext);
-        if (doesEmployeeExist(employee)) {
-            throw new EmployeeAlreadyExistsException();
-        }
-        if (!isManagerValid(employee.getManager())) {
-            throw new ManagerDoesntExistException();
-        }
+        checkIfEmployeeExists(employee);
+        checkIfManagerIsValid(employee.getManager());
         Employee savedEmployee = employeeRepository.save(employee);
 
         return mapStructMapper.employeeToEmployeeResponse(savedEmployee);
     }
 
     public void deleteEmployeeById(UUID id) {
-        Optional<Employee> foundEmployee = employeeRepository.findById(id);
-        if (foundEmployee.isEmpty()) {
-            throw new EmployeeNotFoundException();
-        }
+        employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
         employeeRepository.deleteById(id);
     }
 
     public EmployeeResponse getEmployeeById(UUID id) {
-        return mapStructMapper.employeeToEmployeeResponse(getEmployeeModelById(id));
+        Employee foundEmployee = getEmployeeModelById(id);
+        return mapStructMapper.employeeToEmployeeResponse(foundEmployee);
     }
 
     public Employee getEmployeeModelById(UUID id) {
-        Optional<Employee> foundEmployee = employeeRepository.findById(id);
-        if (foundEmployee.isEmpty()) {
-            throw new EmployeeNotFoundException();
-        }
-
-        return foundEmployee.get();
+        return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
     }
 
     public List<EmployeeResponse> getEmployees() {
         return employeeRepository.findAll()
                 .stream()
-                .map(e -> mapStructMapper.employeeToEmployeeResponse(e))
+                .map(mapStructMapper::employeeToEmployeeResponse)
                 .toList();
     }
 
     public List<EmployeeResponse> getEmployeesByNameOrSurnameContaining(String term) {
         List<Employee> employeeList = employeeRepository.findByNameOrSurnameContainingIgnoreCase(term);
-        if (employeeList.isEmpty()) {
-            throw new EmployeeNotFoundException();
-        }
 
         return employeeList.stream()
-                .map(e -> mapStructMapper.employeeToEmployeeResponse(e))
+                .map(mapStructMapper::employeeToEmployeeResponse)
                 .toList();
     }
 
     public EmployeeResponse updateEmployee(UUID idFromPath, EmployeeRequest employeeRequest) {
-        if (areIdsNotEqual(idFromPath, employeeRequest.id())) {
-            throw new DifferentEmployeeIdInDatabaseException();
-        }
-        if (!employeeRepository.existsById(employeeRequest.id())) {
-            throw new EmployeeNotFoundException();
-        }
-        Employee employeeToUpdate = mapStructMapper.employeeRequestToEmployee(employeeRequest, mapperEmployeeServiceContext);
-        Employee updatedEmployee = employeeRepository.save(employeeToUpdate);
+        checkIfIdsFromPathAndBodyMatch(idFromPath, employeeRequest.id());
+        Employee employeeWithUpdates = mapStructMapper
+                .employeeRequestToEmployee(employeeRequest, mapperEmployeeServiceContext);
+        checkIfEmployeeExists(employeeWithUpdates);
+        checkIfManagerIsValid(employeeWithUpdates.getManager());
+        Employee updatedEmployee = employeeRepository.save(employeeWithUpdates);
 
         return mapStructMapper.employeeToEmployeeResponse(updatedEmployee);
     }
 
-    private boolean doesEmployeeExist(Employee employee) {
-        return employee.getId() != null && employeeRepository.existsById(employee.getId());
+    private void checkIfEmployeeExists(Employee employee) {
+        if (employee.getId() != null && employeeRepository.existsById(employee.getId())) {
+            throw new EmployeeAlreadyExistsException(employee.getId());
+        }
     }
 
-    private boolean isManagerValid(Employee manager) {
-        return manager == null || employeeRepository.existsById(manager.getId());
+    private void checkIfIdsFromPathAndBodyMatch(UUID idFromPath, UUID idFromBody) {
+        if (!idFromBody.equals(idFromPath)) {
+            throw new DifferentEmployeeIdInPathAndBodyException(idFromPath, idFromBody);
+        }
     }
 
-    private boolean areIdsNotEqual(UUID idFromPath, UUID idFromBody) {
-        return !idFromBody.equals(idFromPath);
+    private void checkIfManagerIsValid(Employee manager) {
+        if (manager != null && !employeeRepository.existsById(manager.getId())) {
+            throw new ManagerWasNotFoundException(manager.getId());
+        }
     }
 }

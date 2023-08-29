@@ -1,8 +1,8 @@
 package com.bootcamp.backend.backend.project;
 
-import com.bootcamp.backend.backend.employee.exception.EmployeeAlreadyExistsException;
 import com.bootcamp.backend.backend.mappers.MapStructMapper;
-import com.bootcamp.backend.backend.project.exception.DifferentProjectIdInDatabaseException;
+import com.bootcamp.backend.backend.project.exception.DifferentProjectIdInPathAndBodyException;
+import com.bootcamp.backend.backend.project.exception.ProjectAlreadyExistsException;
 import com.bootcamp.backend.backend.project.exception.ProjectNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,34 +19,24 @@ public class ProjectService {
 
     public ProjectDto addProject(ProjectDto projectDto) {
         Project project = mapStructMapper.projectDtoToProject(projectDto);
-        if (doesProjectExist(project)) {
-            throw new EmployeeAlreadyExistsException();
-        }
-
+        checkIfProjectExists(project);
         Project savedProject = projectRepository.save(project);
 
         return mapStructMapper.projectToProjectDto(savedProject);
     }
 
     public void deleteProjectById(UUID id) {
-        Optional<Project> foundProject = projectRepository.findById(id);
-        if (foundProject.isEmpty()) {
-            throw new ProjectNotFoundException();
-        }
+        projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
         projectRepository.deleteById(id);
     }
 
-    public Optional<ProjectDto> getProjectById(UUID id) {
-        return getProjectModelById(id).map(mapStructMapper::projectToProjectDto);
+    public ProjectDto getProjectById(UUID id) {
+        Project foundProject = getProjectModelById(id);
+        return mapStructMapper.projectToProjectDto(foundProject);
     }
 
-    public Optional<Project> getProjectModelById(UUID id) {
-        Optional<Project> foundProject = projectRepository.findById(id);
-        if (foundProject.isEmpty()) {
-            throw new ProjectNotFoundException();
-        }
-
-        return Optional.ofNullable(foundProject.get());
+    public Project getProjectModelById(UUID id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
     }
 
     public List<ProjectDto> getProjects() {
@@ -60,24 +50,23 @@ public class ProjectService {
     }
 
     public ProjectDto updateProject(UUID idFromPath, ProjectDto projectDto) {
-        Project project = mapStructMapper.projectDtoToProject(projectDto);
-        if (areIdsNotEqual(idFromPath, project.getId())) {
-            throw new DifferentProjectIdInDatabaseException();
-        }
-        if (!projectRepository.existsById(project.getId())) {
-            throw new ProjectNotFoundException();
-        }
-
-        Project savedProject = projectRepository.save(project);
+        Project projectWithUpdates = mapStructMapper.projectDtoToProject(projectDto);
+        checkIfIdsFromPathAndBodyMatch(idFromPath, projectWithUpdates.getId());
+        checkIfProjectExists(projectWithUpdates);
+        Project savedProject = projectRepository.save(projectWithUpdates);
 
         return mapStructMapper.projectToProjectDto(savedProject);
     }
 
-    private boolean doesProjectExist(Project project) {
-        return project.getId() != null && projectRepository.existsById(project.getId());
+    private void checkIfIdsFromPathAndBodyMatch(UUID idFromPath, UUID idFromBody) {
+        if (!idFromBody.equals(idFromPath)) {
+            throw new DifferentProjectIdInPathAndBodyException(idFromPath, idFromBody);
+        }
     }
 
-    private boolean areIdsNotEqual(UUID idFromPath, UUID idFromBody) {
-        return !idFromBody.equals(idFromPath);
+    private void checkIfProjectExists(Project project) {
+        if (project.getId() != null && projectRepository.existsById(project.getId())) {
+            throw new ProjectAlreadyExistsException(project.getId());
+        }
     }
 }
