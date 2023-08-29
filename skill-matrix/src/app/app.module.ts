@@ -43,10 +43,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDateFnsModule,
     NavigationModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-      dataEncapsulation: false,
-      passThruUnknownUrl: true,
-    }),
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,

@@ -5,12 +5,13 @@ import { ErrorLoggingService } from './error-logging-service';
 import { Injectable } from '@angular/core';
 import { MessageService } from './message.service';
 import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeService extends ErrorLoggingService {
-  private readonly employeesUrl = 'api/employees';
+  private readonly employeesUrl = environment.apiBaseUrl + '/employees';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
