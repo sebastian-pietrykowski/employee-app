@@ -1,13 +1,14 @@
-import { Employee } from '../models/employee';
+import { EmployeeResponse } from '../models/employeeResponse';
 
-export const MOCK_EMPLOYEES: Employee[] = [
+export const MOCK_EMPLOYEES: EmployeeResponse[] = [
+  /*
   {
     id: '1',
     name: 'Jan',
     surname: 'Kowalski',
     employmentDate: new Date(2023, 7, 17, 0, 0, 0, 0),
-    listOfSkills: ['Angular', 'HTML', 'CSS', 'TypeScript'],
-    listOfProjects: ['DataTrackr', 'eHealthPlus'],
+    skills: ['Angular', 'HTML', 'CSS', 'TypeScript'],
+    projects: ['DataTrackr', 'eHealthPlus'],
     managerId: undefined,
   },
   {
@@ -15,8 +16,8 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Przemysław',
     surname: 'Górecki',
     employmentDate: new Date(2023, 1, 2, 0, 0, 0, 0),
-    listOfSkills: ['Java', 'Spring'],
-    listOfProjects: ['DataTrackr', 'SafeGuardian'],
+    skills: ['Java', 'Spring'],
+    projects: ['DataTrackr', 'SafeGuardian'],
     managerId: '1',
   },
   {
@@ -24,8 +25,8 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Jola',
     surname: 'Sawicka',
     employmentDate: new Date(2022, 10, 13, 0, 0, 0, 0),
-    listOfSkills: ['MySQL', 'MSSQL', 'Python'],
-    listOfProjects: ['DataTrackr', 'SafeGuardian', 'LearnUp'],
+    skills: ['MySQL', 'MSSQL', 'Python'],
+    projects: ['DataTrackr', 'SafeGuardian', 'LearnUp'],
     managerId: undefined,
   },
   {
@@ -33,8 +34,8 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Aleksandra',
     surname: 'Nowak',
     employmentDate: new Date(2021, 5, 1, 0, 0, 0, 0),
-    listOfSkills: ['C#', 'Matlab', 'CSS', 'Rust'],
-    listOfProjects: ['RetailEdge'],
+    skills: ['C#', 'Matlab', 'CSS', 'Rust'],
+    projects: ['RetailEdge'],
     managerId: '2',
   },
   {
@@ -42,8 +43,8 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Michał',
     surname: 'Kowalski',
     employmentDate: new Date(2023, 7, 1, 0, 0, 0, 0),
-    listOfSkills: ['Python'],
-    listOfProjects: ['SmartHomeX'],
+    skills: ['Python'],
+    projects: ['SmartHomeX'],
     managerId: '2',
   },
   {
@@ -51,8 +52,8 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Karolina',
     surname: 'Wiśniewska',
     employmentDate: new Date(2022, 10, 10, 0, 0, 0, 0),
-    listOfSkills: ['Ruby', 'HTML', 'CSS', 'TypeScript'],
-    listOfProjects: [],
+    skills: ['Ruby', 'HTML', 'CSS', 'TypeScript'],
+    projects: [],
     managerId: '1',
   },
   {
@@ -60,7 +61,7 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Janusz',
     surname: 'Kowalski',
     employmentDate: new Date(2022, 8, 28, 0, 0, 0, 0),
-    listOfSkills: [
+    skills: [
       'Kotlin',
       'Firebase',
       'Swift',
@@ -70,7 +71,7 @@ export const MOCK_EMPLOYEES: Employee[] = [
       'TypeScript',
       'PHP',
     ],
-    listOfProjects: ['DataTrackr', 'eHealthPlus'],
+    projects: ['DataTrackr', 'eHealthPlus'],
     managerId: undefined,
   },
   {
@@ -78,8 +79,9 @@ export const MOCK_EMPLOYEES: Employee[] = [
     name: 'Piotr',
     surname: 'Jankowski',
     employmentDate: new Date(2023, 1, 15, 0, 0, 0, 0),
-    listOfSkills: ['HTML', 'CSS', 'TypeScript', 'MySQL'],
-    listOfProjects: ['eHealthPlus'],
+    skills: ['HTML', 'CSS', 'TypeScript', 'MySQL'],
+    projects: ['eHealthPlus'],
     managerId: '7',
   },
+     */
 ];

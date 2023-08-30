@@ -80,11 +80,11 @@
                 <mat-label for="managerSelect">
                   {{ "employee.detail.manager.manager" | translate }}
                 </mat-label>
-                <mat-select formControlName="managerId" id="managerSelect">
+                <mat-select formControlName="manager" id="managerSelect">
                   <mat-option [value]="undefined">-</mat-option>
                   <mat-option
                     *ngFor="let manager of possibleManagers"
-                    [value]="manager.id"
+                    [value]="manager"
                   >
                     {{ manager.name }} {{ manager.surname }}
                   </mat-option>
@@ -93,17 +93,14 @@
             </div>
           </div>
 
-          <div formArrayName="listOfSkills" class="employee-detail__list">
+          <div formArrayName="skills" class="employee-detail__list">
             <div class="employee-detail__subheader">
               <h2>{{ "employee.detail.skills.skills" | translate }}:</h2>
             </div>
             <div class="employee-detail__form-fields">
               <div
                 class="employee-detail__form-field"
-                *ngFor="
-                  let skillControl of listOfSkills.controls;
-                  let index = index
-                "
+                *ngFor="let skillControl of skills.controls; let index = index"
               >
                 <mat-form-field
                   class="employee-detail__form-field"
@@ -126,13 +123,13 @@
                     <mat-option
                       *ngFor="
                         let possibleSkill of findSkillsForAutocomplete(
-                          employee?.listOfSkills?.at(index) ?? '',
+                          employee?.skills?.at(index)!,
                           skillControl
                         )
                       "
-                      [value]="possibleSkill"
+                      [value]="possibleSkill.name"
                     >
-                      {{ possibleSkill }}
+                      {{ possibleSkill.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -171,7 +168,7 @@
             </div>
           </div>
 
-          <div formArrayName="listOfProjects" class="employee-detail__list">
+          <div formArrayName="projects" class="employee-detail__list">
             <div class="employee-detail__subheader">
               <h2>{{ "employee.detail.projects.projects" | translate }}:</h2>
             </div>
@@ -179,7 +176,7 @@
               <div
                 class="employee-detail__form-field"
                 *ngFor="
-                  let projectControl of listOfProjects.controls;
+                  let projectControl of projects.controls;
                   let index = index
                 "
               >
@@ -206,13 +203,13 @@
                     <mat-option
                       *ngFor="
                         let possibleProject of findProjectsForAutocomplete(
-                          employee?.listOfProjects?.at(index) ?? '',
+                          employee?.projects?.at(index)!,
                           projectControl
                         )
                       "
-                      [value]="possibleProject"
+                      [value]="possibleProject.name"
                     >
-                      {{ possibleProject }}
+                      {{ possibleProject.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -264,7 +261,7 @@
             employeeProfileForm.pristine)
         "
         routerLink=""
-        (click)="submitForm(); this.goBack()"
+        (click)="submitForm(); this.exitPage()"
       >
         {{ "employee.detail.submit" | translate }}
       </a>
@@ -285,7 +282,7 @@
         color="accent"
         type="button"
         routerLink=""
-        (click)="deleteEmployee(); this.goBack()"
+        (click)="deleteEmployee(); this.exitPage()"
         [disabled]="isEmployeeNewlyCreated()"
       >
         {{ "employee.detail.delete" | translate }}
@@ -295,7 +292,7 @@
         color="accent"
         type="button"
         routerLink=""
-        (click)="this.goBack()"
+        (click)="this.exitPage()"
       >
         {{ "employee.detail.back" | translate }}
       </a>

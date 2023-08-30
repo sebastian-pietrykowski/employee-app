@@ -49,6 +49,9 @@
         "added": "Added employee id={{id}}",
         "deleted": "Deleted employee id={{id}}",
         "fetched": "Fetched employees",
+        "manager": {
+          "fetched": "Fetched managers"
+        },
         "search": {
           "failure": "No employees matching term '{{term}}'",
           "success": "Found employees matching '{{term}}'"

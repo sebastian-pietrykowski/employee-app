@@ -6,6 +6,7 @@ import {
   NonNullableFormBuilder,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   Component,
   OnChanges,
@@ -14,12 +15,16 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Subject, map, takeUntil } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { Employee } from '../../core/models/employee';
+import { EmployeeRequest } from '../../core/models/employeeRequest';
+import { EmployeeResponse } from '../../core/models/employeeResponse';
 import { EmployeeService } from '../../core/services/employee.service';
 import { Location } from '@angular/common';
+import { Manager } from '../../core/models/manager';
 import { MessageService } from '../../core/services/message.service';
+import { Project } from '../../core/models/project';
 import { ProjectService } from '../../core/services/project.service';
+import { ROUTE_PATHS } from '../../config/route-paths';
+import { Skill } from '../../core/models/skill';
 import { SkillService } from '../../core/services/skill.service';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -29,12 +34,12 @@ import { TranslateService } from '@ngx-translate/core';
   styleUrls: ['./employee-detail.component.scss'],
 })
 export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
-  allPossibleProjectsList: string[] = [];
-  allPossibleSkillsList: string[] = [];
-  employee?: Employee;
+  allPossibleProjects: Project[] = [];
+  allPossibleSkills: Skill[] = [];
+  employee?: EmployeeResponse;
   employeeProfileForm: FormGroup;
   isLoading = true;
-  possibleManagers?: Employee[];
+  possibleManagers?: Manager[];
   wasProjectControlRemoved = false;
   wasSkillControlRemoved = false;
 
@@ -46,9 +51,10 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     private readonly projectService: ProjectService,
     private readonly skillService: SkillService,
     private readonly translationService: TranslateService,
+    private readonly activatedRoute: ActivatedRoute,
     private formBuilder: NonNullableFormBuilder,
     private readonly location: Location,
-    private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {
     this.employeeProfileForm = new FormGroup({});
   }
@@ -73,12 +79,12 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  get listOfProjects() {
-    return this.employeeProfileForm.get('listOfProjects') as FormArray;
+  get projects() {
+    return this.employeeProfileForm.get('projects') as FormArray;
   }
 
-  get listOfSkills() {
-    return this.employeeProfileForm.get('listOfSkills') as FormArray;
+  get skills() {
+    return this.employeeProfileForm.get('skills') as FormArray;
   }
 
   resetForm(): void {
@@ -95,17 +101,17 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
         this.employee?.employmentDate ?? new Date(),
         Validators.required,
       ],
-      listOfSkills: this.formBuilder.array(
-        (this.employee ? this.employee.listOfSkills : []).map((skill) =>
-          this.createArrayFormControlWithValidators(skill),
+      skills: this.formBuilder.array<FormControl<Skill>>(
+        (this.employee ? this.employee.skills : []).map((skill) =>
+          this.createArrayFormControlWithValidators(skill.name),
         ),
       ),
-      listOfProjects: this.formBuilder.array(
-        (this.employee ? this.employee.listOfProjects : []).map((project) =>
-          this.createArrayFormControlWithValidators(project),
+      projects: this.formBuilder.array<FormControl<Project>>(
+        (this.employee ? this.employee.projects : []).map((project) =>
+          this.createArrayFormControlWithValidators(project.name),
         ),
       ),
-      managerId: [this.employee ? this.employee.managerId : undefined],
+      manager: [this.employee ? this.employee.manager : undefined],
     });
   }
 
@@ -118,92 +124,105 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   submitForm(): void {
-    const employee: Employee =
-      this.employeeProfileForm.getRawValue() as Employee;
+    const employeeRequest: EmployeeRequest = this.mapFormToEmployeeRequest();
+    console.log(JSON.stringify(employeeRequest));
 
-    const isEmployeeNewlyCreated = this.employee?.id === undefined;
+    const isEmployeeNewlyCreated = this.isEmployeeNewlyCreated();
     if (isEmployeeNewlyCreated) {
       this.employeeService
-        .addEmployee(employee)
+        .addEmployee(employeeRequest)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(() => this.handleFormSubmit(employee));
+        .subscribe((employeeResponse: EmployeeResponse) =>
+          this.handleFormSubmit(employeeResponse),
+        );
     } else {
-      employee.id = this.employee?.id as string;
+      employeeRequest.id = this.employee?.id as string;
       this.employeeService
-        .updateEmployee(employee)
+        .updateEmployee(employeeRequest)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe(() => this.handleFormSubmit(employee));
+        .subscribe((employeeResponse: EmployeeResponse) =>
+          this.handleFormSubmit(employeeResponse),
+        );
     }
   }
 
   addProjectControlIfNeeded(): void {
-    this.addElementToFormArrayIfNeeded(this.listOfProjects);
+    this.addElementToFormArrayIfNeeded(this.projects);
   }
 
   removeProjectAt(index: number): void {
-    this.listOfProjects.removeAt(index);
+    this.projects.removeAt(index);
     this.wasProjectControlRemoved = true;
   }
 
   addSkillControlIfNeeded(): void {
-    this.addElementToFormArrayIfNeeded(this.listOfSkills);
+    this.addElementToFormArrayIfNeeded(this.skills);
   }
 
   removeSkillAt(index: number): void {
-    this.listOfSkills.removeAt(index);
+    this.skills.removeAt(index);
     this.wasSkillControlRemoved = true;
   }
 
   findProjectsForAutocomplete(
-    otherProject: string,
+    otherProject: Project,
     control: AbstractControl,
-  ): string[] {
+  ): Project[] {
     const availableProjects = this.createExcludedListWithOtherElem(
-      this.allPossibleProjectsList,
-      this.employeeProfileForm.get('listOfProjects') as FormArray,
+      this.allPossibleProjects,
+      this.employeeProfileForm.get('projects') as FormArray,
       otherProject,
     );
+    const searchedTerm = control.value;
 
-    return this.findMatchingStrings(availableProjects, control.value);
+    return availableProjects.filter(
+      (project) =>
+        project?.name.toLowerCase().includes(searchedTerm.toLowerCase()),
+    );
   }
 
   findSkillsForAutocomplete(
-    otherSkill: string,
+    otherSkill: Skill,
     control: AbstractControl,
-  ): string[] {
+  ): Skill[] {
     const availableSkills = this.createExcludedListWithOtherElem(
-      this.allPossibleSkillsList,
-      this.employeeProfileForm.get('listOfSkills') as FormArray,
+      this.allPossibleSkills,
+      this.employeeProfileForm.get('skills') as FormArray,
       otherSkill,
     );
+    const searchedTerm = control.value;
 
-    return this.findMatchingStrings(availableSkills, control.value);
+    return availableSkills.filter(
+      (skill) => skill?.name.toLowerCase().includes(searchedTerm.toLowerCase()),
+    );
   }
 
   checkIfLastProjectAndSkillAreNotEmpty(): boolean {
-    return (
-      this.listOfProjects.value.at(-1) != '' &&
-      this.listOfSkills.value.at(-1) != ''
-    );
+    return this.projects.value.at(-1) != '' && this.skills.value.at(-1) != '';
   }
 
   isEmployeeNewlyCreated(): boolean {
+    console.log(this.employee?.id === undefined);
     return this.employee?.id === undefined;
   }
 
-  goBack() {
-    this.location.back();
+  exitPage(): void {
+    this.router
+      .navigate(['/' + ROUTE_PATHS.EMPLOYEES], {
+        relativeTo: this.activatedRoute,
+      })
+      .then(() => window.location.reload());
   }
 
   private loadEmployee(): void {
-    const employeeId = this.route.snapshot.paramMap.get('id');
+    const employeeId = this.activatedRoute.snapshot.paramMap.get('id');
     const doEmployeeExist = employeeId !== null;
     if (doEmployeeExist) {
       this.employeeService
         .getEmployee(employeeId)
         .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((employee) => {
-          this.employee = employee;
+        .subscribe((employeeResponse) => {
+          this.employee = employeeResponse;
           this.isLoading = false;
           this.resetForm();
         });
@@ -215,36 +234,41 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   private loadPossibleManagers(): void {
     this.employeeService
-      .getEmployees()
+      .getManagers()
       .pipe(
-        map((employees: Employee[]) =>
-          employees.filter(
-            (employee: Employee) => employee.id !== this.employee?.id,
+        map((managers: Manager[]) =>
+          managers.filter(
+            (manager: Manager) => manager.id !== this.employee?.id,
           ),
         ),
         takeUntil(this.unsubscribe$),
       )
-      .subscribe(
-        (possibleManagers: Employee[]) =>
-          (this.possibleManagers = possibleManagers),
-      );
+      .subscribe((possibleManagers: Manager[]) => {
+        this.possibleManagers = possibleManagers;
+        if (this.employee) {
+          this.employee.manager = possibleManagers.find(
+            (manager: Manager) => manager.id == this.employee?.manager?.id,
+          );
+        }
+        this.resetForm();
+      });
   }
 
   private loadPossibleProjects(): void {
     this.projectService
       .getProjects()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((projects) => (this.allPossibleProjectsList = projects));
+      .subscribe((projects) => (this.allPossibleProjects = projects));
   }
 
   private loadPossibleSkills(): void {
     this.skillService
       .getSkills()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((skills) => (this.allPossibleSkillsList = skills));
+      .subscribe((skills) => (this.allPossibleSkills = skills));
   }
 
-  private handleFormSubmit(employee: Employee): void {
+  private handleFormSubmit(employee: EmployeeResponse): void {
     this.employee = employee;
 
     this.wasProjectControlRemoved = false;
@@ -263,22 +287,39 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     }
   }
 
-  private createExcludedListWithOtherElem(
-    allPossibleValues: string[],
+  private createExcludedListWithOtherElem<T>(
+    allPossibleValues: T[],
     exclusionList: FormArray,
-    otherElem: string,
+    otherElem: T,
   ) {
     return allPossibleValues.filter(
       (value) => !exclusionList.value.includes(value) || value === otherElem,
     );
   }
 
-  private findMatchingStrings(
-    sourceList: string[],
-    searchString: string,
-  ): string[] {
-    return sourceList.filter((elem) =>
-      elem.toLowerCase().includes(searchString.toLowerCase()),
-    );
+  private mapFormToEmployeeRequest(): EmployeeRequest {
+    const form = this.employeeProfileForm;
+    return {
+      id: this.employee?.id ?? undefined,
+      name: form.get('name')?.value,
+      surname: form.get('surname')?.value,
+      employmentDate: new Date(form.get('employmentDate')?.value),
+      skillIds: (form.get('skills')?.value as Array<string>)
+        .map(
+          (skillName) =>
+            this.allPossibleSkills.find((skill) => skill.name === skillName)
+              ?.id,
+        )
+        .filter((skillName): skillName is string => !!skillName),
+      projectIds: (form.get('projects')?.value as Array<string>)
+        .map(
+          (projectName) =>
+            this.allPossibleProjects.find(
+              (project) => project.name === projectName,
+            )?.id,
+        )
+        .filter((projectName): projectName is string => !!projectName),
+      managerId: (form.get('manager')?.value as Manager)?.id,
+    };
   }
 }
