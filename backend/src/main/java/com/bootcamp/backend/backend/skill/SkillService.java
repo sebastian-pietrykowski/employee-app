@@ -1,6 +1,8 @@
 package com.bootcamp.backend.backend.skill;
 
 import com.bootcamp.backend.backend.mappers.MapStructMapper;
+import com.bootcamp.backend.backend.project.Project;
+import com.bootcamp.backend.backend.project.exception.ProjectNotFoundException;
 import com.bootcamp.backend.backend.skill.exception.DifferentSkillIdInPathAndBodyException;
 import com.bootcamp.backend.backend.skill.exception.SkillAlreadyExistsException;
 import com.bootcamp.backend.backend.skill.exception.SkillNotFoundException;
@@ -8,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,7 +20,7 @@ public class SkillService {
 
     public SkillDto addSkill(SkillDto skillDto) {
         Skill skill = mapStructMapper.skillDtotoSkill(skillDto);
-        checkIfSkillExists(skill);
+        throwExceptionIfSkillAlreadyExists(skill);
         Skill savedSkill = skillRepository.save(skill);
 
         return mapStructMapper.skillToSkillDto(savedSkill);
@@ -52,7 +53,7 @@ public class SkillService {
     public SkillDto updateSkill(UUID idFromPath, SkillDto skillDto) {
         Skill skillWithUpdates = mapStructMapper.skillDtotoSkill(skillDto);
         checkIfIdsFromPathAndBodyMatch(idFromPath, skillWithUpdates.getId());
-        checkIfSkillExists(skillWithUpdates);
+        throwExceptionIfSkillNotFound(skillWithUpdates);
         Skill savedSkill = skillRepository.save(skillWithUpdates);
 
         return mapStructMapper.skillToSkillDto(savedSkill);
@@ -64,9 +65,15 @@ public class SkillService {
         }
     }
 
-    private void checkIfSkillExists(Skill skill) {
+    private void throwExceptionIfSkillAlreadyExists(Skill skill) {
         if (skill.getId() != null && skillRepository.existsById(skill.getId())) {
             throw new SkillAlreadyExistsException(skill.getId());
+        }
+    }
+
+    private void throwExceptionIfSkillNotFound(Skill skill) {
+        if (!skillRepository.existsById(skill.getId())) {
+            throw new SkillNotFoundException(skill.getId());
         }
     }
 }

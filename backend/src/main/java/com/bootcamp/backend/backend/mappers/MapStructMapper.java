@@ -62,8 +62,10 @@ public abstract class MapStructMapper {
         }
     }
 
-    @Mapping(source = "employee.manager", target = "manager", qualifiedByName = "employeeToManagerDto")
+    @Mapping(source = "employee.manager", target = "manager", qualifiedByName = "employeeToManagerDtoOptional")
     public abstract EmployeeResponse employeeToEmployeeResponse(Employee employee);
+
+    public abstract ManagerDto employeeToManagerDto(Employee employee);
 
     public abstract Project projectDtoToProject(ProjectDto projectDto);
 
@@ -73,8 +75,8 @@ public abstract class MapStructMapper {
 
     public abstract SkillDto skillToSkillDto(Skill skill);
 
-    @Named("employeeToManagerDto")
-    protected Optional<ManagerDto> employeeToManagerDto(Employee employee) {
+    @Named("employeeToManagerDtoOptional")
+    protected Optional<ManagerDto> employeeToManagerDtoOptional(Employee employee) {
         return Optional.ofNullable(employee).map(e ->
                 new ManagerDto(e.getId(), e.getName(), e.getSurname())
         );

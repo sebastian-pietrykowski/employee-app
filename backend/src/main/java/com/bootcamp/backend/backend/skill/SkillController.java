@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "skills", consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "skills")
 @CrossOrigin()
 @AllArgsConstructor
 public class SkillController {

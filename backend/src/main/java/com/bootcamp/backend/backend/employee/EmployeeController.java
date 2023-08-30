@@ -2,6 +2,7 @@ package com.bootcamp.backend.backend.employee;
 
 import com.bootcamp.backend.backend.employee.dtos.EmployeeRequest;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeResponse;
+import com.bootcamp.backend.backend.employee.dtos.ManagerDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEmployeeById(
+    public ResponseEntity<Void> deleteEmployeeById(
             @PathVariable("id") UUID id
     ) {
         employeeService.deleteEmployeeById(id);
@@ -54,6 +55,12 @@ public class EmployeeController {
             employees = employeeService.getEmployeesByNameOrSurnameContaining(term);
         }
         return ResponseEntity.status(HttpStatus.OK).body(employees);
+    }
+
+    @GetMapping("/managers")
+    public ResponseEntity<List<ManagerDto>> getManagers() {
+        List<ManagerDto> managers = employeeService.getManagers();
+        return ResponseEntity.status(HttpStatus.OK).body(managers);
     }
 
     @PutMapping("/{id}")

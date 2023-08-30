@@ -25,7 +25,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Employee'
+              $ref: '#/components/schemas/EmployeeRequest'
         required: true
       responses:
         '201':
@@ -33,7 +33,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Employee'
+                $ref: '#/components/schemas/EmployeeResponse'
         '400':
           description: Invalid input
         '409':
@@ -59,7 +59,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Employee'
+                  $ref: '#/components/schemas/EmployeeResponse'
         '400':
           description: Invalid status value
         '404':
@@ -84,7 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Employee'
+                $ref: '#/components/schemas/EmployeeResponse'
         '400':
           description: Invalid ID supplied
         '404':
@@ -107,11 +107,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Employee'
+              $ref: '#/components/schemas/EmployeeRequest'
         required: true
       responses:
         '200':
           description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
         '400':
           description: Invalid input
         '404':
@@ -136,6 +140,24 @@ paths:
           description: Successfully deleted
         '404':
           description: Employee not found
+  /employees/managers:
+    get:
+      tags:
+        - employees
+      summary: Get all managers
+      description: Get all managers
+      operationId: getManagers
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid status value
   /projects:
     post:
       tags:
@@ -236,18 +258,18 @@ paths:
           description: Skill not found
 components:
   schemas:
-    Employee:
+    EmployeeRequest:
       required:
         - name
         - surname
         - employmentDate
-        - listOfSkills
-        - listOfProjects
+        - skills
+        - projects
       type: object
       properties:
         id:
           type: string
-          example: 1
+          example: 373acd6a-54e1-4291-ba16-6b80320db9c1
         name:
           type: string
           example: Jan
@@ -258,13 +280,68 @@ components:
           type: string
           format: date
           example: 2023-7-17
-        listOfProjects:
-          $ref: '#/components/schemas/Project'
-        listOfSkills:
-          $ref: '#/components/schemas/Skill'
+        projectIds:
+          type: array
+          items:
+            type: string
+          example:
+            - 1aa63fd0-1af1-4b43-8691-6d01fdc5c070
+            - 305bc94e-bfb8-42fa-b5da-5bf63fe6ec66
+        skillIds:
+          type: array
+          items:
+            type: string
+          example:
+            - 1da7bf61-0927-4a80-9048-62c06730a284
+            - 5050d3fe-3654-4d86-ba3a-c109939b4a80
         managerId:
           type: string
-          example: 1
+          example: 9080083d-1619-4fbd-9f65-259c1d204039
+    EmployeeResponse:
+      required:
+        - id
+        - name
+        - surname
+        - employmentDate
+        - skills
+        - projects
+      type: object
+      properties:
+        id:
+          type: string
+          example: 373acd6a-54e1-4291-ba16-6b80320db9c1
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Kowalski
+        employmentDate:
+          type: string
+          format: date
+          example: 2023-7-17
+        projects:
+          $ref: '#/components/schemas/Project'
+        skills:
+          $ref: '#/components/schemas/Skill'
+        manager:
+          $ref: '#/components/schemas/Manager'
+    Manager:
+      required:
+        - id
+        - name
+        - surname
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9080083d-1619-4fbd-9f65-259c1d204039
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Nowak
     Project:
       type: array
       items:
@@ -287,4 +364,4 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Employee'
+            $ref: '#/components/schemas/EmployeeResponse'

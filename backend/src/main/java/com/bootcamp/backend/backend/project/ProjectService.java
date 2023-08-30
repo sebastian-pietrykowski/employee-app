@@ -1,5 +1,7 @@
 package com.bootcamp.backend.backend.project;
 
+import com.bootcamp.backend.backend.employee.Employee;
+import com.bootcamp.backend.backend.employee.exception.EmployeeNotFoundException;
 import com.bootcamp.backend.backend.mappers.MapStructMapper;
 import com.bootcamp.backend.backend.project.exception.DifferentProjectIdInPathAndBodyException;
 import com.bootcamp.backend.backend.project.exception.ProjectAlreadyExistsException;
@@ -8,7 +10,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,7 +20,7 @@ public class ProjectService {
 
     public ProjectDto addProject(ProjectDto projectDto) {
         Project project = mapStructMapper.projectDtoToProject(projectDto);
-        checkIfProjectExists(project);
+        throwExceptionIfProjectAlreadyExists(project);
         Project savedProject = projectRepository.save(project);
 
         return mapStructMapper.projectToProjectDto(savedProject);
@@ -52,7 +53,7 @@ public class ProjectService {
     public ProjectDto updateProject(UUID idFromPath, ProjectDto projectDto) {
         Project projectWithUpdates = mapStructMapper.projectDtoToProject(projectDto);
         checkIfIdsFromPathAndBodyMatch(idFromPath, projectWithUpdates.getId());
-        checkIfProjectExists(projectWithUpdates);
+        throwExceptionIfProjectNotFound(projectWithUpdates);
         Project savedProject = projectRepository.save(projectWithUpdates);
 
         return mapStructMapper.projectToProjectDto(savedProject);
@@ -64,9 +65,15 @@ public class ProjectService {
         }
     }
 
-    private void checkIfProjectExists(Project project) {
+    private void throwExceptionIfProjectAlreadyExists(Project project) {
         if (project.getId() != null && projectRepository.existsById(project.getId())) {
             throw new ProjectAlreadyExistsException(project.getId());
+        }
+    }
+
+    private void throwExceptionIfProjectNotFound(Project project) {
+        if (!projectRepository.existsById(project.getId())) {
+            throw new ProjectNotFoundException(project.getId());
         }
     }
 }
