@@ -1,36 +1,45 @@
 <mat-spinner *ngIf="isLoading; else employeeDetailContent" class="spinner">
 </mat-spinner>
 <ng-template #employeeDetailContent>
-  <article class="employee">
-    <header class="employee__header">
-      <h1>{{ "employee.header" | translate }}</h1>
-    </header>
-    <app-employee-search class="employee__search-bar"></app-employee-search>
-    <ul class="employee__list">
-      <li class="employee__list-element" *ngFor="let employee of employeeList">
-        <a
-          mat-raised-button
-          color="primary"
-          class="employee__list-button"
-          type="button"
-          routerLink="/employee/show/{{ employee.id }}"
+  <mat-card class="employee">
+    <mat-card-header>
+      <mat-card-title>
+        <header class="employee__header">
+          <h1>{{ "employee.header" | translate }}</h1>
+        </header>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <app-employee-search class="employee__search-bar"></app-employee-search>
+      <ul class="employee__list">
+        <li
+          class="employee__list-element"
+          *ngFor="let employee of employeeList"
         >
-          <span class="employee__full-name-select"
-            >{{ employee.name }} {{ employee.surname }}</span
+          <a
+            mat-raised-button
+            color="accent"
+            class="employee__list-button"
+            type="button"
+            routerLink="/employee/show/{{ employee.id }}"
           >
-        </a>
-      </li>
-      <li class="employee__list-element">
-        <a
-          mat-raised-button
-          color="primary"
-          class="employee__list-button employee__list-add-button"
-          type="button"
-          routerLink="/employee/add"
-        >
-          <span class="employee__full-name-select">+</span>
-        </a>
-      </li>
-    </ul>
-  </article>
+            <span class="employee__full-name-select"
+              >{{ employee.name }} {{ employee.surname }}</span
+            >
+          </a>
+        </li>
+        <li class="employee__list-element">
+          <a
+            mat-raised-button
+            color="accent"
+            class="employee__list-button employee__list-add-button"
+            type="button"
+            routerLink="/employee/add"
+          >
+            <span class="employee__full-name-select">+</span>
+          </a>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
 </ng-template>
