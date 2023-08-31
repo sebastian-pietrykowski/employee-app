@@ -1,10 +1,12 @@
 package com.bootcamp.backend.backend.skill;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.UUID;
 
 @Entity(name = "skill")
 @Table(name = "skill")
@@ -13,12 +15,12 @@ import lombok.Setter;
 @Setter
 public class Skill implements Comparable<Skill> {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Long id;
+    private UUID id;
 
     @Column(name = "name")
-    @NotEmpty
+    @NotBlank(message = "Property 'name' is not defined")
     private String name;
 
     @Override

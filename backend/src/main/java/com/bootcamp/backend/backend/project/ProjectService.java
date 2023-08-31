@@ -1,64 +1,79 @@
 package com.bootcamp.backend.backend.project;
 
-import com.bootcamp.backend.backend.employee.EmployeeAlreadyExistsException;
+import com.bootcamp.backend.backend.employee.Employee;
+import com.bootcamp.backend.backend.employee.exception.EmployeeNotFoundException;
+import com.bootcamp.backend.backend.mappers.MapStructMapper;
+import com.bootcamp.backend.backend.project.exception.DifferentProjectIdInPathAndBodyException;
+import com.bootcamp.backend.backend.project.exception.ProjectAlreadyExistsException;
+import com.bootcamp.backend.backend.project.exception.ProjectNotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class ProjectService {
+    private final MapStructMapper mapStructMapper;
     private final ProjectRepository projectRepository;
 
-    public ProjectService(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectDto addProject(ProjectDto projectDto) {
+        Project project = mapStructMapper.projectDtoToProject(projectDto);
+        throwExceptionIfProjectAlreadyExists(project);
+        Project savedProject = projectRepository.save(project);
+
+        return mapStructMapper.projectToProjectDto(savedProject);
     }
 
-    public Project addProject(Project project) {
-        if (project.getId() != null && projectRepository.existsById(project.getId())) {
-            throw new EmployeeAlreadyExistsException();
-        }
-
-        return projectRepository.save(project);
-    }
-
-    public void deleteProjectById(Long id) {
-        Optional<Project> foundProject = projectRepository.findById(id);
-        if (foundProject.isEmpty()) {
-            throw new ProjectNotFoundException();
-        }
+    public void deleteProjectById(UUID id) {
+        projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
         projectRepository.deleteById(id);
     }
 
-    public Optional<Project> getProjectById(Long id) {
-        Optional<Project> foundProject = projectRepository.findById(id);
-        if (foundProject.isEmpty()) {
-            throw new ProjectNotFoundException();
+    public ProjectDto getProjectById(UUID id) {
+        Project foundProject = getProjectModelById(id);
+        return mapStructMapper.projectToProjectDto(foundProject);
+    }
+
+    public Project getProjectModelById(UUID id) {
+        return projectRepository.findById(id).orElseThrow(() -> new ProjectNotFoundException(id));
+    }
+
+    public List<ProjectDto> getProjects() {
+        List<Project> foundProjects = projectRepository.findAll();
+        return foundProjects.stream().map(mapStructMapper::projectToProjectDto).toList();
+    }
+
+    public List<ProjectDto> getProjectsByNameContaining(String term) {
+        List<Project> foundProjects = projectRepository.findByNameContainingIgnoreCase(term);
+        return foundProjects.stream().map(mapStructMapper::projectToProjectDto).toList();
+    }
+
+    public ProjectDto updateProject(UUID idFromPath, ProjectDto projectDto) {
+        Project projectWithUpdates = mapStructMapper.projectDtoToProject(projectDto);
+        checkIfIdsFromPathAndBodyMatch(idFromPath, projectWithUpdates.getId());
+        throwExceptionIfProjectNotFound(projectWithUpdates);
+        Project savedProject = projectRepository.save(projectWithUpdates);
+
+        return mapStructMapper.projectToProjectDto(savedProject);
+    }
+
+    private void checkIfIdsFromPathAndBodyMatch(UUID idFromPath, UUID idFromBody) {
+        if (!idFromBody.equals(idFromPath)) {
+            throw new DifferentProjectIdInPathAndBodyException(idFromPath, idFromBody);
         }
-
-        return projectRepository.findById(id);
     }
 
-    public List<Project> getProjects() {
-        return projectRepository.findAll();
-    }
-
-    public List<Project> getProjectsByNameContaining(String term) {
-        return projectRepository.findByNameContainingIgnoreCase(term);
-    }
-
-    public Project updateProject(Long idFromPath, Project project) {
-        if (areIdsNotEqual(idFromPath, project.getId())) {
-            throw new DifferentProjectIdInDatabaseException();
+    private void throwExceptionIfProjectAlreadyExists(Project project) {
+        if (project.getId() != null && projectRepository.existsById(project.getId())) {
+            throw new ProjectAlreadyExistsException(project.getId());
         }
+    }
+
+    private void throwExceptionIfProjectNotFound(Project project) {
         if (!projectRepository.existsById(project.getId())) {
-            throw new ProjectNotFoundException();
+            throw new ProjectNotFoundException(project.getId());
         }
-
-        return projectRepository.save(project);
-    }
-
-    private boolean areIdsNotEqual(Long idFromPath, Long idFromBody) {
-        return !idFromBody.equals(idFromPath);
     }
 }
