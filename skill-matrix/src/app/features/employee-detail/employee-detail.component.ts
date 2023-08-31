@@ -18,12 +18,10 @@ import { Subject, map, takeUntil } from 'rxjs';
 import { EmployeeRequest } from '../../core/models/employeeRequest';
 import { EmployeeResponse } from '../../core/models/employeeResponse';
 import { EmployeeService } from '../../core/services/employee.service';
-import { Location } from '@angular/common';
 import { Manager } from '../../core/models/manager';
 import { MessageService } from '../../core/services/message.service';
 import { Project } from '../../core/models/project';
 import { ProjectService } from '../../core/services/project.service';
-import { ROUTE_PATHS } from '../../config/route-paths';
 import { Skill } from '../../core/models/skill';
 import { SkillService } from '../../core/services/skill.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -53,7 +51,6 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     private readonly translationService: TranslateService,
     private readonly activatedRoute: ActivatedRoute,
     private formBuilder: NonNullableFormBuilder,
-    private readonly location: Location,
     private readonly router: Router,
   ) {
     this.employeeProfileForm = new FormGroup({});
@@ -120,12 +117,11 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     this.employeeService
       .deleteEmployee(id)
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+      .subscribe(() => this.exitPage());
   }
 
   submitForm(): void {
     const employeeRequest: EmployeeRequest = this.mapFormToEmployeeRequest();
-    console.log(JSON.stringify(employeeRequest));
 
     const isEmployeeNewlyCreated = this.isEmployeeNewlyCreated();
     if (isEmployeeNewlyCreated) {
@@ -202,16 +198,11 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
   }
 
   isEmployeeNewlyCreated(): boolean {
-    console.log(this.employee?.id === undefined);
     return this.employee?.id === undefined;
   }
 
   exitPage(): void {
-    this.router
-      .navigate(['/' + ROUTE_PATHS.EMPLOYEES], {
-        relativeTo: this.activatedRoute,
-      })
-      .then(() => window.location.reload());
+    this.router.navigate(['/employee']).then();
   }
 
   private loadEmployee(): void {
@@ -275,6 +266,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     this.wasSkillControlRemoved = false;
 
     this.resetForm();
+    this.exitPage();
   }
 
   private createArrayFormControlWithValidators(value: string): FormControl {

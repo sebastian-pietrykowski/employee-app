@@ -31,7 +31,7 @@
           <div class="employee-detail__form-fields">
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="name"
+                <mat-label
                   ><span
                     >{{ "employee.detail.name" | translate }}:
                   </span></mat-label
@@ -42,7 +42,7 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="surname"
+                <mat-label
                   >{{ "employee.detail.surname" | translate }}:
                 </mat-label>
                 <input
@@ -56,7 +56,7 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="employmentDatePicker"
+                <mat-label
                   ><span
                     >{{ "employee.detail.employment.date" | translate }}:
                   </span></mat-label
@@ -77,7 +77,7 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="managerSelect">
+                <mat-label>
                   {{ "employee.detail.manager.manager" | translate }}
                 </mat-label>
                 <mat-select formControlName="manager" id="managerSelect">
@@ -184,7 +184,7 @@
                   class="employee-detail__form-field"
                   id="project-{{ index }}"
                 >
-                  <mat-label for="project-index"
+                  <mat-label
                     >{{ "employee.detail.projects.project" | translate }}
                     {{ index + 1 }}</mat-label
                   >
@@ -260,12 +260,12 @@
             !wasSkillControlRemoved &&
             employeeProfileForm.pristine)
         "
-        routerLink=""
-        (click)="submitForm(); this.exitPage()"
+        (click)="submitForm()"
+        [routerLink]="null"
       >
         {{ "employee.detail.submit" | translate }}
       </a>
-      <button
+      <a
         mat-raised-button
         color="accent"
         type="button"
@@ -274,16 +274,18 @@
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
         "
+        [routerLink]="null"
       >
         {{ "employee.detail.undo" | translate }}
-      </button>
+      </a>
       <a
         mat-raised-button
         color="accent"
         type="button"
         routerLink=""
-        (click)="deleteEmployee(); this.exitPage()"
+        (click)="deleteEmployee()"
         [disabled]="isEmployeeNewlyCreated()"
+        [routerLink]="null"
       >
         {{ "employee.detail.delete" | translate }}
       </a>
@@ -291,8 +293,8 @@
         mat-raised-button
         color="accent"
         type="button"
-        routerLink=""
         (click)="this.exitPage()"
+        [routerLink]="null"
       >
         {{ "employee.detail.back" | translate }}
       </a>

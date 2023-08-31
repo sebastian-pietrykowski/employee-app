@@ -100,9 +100,7 @@ export class EmployeeService extends ErrorLoggingService {
   updateEmployee(
     employeeToUpdate: EmployeeRequest,
   ): Observable<EmployeeResponse> {
-    console.log('put');
     const url = this.employeesUrl + '/' + employeeToUpdate.id;
-    console.log(url);
     return this.http
       .put<EmployeeResponse>(url, employeeToUpdate, this.httpOptions)
       .pipe(
