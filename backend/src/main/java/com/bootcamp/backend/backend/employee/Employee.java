@@ -5,10 +5,11 @@ import com.bootcamp.backend.backend.skill.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.*;
@@ -16,9 +17,11 @@ import java.util.*;
 @Entity(name = "employee")
 @Table(name = "employee")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class Employee implements Comparable<Employee> {
+@Builder
+public class Employee implements Comparable<Employee>, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
@@ -47,6 +50,11 @@ public class Employee implements Comparable<Employee> {
     @JoinColumn(name = "manager_id")
     private Employee manager;
 
+    private String username;
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @Override
     public int compareTo(Employee otherEmployee) {
         return Comparator
@@ -54,5 +62,43 @@ public class Employee implements Comparable<Employee> {
                 .thenComparing(Employee::getName)
                 .thenComparing(Employee::getId)
                 .compare(this, otherEmployee);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
