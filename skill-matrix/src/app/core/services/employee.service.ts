@@ -43,15 +43,15 @@ export class EmployeeService extends ErrorLoggingService {
       );
   }
 
-  deleteEmployee(id: string): Observable<EmployeeResponse> {
+  deleteEmployee(id: string): Observable<never> {
     const url = `${this.employeesUrl}/${id}`;
-    return this.http.delete<EmployeeResponse>(url).pipe(
+    return this.http.delete<never>(url).pipe(
       tap(() =>
         super.log('messages.employee.service.deleted', {
           id: id,
         }),
       ),
-      catchError(super.handleError<EmployeeResponse>('deleteEmployee')),
+      catchError(super.handleError<never>('deleteEmployee')),
     );
   }
 

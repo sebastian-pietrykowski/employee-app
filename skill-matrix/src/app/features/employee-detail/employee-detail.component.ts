@@ -14,7 +14,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { Subject, map, takeUntil } from 'rxjs';
+import { Subject, forkJoin, takeUntil } from 'rxjs';
 import { EmployeeRequest } from '../../core/models/employeeRequest';
 import { EmployeeResponse } from '../../core/models/employeeResponse';
 import { EmployeeService } from '../../core/services/employee.service';
@@ -58,9 +58,7 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.resetForm();
-    this.loadEmployee();
-    this.loadPossibleManagers();
-
+    this.loadEmployeeAndPossibleManagers();
     this.loadPossibleProjects();
     this.loadPossibleSkills();
   }
@@ -205,44 +203,50 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     this.router.navigate(['/employee']).then();
   }
 
-  private loadEmployee(): void {
+  private loadEmployeeAndPossibleManagers(): void {
     const employeeId = this.activatedRoute.snapshot.paramMap.get('id');
     const doEmployeeExist = employeeId !== null;
-    if (doEmployeeExist) {
-      this.employeeService
-        .getEmployee(employeeId)
-        .pipe(takeUntil(this.unsubscribe$))
-        .subscribe((employeeResponse) => {
-          this.employee = employeeResponse;
-          this.isLoading = false;
-          this.resetForm();
-        });
-    } else {
-      this.isLoading = false;
-      this.resetForm();
+    if (!doEmployeeExist) {
+      this.markEndOfLoading();
+      return;
     }
-  }
 
-  private loadPossibleManagers(): void {
-    this.employeeService
-      .getManagers()
-      .pipe(
-        map((managers: Manager[]) =>
-          managers.filter(
-            (manager: Manager) => manager.id !== this.employee?.id,
-          ),
-        ),
-        takeUntil(this.unsubscribe$),
-      )
-      .subscribe((possibleManagers: Manager[]) => {
-        this.possibleManagers = possibleManagers;
-        if (this.employee) {
-          this.employee.manager = possibleManagers.find(
-            (manager: Manager) => manager.id == this.employee?.manager?.id,
+    forkJoin({
+      employee: this.employeeService.getEmployee(employeeId),
+      managers: this.employeeService.getManagers(),
+    })
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((x) => {
+        x.managers = this.excludeEmployeeFromManagers(x.employee, x.managers);
+        this.employee = x.employee;
+        this.possibleManagers = x.managers;
+        if (x.employee.manager) {
+          this.employee.manager = this.findManagerFromList(
+            x.employee.manager.id,
+            x.managers,
           );
         }
-        this.resetForm();
+        this.markEndOfLoading();
       });
+  }
+
+  private markEndOfLoading(): void {
+    this.isLoading = false;
+    this.resetForm();
+  }
+
+  private excludeEmployeeFromManagers(
+    employee: EmployeeResponse,
+    managers: Manager[],
+  ): Manager[] {
+    return managers.filter((manager: Manager) => manager.id !== employee?.id);
+  }
+
+  private findManagerFromList(
+    managerId: string,
+    managers: Manager[],
+  ): Manager | undefined {
+    return managers.find((manager: Manager) => manager.id == managerId);
   }
 
   private loadPossibleProjects(): void {
@@ -296,22 +300,33 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
       name: form.get('name')?.value,
       surname: form.get('surname')?.value,
       employmentDate: new Date(form.get('employmentDate')?.value),
-      skillIds: (form.get('skills')?.value as Array<string>)
-        .map(
-          (skillName) =>
-            this.allPossibleSkills.find((skill) => skill.name === skillName)
-              ?.id,
-        )
-        .filter((skillName): skillName is string => !!skillName),
-      projectIds: (form.get('projects')?.value as Array<string>)
-        .map(
-          (projectName) =>
-            this.allPossibleProjects.find(
-              (project) => project.name === projectName,
-            )?.id,
-        )
-        .filter((projectName): projectName is string => !!projectName),
+      skillIds: this.mapSkillsToSkillIds(),
+      projectIds: this.mapProjectsToProjectIds(),
       managerId: (form.get('manager')?.value as Manager)?.id,
     };
+  }
+
+  private mapSkillsToSkillIds(): string[] {
+    const skills = this.employeeProfileForm.get('skills')
+      ?.value as Array<string>;
+    return skills
+      .map(
+        (skillName) =>
+          this.allPossibleSkills.find((skill) => skill.name === skillName)?.id,
+      )
+      .filter((skillName): skillName is string => !!skillName);
+  }
+
+  private mapProjectsToProjectIds(): string[] {
+    const projects = this.employeeProfileForm.get('projects')
+      ?.value as Array<string>;
+    return projects
+      .map(
+        (projectName) =>
+          this.allPossibleProjects.find(
+            (project) => project.name === projectName,
+          )?.id,
+      )
+      .filter((projectName): projectName is string => !!projectName);
   }
 }
