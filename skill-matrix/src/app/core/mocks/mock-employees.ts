@@ -1,4 +1,4 @@
-import { EmployeeResponse } from '../models/employeeResponse';
+import { EmployeeResponse } from '../models/employee-response';
 
 export const MOCK_EMPLOYEES: EmployeeResponse[] = [
   {

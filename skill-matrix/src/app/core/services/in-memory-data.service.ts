@@ -1,4 +1,4 @@
-import { EmployeeResponse } from '../models/employeeResponse';
+import { EmployeeResponse } from '../models/employee-response';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';

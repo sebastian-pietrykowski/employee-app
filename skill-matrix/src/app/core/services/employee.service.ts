@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, of, tap } from 'rxjs';
-import { EmployeeRequest } from '../models/employeeRequest';
-import { EmployeeResponse } from '../models/employeeResponse';
+import { EmployeeRequest } from '../models/employee-request';
+import { EmployeeResponse } from '../models/employee-response';
 import { ErrorLoggingService } from './error-logging-service';
 import { Injectable } from '@angular/core';
 import { Manager } from '../models/manager';
@@ -43,15 +43,15 @@ export class EmployeeService extends ErrorLoggingService {
       );
   }
 
-  deleteEmployee(id: string): Observable<never> {
+  deleteEmployee(id: string): Observable<void> {
     const url = `${this.employeesUrl}/${id}`;
-    return this.http.delete<never>(url).pipe(
+    return this.http.delete<void>(url).pipe(
       tap(() =>
         super.log('messages.employee.service.deleted', {
           id: id,
         }),
       ),
-      catchError(super.handleError<never>('deleteEmployee')),
+      catchError(super.handleError<void>('deleteEmployee')),
     );
   }
 

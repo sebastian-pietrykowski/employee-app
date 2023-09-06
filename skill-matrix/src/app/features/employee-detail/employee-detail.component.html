@@ -25,7 +25,7 @@
       <form
         class="employee-detail__form"
         [formGroup]="employeeProfileForm"
-        (ngSubmit)="submitForm()"
+        (ngSubmit)="submitFormAndExitPage()"
       >
         <div class="employee-detail__inner-form">
           <div class="employee-detail__form-fields">
@@ -122,9 +122,9 @@
                   <mat-autocomplete #skillAuto="matAutocomplete">
                     <mat-option
                       *ngFor="
-                        let possibleSkill of findSkillsForAutocomplete(
-                          employee?.skills?.at(index)!,
-                          skillControl
+                        let possibleSkill of this.findSkillsForAutocomplete(
+                          skillControl.value,
+                          employee?.skills?.at(index)
                         )
                       "
                       [value]="possibleSkill.name"
@@ -203,8 +203,8 @@
                     <mat-option
                       *ngFor="
                         let possibleProject of findProjectsForAutocomplete(
-                          employee?.projects?.at(index)!,
-                          projectControl
+                          projectControl.value,
+                          employee?.projects?.at(index)
                         )
                       "
                       [value]="possibleProject.name"
@@ -250,7 +250,7 @@
       </form>
     </mat-card-content>
     <mat-card-actions class="employee-detail__action-buttons">
-      <a
+      <button
         mat-raised-button
         color="primary"
         type="submit"
@@ -260,44 +260,39 @@
             !wasSkillControlRemoved &&
             employeeProfileForm.pristine)
         "
-        (click)="submitForm()"
-        [routerLink]="null"
+        (click)="submitFormAndExitPage()"
       >
         {{ "employee.detail.submit" | translate }}
-      </a>
-      <a
+      </button>
+      <button
         mat-raised-button
         color="accent"
         type="button"
-        (click)="resetForm()"
+        (click)="fillFormWithEmployee()"
         [disabled]="
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
         "
-        [routerLink]="null"
       >
         {{ "employee.detail.undo" | translate }}
-      </a>
-      <a
+      </button>
+      <button
         mat-raised-button
         color="accent"
         type="button"
-        routerLink=""
-        (click)="deleteEmployee()"
+        (click)="deleteEmployeeAndExitPage()"
         [disabled]="isEmployeeNewlyCreated()"
-        [routerLink]="null"
       >
         {{ "employee.detail.delete" | translate }}
-      </a>
-      <a
+      </button>
+      <button
         mat-raised-button
         color="accent"
         type="button"
         (click)="this.exitPage()"
-        [routerLink]="null"
       >
         {{ "employee.detail.back" | translate }}
-      </a>
+      </button>
     </mat-card-actions>
   </mat-card>
 </ng-template>

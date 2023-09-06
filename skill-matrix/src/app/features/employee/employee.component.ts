@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { EmployeeResponse } from '../../core/models/employeeResponse';
+import { EmployeeResponse } from '../../core/models/employee-response';
 import { EmployeeService } from '../../core/services/employee.service';
 
 @Component({

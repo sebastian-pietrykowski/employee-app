@@ -7,7 +7,7 @@ import {
   distinctUntilChanged,
   switchMap,
 } from 'rxjs';
-import { EmployeeResponse } from '../../../../core/models/employeeResponse';
+import { EmployeeResponse } from '../../../../core/models/employee-response';
 import { EmployeeService } from '../../../../core/services/employee.service';
 import { ROUTE_PATHS } from '../../../../config/route-paths';
 
