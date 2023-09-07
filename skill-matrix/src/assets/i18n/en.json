@@ -3,6 +3,17 @@
     "dashboard": "Dashboard",
     "employee": "Employees"
   },
+  "form": {
+    "submit": "Submit",
+    "undo": "Undo changes",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "login": {
+    "header": "Log in",
+    "username": "Username",
+    "password": "Password"
+  },
   "employee": {
     "header": "Employee info",
     "top": "Top employees",
@@ -30,11 +41,7 @@
         "project": "Project",
         "remove": "Remove project",
         "add": "Add another project"
-      },
-      "submit": "Submit",
-      "undo": "Undo changes",
-      "delete": "Delete",
-      "back": "Back"
+      }
     }
   },
   "messages": {

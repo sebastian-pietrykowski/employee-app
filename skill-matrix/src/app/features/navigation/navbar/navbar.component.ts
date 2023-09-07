@@ -1,4 +1,5 @@
 import { enUS, pl } from 'date-fns/locale';
+import { AuthenticationService } from '../../../core/services/authentication.service';
 import { Component } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { MessageService } from '../../../core/services/message.service';
@@ -16,6 +17,7 @@ export class NavbarComponent {
     ['pl', pl],
   ]);
   constructor(
+    private readonly authenticationService: AuthenticationService,
     readonly messageService: MessageService,
     readonly translateService: TranslateService,
     private readonly dateAdapter: DateAdapter<Date>,
@@ -27,5 +29,9 @@ export class NavbarComponent {
       const dateAdapterLocal = this.localsForLanguages.get(language);
       this.dateAdapter.setLocale(dateAdapterLocal);
     }
+  }
+
+  logout() {
+    this.authenticationService.logout();
   }
 }

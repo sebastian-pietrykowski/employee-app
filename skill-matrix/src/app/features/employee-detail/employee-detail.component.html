@@ -260,9 +260,8 @@
             !wasSkillControlRemoved &&
             employeeProfileForm.pristine)
         "
-        (click)="submitFormAndExitPage()"
       >
-        {{ "employee.detail.submit" | translate }}
+        {{ "form.submit" | translate }}
       </button>
       <button
         mat-raised-button
@@ -274,7 +273,7 @@
           employeeProfileForm.pristine
         "
       >
-        {{ "employee.detail.undo" | translate }}
+        {{ "form.undo" | translate }}
       </button>
       <button
         mat-raised-button
@@ -283,7 +282,7 @@
         (click)="deleteEmployeeAndExitPage()"
         [disabled]="isEmployeeNewlyCreated()"
       >
-        {{ "employee.detail.delete" | translate }}
+        {{ "form.delete" | translate }}
       </button>
       <button
         mat-raised-button
@@ -291,7 +290,7 @@
         type="button"
         (click)="this.exitPage()"
       >
-        {{ "employee.detail.back" | translate }}
+        {{ "form.back" | translate }}
       </button>
     </mat-card-actions>
   </mat-card>

@@ -10,6 +10,12 @@ html {
   font-size: $font-size;
   margin: $body-margin;
   color: $app-white;
+
+  input[type=password]::-ms-reveal,
+  input[type=password]::-ms-clear
+  {
+    display: none;
+  }
 }
 
 .material-symbols-outlined {

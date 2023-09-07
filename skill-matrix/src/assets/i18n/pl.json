@@ -3,6 +3,17 @@
     "dashboard": "Panel",
     "employee": "Pracownicy"
   },
+  "form": {
+    "submit": "Zatwierdź",
+    "undo": "Cofnij zmiany",
+    "delete": "Usuń",
+    "back": "Wróć"
+  },
+  "loging": {
+    "header": "Zaloguj się",
+    "username": "Nazwa użytkownika",
+    "password": "Hasło"
+  },
   "employee": {
     "header": "Informacje o pracownikach",
     "top": "Najlepsi pracownicy",
@@ -30,11 +41,7 @@
         "project": "Projekt",
         "remove": "Usuń projekt",
         "add": "Dodaj kolejny projekt"
-      },
-      "submit": "Zatwierdź",
-      "undo": "Cofnij zmiany",
-      "delete": "Usuń",
-      "back": "Wróć"
+      }
     }
   },
   "messages": {
