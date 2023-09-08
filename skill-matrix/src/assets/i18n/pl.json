@@ -1,7 +1,11 @@
 {
-  "nav": {
+  "navigation": {
     "dashboard": "Panel",
-    "employee": "Pracownicy"
+    "employee": "Pracownicy",
+    "language": "Zmień język",
+    "messages": "Pokaż wiadomości",
+    "log.in": "Zaloguj sie",
+    "log.out": "Wyloguj się"
   },
   "form": {
     "submit": "Zatwierdź",
@@ -9,10 +13,11 @@
     "delete": "Usuń",
     "back": "Wróć"
   },
-  "loging": {
-    "header": "Zaloguj się",
+  "log.in": {
+    "header": "Zaloguj się do swojego konta",
     "username": "Nazwa użytkownika",
-    "password": "Hasło"
+    "password": "Hasło",
+    "log.in": "Zaloguj się"
   },
   "employee": {
     "header": "Informacje o pracownikach",

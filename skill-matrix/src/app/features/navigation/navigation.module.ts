@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgModule } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import {MatTooltipModule} from "@angular/material/tooltip";
 
 @NgModule({
   declarations: [NavbarComponent, MessagesComponent],
@@ -23,6 +24,7 @@ import { TranslateModule } from '@ngx-translate/core';
     MatCardModule,
     MatMenuModule,
     RouterLink,
+    MatTooltipModule,
   ],
   exports: [NavbarComponent],
 })

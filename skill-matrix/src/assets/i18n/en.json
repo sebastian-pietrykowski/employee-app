@@ -1,7 +1,11 @@
 {
-  "nav": {
+  "navigation": {
     "dashboard": "Dashboard",
-    "employee": "Employees"
+    "employee": "Employees",
+    "language": "Change language",
+    "messages": "Show messages",
+    "log.in": "Log in",
+    "log.out": "Log out"
   },
   "form": {
     "submit": "Submit",
@@ -9,10 +13,11 @@
     "delete": "Delete",
     "back": "Back"
   },
-  "login": {
-    "header": "Log in",
+  "log.in": {
+    "header": "Log into your account",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "log.in": "Log in"
   },
   "employee": {
     "header": "Employee info",

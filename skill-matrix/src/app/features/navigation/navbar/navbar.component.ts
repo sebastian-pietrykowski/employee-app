@@ -4,6 +4,7 @@ import { Component } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { MessageService } from '../../../core/services/message.service';
 import { TranslateService } from '@ngx-translate/core';
+import {ROUTE_PATHS} from "../../../config/route-paths";
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +18,7 @@ export class NavbarComponent {
     ['pl', pl],
   ]);
   constructor(
-    private readonly authenticationService: AuthenticationService,
+    readonly authenticationService: AuthenticationService,
     readonly messageService: MessageService,
     readonly translateService: TranslateService,
     private readonly dateAdapter: DateAdapter<Date>,
@@ -31,7 +32,9 @@ export class NavbarComponent {
     }
   }
 
-  logout() {
+  logOut() {
     this.authenticationService.logout();
   }
+
+  protected readonly ROUTE_PATHS = ROUTE_PATHS;
 }

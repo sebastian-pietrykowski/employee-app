@@ -205,7 +205,13 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     const employeeId = this.activatedRoute.snapshot.paramMap.get('id');
     const doEmployeeExist = employeeId !== null;
     if (!doEmployeeExist) {
-      this.markEndOfLoading();
+      this.employeeService
+        .getManagers()
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe((managers: Manager[]) => {
+          this.saveLoadedManagers(managers);
+          this.markEndOfLoading();
+        });
       return;
     }
 
@@ -215,21 +221,27 @@ export class EmployeeDetailComponent implements OnChanges, OnInit, OnDestroy {
     })
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((employeeAndManagersResponse) => {
-        employeeAndManagersResponse.managers =
-          EmployeeDetailHelper.excludeEmployeeFromManagers(
-            employeeAndManagersResponse.employee,
-            employeeAndManagersResponse.managers,
-          );
-        this.employee = employeeAndManagersResponse.employee;
-        this.possibleManagers = employeeAndManagersResponse.managers;
-        if (employeeAndManagersResponse.employee.manager) {
-          this.employee.manager = EmployeeDetailHelper.findManagerFromList(
-            employeeAndManagersResponse.employee.manager.id,
-            employeeAndManagersResponse.managers,
-          );
-        }
+        this.saveLoadedEmployee(employeeAndManagersResponse.employee);
+        this.saveLoadedManagers(employeeAndManagersResponse.managers);
         this.markEndOfLoading();
       });
+  }
+
+  private saveLoadedEmployee(loadedEmployee: EmployeeResponse): void {
+    this.employee = loadedEmployee;
+  }
+
+  private saveLoadedManagers(loadedManagers: Manager[]) {
+    this.possibleManagers = EmployeeDetailHelper.excludeEmployeeFromManagers(
+      this.employee,
+      loadedManagers,
+    );
+    if (this.employee && this.employee.manager) {
+      this.employee.manager = EmployeeDetailHelper.findManagerFromList(
+        this.employee.manager.id,
+        this.possibleManagers,
+      );
+    }
   }
 
   private markEndOfLoading(): void {

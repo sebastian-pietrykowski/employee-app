@@ -1,12 +1,26 @@
-$navbar-height: 6rem;
-$container-padding: 10px;
-$container-width: 90%;
+@import "./styles/screen-sizes";
+
+$normal-screen-container-width: 85%;
+$large-screen-container-width: 60%;
+$extra-large-screen-container-width: 50%;
+
+$card-content-width: 80%;
+$top-margin: 4%;
 $flex-gap: 5rem;
 
+@media screen and (min-width: $large-screen-min-width){
+  $container-width: 50%;
+}
+
 .app-container__content {
-  width: $container-width;
-  margin: $navbar-height auto 0 auto;
-  padding: $container-padding;
+  width: $normal-screen-container-width;
+  @media screen and (min-width: $large-screen-min-width){
+    width: $large-screen-container-width;
+  }
+  @media screen and (min-width: $extra-large-screen-min-width){
+    width: $extra-large-screen-container-width;
+  }
+  margin: $top-margin auto;
   display: flex;
   flex-direction: column;
   justify-items: center;

@@ -48,6 +48,10 @@ export class AuthenticationService {
     this.exitPage();
   }
 
+  isUserLoggedIn(): boolean {
+    return this.userValue !== null && this.userValue !== undefined;
+  }
+
   private exitPage(): void {
     this.router.navigate(['/' + ROUTE_PATHS.LOGIN]).then();
   }

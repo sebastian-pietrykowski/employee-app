@@ -1,6 +1,7 @@
 @import "../../../styles/colors";
-@import "../../../app.component";
+@import "../../../styles/screen-sizes";
 
+$navbar-height: 6rem;
 $navbar-padding: 3px;
 $navbar-border-bottom: 1px;
 $element-margin: 3px;
@@ -17,20 +18,20 @@ $button-width: 3.5rem;
   background-color: $app-dim-gray;
   border-bottom: $navbar-border-bottom solid $app-medium-gray;
 
-  &__nav {
-    height: 100%;
+  &__link-menu {
+    @media screen and (min-width: $small-screen-min-width) {
+      display: none;
+    }
+  }
+
+  &__link {
+    @media screen and (max-width: $extra-small-screen-max-width) {
+      display: none;
+    }
   }
 
   &__spacer {
     flex: 1 1 auto;
     text-align: center;
-  }
-  &__element {
-    margin: $element-margin;
-  }
-
-  &__button {
-    margin: 0;
-    width: $button-width;
   }
 }

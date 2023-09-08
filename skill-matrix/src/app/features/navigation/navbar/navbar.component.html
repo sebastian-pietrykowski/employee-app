@@ -1,20 +1,33 @@
 <mat-toolbar class="navbar">
-  <button mat-icon-button aria-label="Example icon-button with menu icon">
+  <button class="navbar__link-menu"
+    mat-icon-button
+    aria-label="Example icon-button with menu icon"
+    attr.aria-label="{{ 'navigation.language' | translate }}"
+    [matMenuTriggerFor]="linkMenu"
+  >
     <mat-icon class="material-symbols-outlined"> menu </mat-icon>
   </button>
-  <a mat-button routerLink="/dashboard"
-    ><span>{{ "nav.dashboard" | translate }}</span></a
+  <mat-menu #linkMenu="matMenu">
+    <a mat-menu-item routerLink="/{{ ROUTE_PATHS.DASHBOARD }}"
+    ><span>{{ "navigation.dashboard" | translate }}</span></a
+    >
+    <a mat-menu-item routerLink="/{{ ROUTE_PATHS.EMPLOYEES }}"
+    ><span>{{ "navigation.employee" | translate }}</span></a
+    >
+  </mat-menu>
+  <a mat-button class="navbar__link" routerLink="/{{ ROUTE_PATHS.DASHBOARD }}"
+    ><span>{{ "navigation.dashboard" | translate }}</span></a
   >
-  <a mat-button routerLink="/employee"
-    ><span>{{ "nav.employee" | translate }}</span></a
+  <a mat-button class="navbar__link" routerLink="/{{ ROUTE_PATHS.EMPLOYEES }}"
+    ><span>{{ "navigation.employee" | translate }}</span></a
   >
   <span class="navbar__spacer"></span>
-  <button mat-icon-button (click)="logout()">
-    <mat-icon class="material-symbols-outlined" aria-hidden="false">
-      logout
-    </mat-icon>
-  </button>
-  <button mat-icon-button [matMenuTriggerFor]="languageMenu">
+  <button
+    mat-icon-button
+    matTooltip="{{ 'navigation.language' | translate }}"
+    attr.aria-label="{{ 'navigation.language' | translate }}"
+    [matMenuTriggerFor]="languageMenu"
+  >
     <mat-icon class="material-symbols-outlined"> language </mat-icon>
   </button>
   <mat-menu #languageMenu="matMenu">
@@ -27,7 +40,12 @@
       {{ language }}
     </button>
   </mat-menu>
-  <button mat-icon-button [matMenuTriggerFor]="messagesMenu">
+  <button
+    mat-icon-button
+    matTooltip="{{ 'navigation.messages' | translate }}"
+    attr.aria-label="{{ 'navigation.messages' | translate }}"
+    [matMenuTriggerFor]="messageMenu"
+  >
     <mat-icon
       class="material-symbols-outlined"
       matBadge="{{ (messageService.count | async) ?? '' }}"
@@ -36,9 +54,31 @@
       notifications
     </mat-icon>
   </button>
-  <mat-menu #messagesMenu="matMenu">
+  <mat-menu #messageMenu="matMenu">
     <ng-template matMenuContent>
       <app-messages></app-messages>
     </ng-template>
   </mat-menu>
+  <a
+    mat-icon-button
+    matTooltip="{{ 'navigation.log.in' | translate }}"
+    attr.aria-label="{{ 'navigation.log.in' | translate }}"
+    routerLink="/{{ ROUTE_PATHS.LOGIN }}"
+    *ngIf="!authenticationService.isUserLoggedIn()"
+  >
+    <mat-icon class="material-symbols-outlined" aria-hidden="false">
+      login
+    </mat-icon>
+  </a>
+  <button
+    mat-icon-button
+    matTooltip="{{ 'navigation.log.out' | translate }}"
+    attr.aria-label="{{ 'navigation.log.out' | translate }}"
+    (click)="logOut()"
+    *ngIf="authenticationService.isUserLoggedIn()"
+  >
+    <mat-icon class="material-symbols-outlined" aria-hidden="false">
+      logout
+    </mat-icon>
+  </button>
 </mat-toolbar>

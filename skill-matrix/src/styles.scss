@@ -4,16 +4,22 @@
 @import "app/styles/headers";
 
 $font-size: 10px;
-$body-margin: 8px;
+$html-margin: 8px;
+
+body {
+  margin: 0;
+}
 
 html {
   font-size: $font-size;
-  margin: $body-margin;
+  margin: $html-margin;
   color: $app-white;
+}
 
-  input[type=password]::-ms-reveal,
-  input[type=password]::-ms-clear
-  {
+* {
+  // clear default password input settings to enable using Angular Material one
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
     display: none;
   }
 }

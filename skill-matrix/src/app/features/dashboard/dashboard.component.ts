@@ -10,6 +10,7 @@ import { EmployeeService } from '../../core/services/employee.service';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   employees: EmployeeResponse[] = [];
+  isLoading = true;
   private unsubscribe$ = new Subject();
 
   constructor(private readonly employeeService: EmployeeService) {}
@@ -27,6 +28,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.employeeService
       .getEmployees()
       .pipe(takeUntil(this.unsubscribe$))
-      .subscribe((employees) => (this.employees = employees));
+      .subscribe((employees) => {
+        this.employees = employees;
+        this.isLoading = false;
+      });
   }
 }

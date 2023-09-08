@@ -54,7 +54,7 @@ export class EmployeeDetailHelper {
   }
 
   public static excludeEmployeeFromManagers(
-    employee: EmployeeResponse,
+    employee: EmployeeResponse | undefined,
     managers: Manager[],
   ): Manager[] {
     return managers.filter((manager: Manager) => manager.id !== employee?.id);

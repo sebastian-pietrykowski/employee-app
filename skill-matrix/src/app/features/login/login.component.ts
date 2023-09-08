@@ -23,7 +23,9 @@ export class LoginComponent {
     private route: ActivatedRoute,
   ) {
     this.loginForm = this.createLoginForm();
-    this.checkIfUserIsAlreadyLoggedIn();
+    if (this.authService.isUserLoggedIn()) {
+      this.exitPage();
+    }
   }
 
   onSubmit(): void {
@@ -35,13 +37,11 @@ export class LoginComponent {
       .pipe(first())
       .subscribe({
         next: () => {
-          console.log(this.authService.userValue);
           this.exitPage();
         },
         error: (err) => {
           this.error = err;
           this.isLoading = false;
-          console.log(this.error);
         },
       });
   }
@@ -51,13 +51,6 @@ export class LoginComponent {
       username: '',
       password: '',
     });
-  }
-
-  private checkIfUserIsAlreadyLoggedIn(): void {
-    const isUserAlreadyLoggedIn = this.authService.userValue !== null;
-    if (isUserAlreadyLoggedIn) {
-      this.exitPage();
-    }
   }
 
   private exitPage(): void {
