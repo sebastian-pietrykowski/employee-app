@@ -21,6 +21,7 @@ import java.util.*;
 @Getter
 @Setter
 @Builder
+@ToString
 public class Employee implements Comparable<Employee>, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -49,6 +50,9 @@ public class Employee implements Comparable<Employee>, UserDetails {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "manager_id")
     private Employee manager;
+
+    @OneToMany(mappedBy = "manager")
+    private Set<Employee> subordinates = new TreeSet<>();
 
     private String username;
     private String password;

@@ -4,6 +4,7 @@ import com.bootcamp.backend.backend.employee.Employee;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeRequest;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeResponse;
 import com.bootcamp.backend.backend.employee.dtos.ManagerDto;
+import com.bootcamp.backend.backend.employee.exception.EmployeeNotFoundException;
 import com.bootcamp.backend.backend.project.Project;
 import com.bootcamp.backend.backend.project.ProjectDto;
 import com.bootcamp.backend.backend.skill.Skill;
@@ -16,7 +17,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @Mapper(
-        componentModel = "spring"
+        componentModel = "spring",
+        builder = @Builder(disableBuilder = true)
 )
 public abstract class MapStructMapper {
     @Mapping(target = "projects", ignore = true)
@@ -58,7 +60,9 @@ public abstract class MapStructMapper {
         Optional<UUID> managerId = employeeRequest.managerId();
         if (managerId.isPresent()) {
             Optional<Employee> foundManager = managerId.map(mapperEmployeeServiceContext::employeeIdToEmployee);
-            mappedEmployee.setManager(foundManager.orElse(null));
+            mappedEmployee.setManager(foundManager.orElseThrow(
+                    () -> new EmployeeNotFoundException(managerId.get())
+            ));
         }
     }
 

@@ -1,7 +1,5 @@
 package com.bootcamp.backend.backend.employee;
 
-import com.bootcamp.backend.backend.auth.AuthResponse;
-import com.bootcamp.backend.backend.auth.AuthenticationRequest;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeRequest;
 import com.bootcamp.backend.backend.employee.dtos.EmployeeResponse;
 import com.bootcamp.backend.backend.employee.dtos.ManagerDto;
@@ -13,13 +11,9 @@ import com.bootcamp.backend.backend.mappers.MapStructMapper;
 import com.bootcamp.backend.backend.mappers.MapperEmployeeServiceContext;
 import com.bootcamp.backend.backend.project.ProjectService;
 import com.bootcamp.backend.backend.skill.SkillService;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -27,21 +21,18 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final MapStructMapper mapStructMapper;
     private final MapperEmployeeServiceContext mapperEmployeeServiceContext;
-    private final PasswordEncoder passwordEncoder;
 
     public EmployeeService(
             EmployeeRepository employeeRepository,
             MapStructMapper mapStructMapper,
             ProjectService projectService,
-            SkillService skillService,
-            PasswordEncoder passwordEncoder
+            SkillService skillService
     ) {
         this.employeeRepository = employeeRepository;
         this.mapStructMapper = mapStructMapper;
         this.mapperEmployeeServiceContext = new MapperEmployeeServiceContext(
                 this, projectService, skillService
         );
-        this.passwordEncoder = passwordEncoder;
     }
 
     public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
@@ -55,7 +46,7 @@ public class EmployeeService {
 
     public void deleteEmployeeById(UUID id) {
         employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
-        employeeRepository.deleteById(id);
+        employeeRepository.deleteSafelyById(id);
     }
 
     public EmployeeResponse getEmployeeById(UUID id) {
@@ -123,16 +114,5 @@ public class EmployeeService {
         if (!employeeRepository.existsById(employee.getId())) {
             throw new EmployeeNotFoundException(employee.getId());
         }
-    }
-
-    public AuthResponse login(AuthenticationRequest authenticationRequest) {
-        Optional<Employee> response = this.employeeRepository.findUserByUsername(
-                authenticationRequest.username()
-        );
-        if (response.isPresent() && passwordEncoder.matches(authenticationRequest.password(), response.get().getPassword())) {
-            return new AuthResponse(authenticationRequest.username());
-        }
-
-        throw new ResponseStatusException(HttpStatusCode.valueOf(401));
     }
 }

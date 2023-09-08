@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.stream.Collectors;
@@ -105,6 +106,15 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) {
         return handleExceptionHelper(e, request, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResponseStatusException.class)
+    @ResponseBody
+    private ResponseEntity<ApiError> handleResponseStatusException(
+            ResponseStatusException e,
+            HttpServletRequest request
+    ) {
+        return handleExceptionHelper(e, request, HttpStatus.valueOf(e.getStatusCode().value()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

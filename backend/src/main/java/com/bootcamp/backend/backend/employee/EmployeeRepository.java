@@ -15,4 +15,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
     List<Employee> findByNameOrSurnameContainingIgnoreCase(String term);
 
     Optional<Employee> findUserByUsername(String username);
+
+    default void deleteSafelyById(UUID id) {
+        Employee foundEmployee = this.getById(id);
+        foundEmployee.getSubordinates().forEach((Employee subordinate) -> {
+            subordinate.setManager(null);
+        });
+        deleteById(id);
+    }
 }
