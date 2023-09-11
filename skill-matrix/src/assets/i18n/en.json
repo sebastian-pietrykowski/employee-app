@@ -19,10 +19,15 @@
     "password": "Password",
     "log.in": "Log in"
   },
+  "table": {
+    "number": "No."
+  },
   "employee": {
+    "id": "ID",
     "header": "Employee info",
-    "top": "Top employees",
+    "recent.header": "Recently hired employees",
     "search": "Search for employees",
+    "show": "Show information about the employee",
     "detail": {
       "header": {
         "add": "Add new employee",

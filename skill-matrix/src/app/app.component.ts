@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import localeEn from '@angular/common/locales/en';
+import localePl from '@angular/common/locales/pl';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -15,5 +18,8 @@ export class AppComponent {
 
     // the lang to use, if the lang isn't available, it will use the current loader to get them
     translate.use('en');
+
+    registerLocaleData(localeEn);
+    registerLocaleData(localePl);
   }
 }

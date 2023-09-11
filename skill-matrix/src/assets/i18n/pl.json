@@ -19,10 +19,15 @@
     "password": "Hasło",
     "log.in": "Zaloguj się"
   },
+  "table": {
+    "number": "Lp."
+  },
   "employee": {
+    "id": "ID",
     "header": "Informacje o pracownikach",
-    "top": "Najlepsi pracownicy",
+    "recent.header": "Ostatnio zatrudnieni pracownicy",
     "search": "Szukaj pracowników",
+    "show": "Show information about the employee",
     "detail": {
       "header": {
         "add": "Dodaj nowego pracownika",

@@ -1,4 +1,5 @@
 @import "../../app.component";
+@import "../../styles/colors";
 
 .dashboard {
   display: flex;
@@ -7,5 +8,16 @@
 
   &__content {
     width: $card-content-width;
+  }
+
+  &__table {
+    table-layout: fixed;
+    width: 100%;
+    display: table;
+  }
+
+  &__row-link:hover {
+    cursor: pointer;
+    background-color: $app-medium-dim-gray !important;
   }
 }

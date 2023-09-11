@@ -3,8 +3,8 @@ import { AuthenticationService } from '../../../core/services/authentication.ser
 import { Component } from '@angular/core';
 import { DateAdapter } from '@angular/material/core';
 import { MessageService } from '../../../core/services/message.service';
+import { ROUTE_PATHS } from '../../../config/route-paths';
 import { TranslateService } from '@ngx-translate/core';
-import {ROUTE_PATHS} from "../../../config/route-paths";
 
 @Component({
   selector: 'app-navbar',

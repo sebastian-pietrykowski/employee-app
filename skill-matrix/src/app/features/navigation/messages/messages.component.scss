@@ -1,7 +1,8 @@
 .messages {
   max-height: 55vh;
 
-  &__header, &__actions {
+  &__header,
+  &__actions {
     display: flex;
     justify-content: center;
     align-items: center;

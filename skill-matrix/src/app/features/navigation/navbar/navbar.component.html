@@ -1,5 +1,6 @@
 <mat-toolbar class="navbar">
-  <button class="navbar__link-menu"
+  <button
+    class="navbar__link-menu"
     mat-icon-button
     aria-label="Example icon-button with menu icon"
     attr.aria-label="{{ 'navigation.language' | translate }}"
@@ -9,10 +10,10 @@
   </button>
   <mat-menu #linkMenu="matMenu">
     <a mat-menu-item routerLink="/{{ ROUTE_PATHS.DASHBOARD }}"
-    ><span>{{ "navigation.dashboard" | translate }}</span></a
+      ><span>{{ "navigation.dashboard" | translate }}</span></a
     >
     <a mat-menu-item routerLink="/{{ ROUTE_PATHS.EMPLOYEES }}"
-    ><span>{{ "navigation.employee" | translate }}</span></a
+      ><span>{{ "navigation.employee" | translate }}</span></a
     >
   </mat-menu>
   <a mat-button class="navbar__link" routerLink="/{{ ROUTE_PATHS.DASHBOARD }}"

@@ -8,16 +8,16 @@ $card-content-width: 80%;
 $top-margin: 4%;
 $flex-gap: 5rem;
 
-@media screen and (min-width: $large-screen-min-width){
+@media screen and (min-width: $large-screen-min-width) {
   $container-width: 50%;
 }
 
 .app-container__content {
   width: $normal-screen-container-width;
-  @media screen and (min-width: $large-screen-min-width){
+  @media screen and (min-width: $large-screen-min-width) {
     width: $large-screen-container-width;
   }
-  @media screen and (min-width: $extra-large-screen-min-width){
+  @media screen and (min-width: $extra-large-screen-min-width) {
     width: $extra-large-screen-container-width;
   }
   margin: $top-margin auto;
