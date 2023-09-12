@@ -20,8 +20,8 @@ import java.util.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @ToString
+@Builder
 public class Employee implements Comparable<Employee>, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -42,9 +42,11 @@ public class Employee implements Comparable<Employee>, UserDetails {
     private LocalDate employmentDate;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Builder.Default
     private Set<Project> projects = new TreeSet<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Builder.Default
     private Set<Skill> skills = new TreeSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -54,13 +56,19 @@ public class Employee implements Comparable<Employee>, UserDetails {
     @OneToMany(mappedBy = "manager")
     private Set<Employee> subordinates = new TreeSet<>();
 
+    @Column(name = "username")
     private String username;
+
+    @Column(name = "password")
     private String password;
 
+    @Column(name = "role")
     @Enumerated(EnumType.STRING)
-    private Role role;
+    @Builder.Default
+    private Role role = Role.USER;
+
     @Override
-    public int compareTo(Employee otherEmployee) {
+    public int compareTo(@NonNull Employee otherEmployee) {
         return Comparator
                 .comparing(Employee::getSurname)
                 .thenComparing(Employee::getName)

@@ -69,8 +69,8 @@ public class EmployeeService {
                 .toList();
     }
 
-    public List<EmployeeResponse> getEmployeesByNameOrSurnameContaining(String term) {
-        List<Employee> employeeList = employeeRepository.findByNameOrSurnameContainingIgnoreCase(term);
+    public List<EmployeeResponse> getEmployeesByNameWithSurnameContaining(String term) {
+        List<Employee> employeeList = employeeRepository.findByNameWithSurnameContainingIgnoreCase(term);
 
         return employeeList.stream()
                 .map(mapStructMapper::employeeToEmployeeResponse)

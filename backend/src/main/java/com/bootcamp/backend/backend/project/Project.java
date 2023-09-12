@@ -2,15 +2,14 @@ package com.bootcamp.backend.backend.project;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity(name = "project")
 @Table(name = "project")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Project implements Comparable<Project> {

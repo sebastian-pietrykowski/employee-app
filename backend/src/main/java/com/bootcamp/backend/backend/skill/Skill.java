@@ -2,15 +2,14 @@ package com.bootcamp.backend.backend.skill;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.UUID;
 
 @Entity(name = "skill")
 @Table(name = "skill")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class Skill implements Comparable<Skill> {
