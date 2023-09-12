@@ -212,7 +212,7 @@ class EmployeeServiceTest {
         underTest.deleteEmployeeById(employee.getId());
 
         //then
-        verify(employeeRepository, times(1)).deleteById(employee.getId());
+        verify(employeeRepository, times(1)).deleteSafelyById(employee.getId());
     }
 
     @Test
@@ -393,7 +393,7 @@ class EmployeeServiceTest {
                 .manager(oldEmployeeResponse.manager())
                 .build();
 
-        when(employeeRepository.existsById(oldEmployee.getId())).thenReturn(true);
+        when(employeeRepository.findById(oldEmployee.getId())).thenReturn(Optional.of(oldEmployee));
         when(employeeRepository.save(newEmployee)).thenReturn(newEmployee);
         when(mapper.employeeRequestToEmployee(eq(newEmployeeRequest), any(MapperEmployeeServiceContext.class)))
                 .thenReturn(newEmployee);

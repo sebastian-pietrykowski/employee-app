@@ -49,7 +49,7 @@ public class Employee implements Comparable<Employee>, UserDetails {
     @Builder.Default
     private Set<Skill> skills = new TreeSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "manager_id")
     private Employee manager;
 
