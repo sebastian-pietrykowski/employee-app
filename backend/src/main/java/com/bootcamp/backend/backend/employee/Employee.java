@@ -5,9 +5,7 @@ import com.bootcamp.backend.backend.skill.Skill;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -16,8 +14,10 @@ import java.util.*;
 @Entity(name = "employee")
 @Table(name = "employee")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Employee implements Comparable<Employee> {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -38,9 +38,11 @@ public class Employee implements Comparable<Employee> {
     private LocalDate employmentDate;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Builder.Default
     private Set<Project> projects = new TreeSet<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @Builder.Default
     private Set<Skill> skills = new TreeSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -48,7 +50,7 @@ public class Employee implements Comparable<Employee> {
     private Employee manager;
 
     @Override
-    public int compareTo(Employee otherEmployee) {
+    public int compareTo(@NonNull Employee otherEmployee) {
         return Comparator
                 .comparing(Employee::getSurname)
                 .thenComparing(Employee::getName)

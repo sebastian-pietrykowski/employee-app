@@ -52,7 +52,7 @@ public class EmployeeController {
         if (term == null) {
             employees = employeeService.getEmployees();
         } else {
-            employees = employeeService.getEmployeesByNameOrSurnameContaining(term);
+            employees = employeeService.getEmployeesByNameWithSurnameContaining(term);
         }
         return ResponseEntity.status(HttpStatus.OK).body(employees);
     }

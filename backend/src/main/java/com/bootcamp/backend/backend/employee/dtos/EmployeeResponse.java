@@ -6,13 +6,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
+@Builder
 public record EmployeeResponse(
         @NotEmpty(message = "Property 'id' is not defined")
         @JsonProperty("id")
@@ -29,7 +31,7 @@ public record EmployeeResponse(
         @NotNull(message = "Property 'employmentDate' is not defined")
         @DateTimeFormat
         @JsonProperty("employmentDate")
-        Date employmentDate,
+        LocalDate employmentDate,
 
         @NotNull(message = "Property 'projects' is not defined")
         @JsonProperty("projects")

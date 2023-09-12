@@ -3,13 +3,15 @@ package com.bootcamp.backend.backend.employee.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Builder
 public record EmployeeRequest(
         @JsonProperty("id")
         UUID id,
@@ -25,7 +27,7 @@ public record EmployeeRequest(
         @NotNull(message = "Property 'employmentDate' is not defined")
         @DateTimeFormat
         @JsonProperty("employmentDate")
-        Date employmentDate,
+        LocalDate employmentDate,
 
         @NotNull(message = "Property 'projectIds' is not defined")
         @JsonProperty("projectIds")
