@@ -1,4 +1,4 @@
-import { Employee } from '../models/employee';
+import { EmployeeResponse } from '../models/employee-response';
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
 import { MOCK_EMPLOYEES } from '../mocks/mock-employees';
@@ -19,7 +19,7 @@ export class InMemoryDataService implements InMemoryDbService {
     return db;
   }
 
-  genId(employees: Employee[]): string {
+  genId(employees: EmployeeResponse[]): string {
     const idAtLastIndex = employees.at(-1)?.id ?? '0';
 
     return (Number(idAtLastIndex) + 1).toString();

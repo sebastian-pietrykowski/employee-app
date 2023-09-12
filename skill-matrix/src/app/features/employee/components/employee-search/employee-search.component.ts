@@ -7,7 +7,7 @@ import {
   distinctUntilChanged,
   switchMap,
 } from 'rxjs';
-import { Employee } from '../../../../core/models/employee';
+import { EmployeeResponse } from '../../../../core/models/employee-response';
 import { EmployeeService } from '../../../../core/services/employee.service';
 import { ROUTE_PATHS } from '../../../../config/route-paths';
 
@@ -17,7 +17,7 @@ import { ROUTE_PATHS } from '../../../../config/route-paths';
   styleUrls: ['./employee-search.component.scss'],
 })
 export class EmployeeSearchComponent implements OnInit {
-  employees$: Observable<Employee[]> = EMPTY;
+  employees$: Observable<EmployeeResponse[]> = EMPTY;
 
   protected readonly SHOW_EMPLOYEE = ROUTE_PATHS.SHOW_EMPLOYEE;
 

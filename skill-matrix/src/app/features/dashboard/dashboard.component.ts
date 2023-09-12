@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { Employee } from '../../core/models/employee';
+import { EmployeeResponse } from '../../core/models/employee-response';
 import { EmployeeService } from '../../core/services/employee.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { EmployeeService } from '../../core/services/employee.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  employees: Employee[] = [];
+  employees: EmployeeResponse[] = [];
   private unsubscribe$ = new Subject();
 
   constructor(private readonly employeeService: EmployeeService) {}

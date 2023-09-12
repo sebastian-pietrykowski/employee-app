@@ -5,8 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './core/services/in-memory-data.service';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDateFnsModule } from '@angular/material-date-fns-adapter';
@@ -43,10 +41,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDateFnsModule,
     NavigationModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService, {
-      dataEncapsulation: false,
-      passThruUnknownUrl: true,
-    }),
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,

@@ -12,6 +12,7 @@ a {
   border-radius: $button-border-radius;
   cursor: pointer;
   padding: $button-padding;
+  text-align: center;
 
   &:disabled {
     cursor: auto;

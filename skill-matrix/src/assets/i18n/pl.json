@@ -49,6 +49,9 @@
         "added": "Dodano pracownika id={{id}}",
         "deleted": "Usunięto pracownika id={{id}}",
         "fetched": "Pobrano pracowników",
+        "manager": {
+          "fetched": "Pobrano menedżerów"
+        },
         "search": {
           "failure": "Nie znaleziono pracowników pasujących do '{{term}}'",
           "success": "Znaleziono pracowników pasujących do '{{term}}'"

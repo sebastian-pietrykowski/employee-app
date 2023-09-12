@@ -25,13 +25,13 @@
       <form
         class="employee-detail__form"
         [formGroup]="employeeProfileForm"
-        (ngSubmit)="submitForm()"
+        (ngSubmit)="submitFormAndExitPage()"
       >
         <div class="employee-detail__inner-form">
           <div class="employee-detail__form-fields">
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="name"
+                <mat-label
                   ><span
                     >{{ "employee.detail.name" | translate }}:
                   </span></mat-label
@@ -42,7 +42,7 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="surname"
+                <mat-label
                   >{{ "employee.detail.surname" | translate }}:
                 </mat-label>
                 <input
@@ -56,7 +56,7 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="employmentDatePicker"
+                <mat-label
                   ><span
                     >{{ "employee.detail.employment.date" | translate }}:
                   </span></mat-label
@@ -77,14 +77,14 @@
 
             <div class="employee-detail__form-field">
               <mat-form-field class="employee-detail__form-field">
-                <mat-label for="managerSelect">
+                <mat-label>
                   {{ "employee.detail.manager.manager" | translate }}
                 </mat-label>
-                <mat-select formControlName="managerId" id="managerSelect">
+                <mat-select formControlName="manager" id="managerSelect">
                   <mat-option [value]="undefined">-</mat-option>
                   <mat-option
                     *ngFor="let manager of possibleManagers"
-                    [value]="manager.id"
+                    [value]="manager"
                   >
                     {{ manager.name }} {{ manager.surname }}
                   </mat-option>
@@ -93,17 +93,14 @@
             </div>
           </div>
 
-          <div formArrayName="listOfSkills" class="employee-detail__list">
+          <div formArrayName="skills" class="employee-detail__list">
             <div class="employee-detail__subheader">
               <h2>{{ "employee.detail.skills.skills" | translate }}:</h2>
             </div>
             <div class="employee-detail__form-fields">
               <div
                 class="employee-detail__form-field"
-                *ngFor="
-                  let skillControl of listOfSkills.controls;
-                  let index = index
-                "
+                *ngFor="let skillControl of skills.controls; let index = index"
               >
                 <mat-form-field
                   class="employee-detail__form-field"
@@ -125,14 +122,14 @@
                   <mat-autocomplete #skillAuto="matAutocomplete">
                     <mat-option
                       *ngFor="
-                        let possibleSkill of findSkillsForAutocomplete(
-                          employee?.listOfSkills?.at(index) ?? '',
-                          skillControl
+                        let possibleSkill of this.findSkillsForAutocomplete(
+                          skillControl.value,
+                          employee?.skills?.at(index)
                         )
                       "
-                      [value]="possibleSkill"
+                      [value]="possibleSkill.name"
                     >
-                      {{ possibleSkill }}
+                      {{ possibleSkill.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -171,7 +168,7 @@
             </div>
           </div>
 
-          <div formArrayName="listOfProjects" class="employee-detail__list">
+          <div formArrayName="projects" class="employee-detail__list">
             <div class="employee-detail__subheader">
               <h2>{{ "employee.detail.projects.projects" | translate }}:</h2>
             </div>
@@ -179,7 +176,7 @@
               <div
                 class="employee-detail__form-field"
                 *ngFor="
-                  let projectControl of listOfProjects.controls;
+                  let projectControl of projects.controls;
                   let index = index
                 "
               >
@@ -187,7 +184,7 @@
                   class="employee-detail__form-field"
                   id="project-{{ index }}"
                 >
-                  <mat-label for="project-index"
+                  <mat-label
                     >{{ "employee.detail.projects.project" | translate }}
                     {{ index + 1 }}</mat-label
                   >
@@ -206,13 +203,13 @@
                     <mat-option
                       *ngFor="
                         let possibleProject of findProjectsForAutocomplete(
-                          employee?.listOfProjects?.at(index) ?? '',
-                          projectControl
+                          projectControl.value,
+                          employee?.projects?.at(index)
                         )
                       "
-                      [value]="possibleProject"
+                      [value]="possibleProject.name"
                     >
-                      {{ possibleProject }}
+                      {{ possibleProject.name }}
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
@@ -253,7 +250,7 @@
       </form>
     </mat-card-content>
     <mat-card-actions class="employee-detail__action-buttons">
-      <a
+      <button
         mat-raised-button
         color="primary"
         type="submit"
@@ -263,16 +260,15 @@
             !wasSkillControlRemoved &&
             employeeProfileForm.pristine)
         "
-        routerLink=""
-        (click)="submitForm(); this.goBack()"
+        (click)="submitFormAndExitPage()"
       >
         {{ "employee.detail.submit" | translate }}
-      </a>
+      </button>
       <button
         mat-raised-button
         color="accent"
         type="button"
-        (click)="resetForm()"
+        (click)="fillFormWithEmployee()"
         [disabled]="
           checkIfLastProjectAndSkillAreNotEmpty() &&
           employeeProfileForm.pristine
@@ -280,25 +276,23 @@
       >
         {{ "employee.detail.undo" | translate }}
       </button>
-      <a
+      <button
         mat-raised-button
         color="accent"
         type="button"
-        routerLink=""
-        (click)="deleteEmployee(); this.goBack()"
+        (click)="deleteEmployeeAndExitPage()"
         [disabled]="isEmployeeNewlyCreated()"
       >
         {{ "employee.detail.delete" | translate }}
-      </a>
-      <a
+      </button>
+      <button
         mat-raised-button
         color="accent"
         type="button"
-        routerLink=""
-        (click)="this.goBack()"
+        (click)="this.exitPage()"
       >
         {{ "employee.detail.back" | translate }}
-      </a>
+      </button>
     </mat-card-actions>
   </mat-card>
 </ng-template>
