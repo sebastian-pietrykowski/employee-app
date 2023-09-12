@@ -85,8 +85,14 @@ public class EmployeeService {
         checkIfIdsFromPathAndBodyMatch(idFromPath, employeeRequest.id());
         Employee employeeWithUpdates = mapStructMapper
                 .employeeRequestToEmployee(employeeRequest, mapperEmployeeServiceContext);
-        throwExceptionIfEmployeeNotFound(employeeWithUpdates);
+        Employee oldEmployee = employeeRepository.findById(employeeRequest.id())
+                .orElseThrow(() -> new EmployeeNotFoundException(employeeRequest.id()));
         checkIfManagerIsValid(employeeWithUpdates.getManager());
+
+        employeeWithUpdates.setUsername(oldEmployee.getUsername());
+        employeeWithUpdates.setPassword(oldEmployee.getPassword());
+        employeeWithUpdates.setRole(oldEmployee.getRole());
+
         Employee updatedEmployee = employeeRepository.save(employeeWithUpdates);
 
         return mapStructMapper.employeeToEmployeeResponse(updatedEmployee);

@@ -23,4 +23,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID> {
         });
         deleteById(id);
     }
+
+    default void deleteSafelyAll(UUID id) {
+        this.findAll().forEach((Employee foundEmployee) -> {
+            foundEmployee.getSubordinates().forEach((Employee subordinate) -> {
+                subordinate.setManager(null);
+            });
+        });
+        this.deleteAll();
+
+    }
 }
