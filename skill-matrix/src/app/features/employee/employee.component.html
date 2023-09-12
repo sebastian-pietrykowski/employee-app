@@ -1,7 +1,7 @@
 <mat-spinner *ngIf="isLoading; else employee" class="spinner"> </mat-spinner>
 <ng-template #employee>
   <mat-card class="employee">
-    <mat-card-header class="employee__header">
+    <mat-card-header>
       <mat-card-title>
         <header>
           <h1>{{ "employee.header" | translate }}</h1>
@@ -20,7 +20,7 @@
             color="accent"
             class="employee__list-button"
             type="button"
-            routerLink="/employee/show/{{ employee.id }}"
+            [routerLink]="['/' + ROUTE_PATHS.SHOW_EMPLOYEE + '/' + employee.id]"
           >
             <span class="employee__full-name-select"
               >{{ employee.name }} {{ employee.surname }}</span
@@ -33,7 +33,7 @@
             color="accent"
             class="employee__list-button employee__list-add-button"
             type="button"
-            routerLink="/employee/add"
+            [routerLink]="['/' + ROUTE_PATHS.ADD_EMPLOYEE]"
           >
             <span class="employee__full-name-select">+</span>
           </a>

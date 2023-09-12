@@ -1,6 +1,7 @@
 @import "./styles/screen-sizes";
 
-$normal-screen-container-width: 85%;
+$extra-small-screen-container-width: 95%;
+$small-screen-container-width: 80%;
 $large-screen-container-width: 60%;
 $extra-large-screen-container-width: 50%;
 
@@ -13,13 +14,14 @@ $flex-gap: 5rem;
 }
 
 .app-container__content {
-  width: $normal-screen-container-width;
+  width: $extra-small-screen-container-width;
+  @media screen and (min-width: $small-screen-min-width) {
+    width: $small-screen-container-width;
+  }
   @media screen and (min-width: $large-screen-min-width) {
     width: $large-screen-container-width;
   }
-  @media screen and (min-width: $extra-large-screen-min-width) {
-    width: $extra-large-screen-container-width;
-  }
+
   margin: $top-margin auto;
   display: flex;
   flex-direction: column;

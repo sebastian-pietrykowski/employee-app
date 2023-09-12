@@ -17,6 +17,9 @@ export class NavbarComponent {
     ['en', enUS],
     ['pl', pl],
   ]);
+
+  protected readonly ROUTE_PATHS = ROUTE_PATHS;
+
   constructor(
     readonly authenticationService: AuthenticationService,
     readonly messageService: MessageService,
@@ -35,6 +38,4 @@ export class NavbarComponent {
   logOut() {
     this.authenticationService.logout();
   }
-
-  protected readonly ROUTE_PATHS = ROUTE_PATHS;
 }

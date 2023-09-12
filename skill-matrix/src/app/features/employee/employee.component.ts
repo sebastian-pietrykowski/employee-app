@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { EmployeeResponse } from '../../core/models/employee-response';
 import { EmployeeService } from '../../core/services/employee.service';
+import {ROUTE_PATHS} from "../../config/route-paths";
 
 @Component({
   selector: 'app-employee',
@@ -11,6 +12,8 @@ import { EmployeeService } from '../../core/services/employee.service';
 export class EmployeeComponent implements OnInit, OnDestroy {
   employeeList: EmployeeResponse[] = [];
   isLoading = true;
+
+  protected readonly ROUTE_PATHS = ROUTE_PATHS;
 
   private unsubscribe$ = new Subject();
 

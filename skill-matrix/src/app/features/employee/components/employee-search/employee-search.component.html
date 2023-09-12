@@ -11,7 +11,7 @@
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option
         *ngFor="let employee of employees$ | async"
-        routerLink="/{{ SHOW_EMPLOYEE }}/{{ employee.id }}"
+        [routerLink]="['/' + ROUTE_PATHS.SHOW_EMPLOYEE + '/' + employee.id]"
       >
         {{ employee.name }} {{ employee.surname }}
       </mat-option>
