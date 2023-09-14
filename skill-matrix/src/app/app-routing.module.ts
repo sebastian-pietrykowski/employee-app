@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { ROUTE_PATHS } from './config/route-paths';
 
 const routes: Routes = [
-  { path: '', redirectTo: ROUTE_PATHS.DASHBOARD, pathMatch: 'full' },
+  { path: '', redirectTo: ROUTE_PATHS.LOGIN, pathMatch: 'full' },
   {
     path: ROUTE_PATHS.LOGIN,
     loadChildren: () =>
@@ -42,6 +42,7 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({

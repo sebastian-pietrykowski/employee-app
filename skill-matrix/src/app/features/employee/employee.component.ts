@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { EmployeeResponse } from '../../core/models/employee-response';
 import { EmployeeService } from '../../core/services/employee.service';
-import {ROUTE_PATHS} from "../../config/route-paths";
+import { ROUTE_PATHS } from '../../config/route-paths';
 
 @Component({
   selector: 'app-employee',

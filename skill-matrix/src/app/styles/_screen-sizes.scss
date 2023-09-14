@@ -1,6 +1,8 @@
 $extra-extra-large-screen-min-width: 1400px;
 
-$extra-large-screen-min-width: calc(#{$extra-extra-large-screen-min-width} - 1px);
+$extra-large-screen-min-width: calc(
+  #{$extra-extra-large-screen-min-width} - 1px
+);
 $extra-large-screen-min-width: 1200px;
 
 $large-screen-min-width: calc(#{$extra-large-screen-min-width} - 1px);
