@@ -1,10 +1,8 @@
 package com.bootcamp.backend.backend.project;
 
-import com.bootcamp.backend.backend.project.exception.ProjectAlreadyExistsException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "projects")
-@CrossOrigin()
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @AllArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
