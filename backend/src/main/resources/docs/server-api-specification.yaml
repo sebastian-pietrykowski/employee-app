@@ -6,6 +6,8 @@ info:
 servers:
   - url: localhost:8080/api
 tags:
+  - name: auth
+    description: Authentication
   - name: employees
     description: Everything about Employees
   - name: projects
@@ -158,6 +160,29 @@ paths:
                   $ref: '#/components/schemas/Manager'
         '400':
           description: Invalid status value
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      description: Authentication
+      operationId: login
+      requestBody:
+        description: Login data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        '401':
+          description: Invalid data (unauthorized)
   /projects:
     post:
       tags:
@@ -258,6 +283,26 @@ paths:
           description: Skill not found
 components:
   schemas:
+    AuthenticationRequest:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          example: my-username
+        password:
+          type: string
+          example: my.password
+    AuthenticationResponse:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: my-username
     EmployeeRequest:
       required:
         - name

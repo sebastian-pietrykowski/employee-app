@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "employees")
-@CrossOrigin()
+@RequestMapping("employees")
 @AllArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;
