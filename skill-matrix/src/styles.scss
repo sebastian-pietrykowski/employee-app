@@ -36,6 +36,10 @@ html {
   margin: auto auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 $my-primary: mat.define-palette(mat.$light-blue-palette, 200, 100, 400);
 $my-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
 $my-theme: mat.define-dark-theme(

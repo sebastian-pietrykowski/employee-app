@@ -42,7 +42,7 @@ export class AuthenticationService {
     );
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem('user');
     this.userSubject.next(null);
     this.exitPage();

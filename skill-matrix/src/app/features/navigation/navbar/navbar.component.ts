@@ -35,7 +35,7 @@ export class NavbarComponent {
     }
   }
 
-  logOut() {
+  logOut(): void {
     this.authenticationService.logout();
   }
 }

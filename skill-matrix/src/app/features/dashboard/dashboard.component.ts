@@ -6,7 +6,7 @@ import { ROUTE_PATHS } from '../../config/route-paths';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
-export interface ShortEmployeeWithDate {
+export interface EmployeeTableRow {
   id: string;
   name: string;
   surname: string;
@@ -19,7 +19,7 @@ export interface ShortEmployeeWithDate {
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  recentlyEmployedEmployees: ShortEmployeeWithDate[] = [];
+  recentlyEmployedEmployees: EmployeeTableRow[] = [];
   recentlyEmployedEmployeesHeaders = [
     'index',
     'name',
@@ -61,7 +61,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   private extractRecentlyEmployedEmployees(
     employees: EmployeeResponse[],
-  ): ShortEmployeeWithDate[] {
+  ): EmployeeTableRow[] {
     return employees
       .sort(
         (first, second) =>
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .slice(0, this.recentlyEmployedEmployeesLength)
       .map(
         (employeeResponse) =>
-          <ShortEmployeeWithDate>{
+          <EmployeeTableRow>{
             id: employeeResponse.id,
             name: employeeResponse.name,
             surname: employeeResponse.surname,

@@ -15,9 +15,10 @@
   },
   "log.in": {
     "header": "Zaloguj się do swojego konta",
-    "username": "Nazwa użytkownika",
+    "invalid": "Nieprawidłowe dane logowania",
+    "log.in": "Zaloguj się",
     "password": "Hasło",
-    "log.in": "Zaloguj się"
+    "username": "Nazwa użytkownika"
   },
   "table": {
     "number": "Lp."
