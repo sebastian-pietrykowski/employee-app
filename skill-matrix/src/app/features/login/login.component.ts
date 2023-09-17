@@ -1,11 +1,11 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { first, tap } from 'rxjs';
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ROUTE_PATHS } from '../../config/route-paths';
-import {first, forkJoin, tap} from 'rxjs';
-import { MatSnackBar } from "@angular/material/snack-bar";
-import { TranslateService } from "@ngx-translate/core";
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +23,7 @@ export class LoginComponent {
     private readonly translateService: TranslateService,
     private readonly formBuilder: FormBuilder,
     private readonly router: Router,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
   ) {
     this.loginForm = this.createLoginForm();
     if (this.authService.isUserLoggedIn()) {
@@ -39,7 +39,9 @@ export class LoginComponent {
       )
       .pipe(
         first(),
-        tap(() => { this.isLoading = true; })
+        tap(() => {
+          this.isLoading = true;
+        }),
       )
       .subscribe({
         next: () => {
@@ -68,13 +70,13 @@ export class LoginComponent {
   private showInvalidDataPrompt() {
     const durationInSeconds = 5;
     this.translateService
-      .get("log.in.invalid")
+      .get('log.in.invalid')
       .pipe(first())
       .subscribe((message) =>
-        this.snackBar.open(message, '',
-          {duration: durationInSeconds * 1000,
-            panelClass: ['text-center']
-          }
-        ));
+        this.snackBar.open(message, '', {
+          duration: durationInSeconds * 1000,
+          panelClass: ['text-center'],
+        }),
+      );
   }
 }

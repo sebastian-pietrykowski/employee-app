@@ -42,13 +42,13 @@
         "choose": "Wybierz menedżera"
       },
       "skills": {
-        "skills": "Umięjetności",
+        "header": "Umięjetności",
         "skill": "Umiejętność",
         "remove": "Usuń umiejętność",
         "add": "Dodaj kolejną umiejętność"
       },
       "projects": {
-        "projects": "Projekty",
+        "header": "Projekty",
         "project": "Projekt",
         "remove": "Usuń projekt",
         "add": "Dodaj kolejny projekt"

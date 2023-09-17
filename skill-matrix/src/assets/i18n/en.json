@@ -42,13 +42,13 @@
         "choose": "Choose a manager"
       },
       "skills": {
-        "skills": "Skills",
+        "header": "Skills",
         "skill": "Skill",
         "remove": "Remove skill",
         "add": "Add another skill"
       },
       "projects": {
-        "projects": "Projects",
+        "header": "Projects",
         "project": "Project",
         "remove": "Remove project",
         "add": "Add another project"
