@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("employees")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @AllArgsConstructor
 public class EmployeeController {
     private final EmployeeService employeeService;

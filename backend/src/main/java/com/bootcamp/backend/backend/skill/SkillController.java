@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "skills")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @AllArgsConstructor
 public class SkillController {
     private final SkillService skillService;

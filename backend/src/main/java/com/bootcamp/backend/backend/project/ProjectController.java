@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "projects")
-@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @AllArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
