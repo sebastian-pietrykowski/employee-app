@@ -19,7 +19,7 @@ import { ROUTE_PATHS } from '../../../../config/route-paths';
 export class EmployeeSearchComponent implements OnInit {
   employees$: Observable<EmployeeResponse[]> = EMPTY;
 
-  protected readonly SHOW_EMPLOYEE = ROUTE_PATHS.SHOW_EMPLOYEE;
+  protected readonly ROUTE_PATHS = ROUTE_PATHS;
 
   private searchTerms = new Subject<string>();
 

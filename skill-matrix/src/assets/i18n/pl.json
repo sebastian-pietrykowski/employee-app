@@ -1,12 +1,34 @@
 {
-  "nav": {
+  "navigation": {
     "dashboard": "Panel",
-    "employee": "Pracownicy"
+    "employee": "Pracownicy",
+    "language": "Zmień język",
+    "messages": "Pokaż wiadomości",
+    "log.in": "Zaloguj sie",
+    "log.out": "Wyloguj się"
+  },
+  "form": {
+    "submit": "Zatwierdź",
+    "undo": "Cofnij zmiany",
+    "delete": "Usuń",
+    "back": "Wróć"
+  },
+  "log.in": {
+    "header": "Zaloguj się do swojego konta",
+    "invalid": "Nieprawidłowe dane logowania",
+    "log.in": "Zaloguj się",
+    "password": "Hasło",
+    "username": "Nazwa użytkownika"
+  },
+  "table": {
+    "number": "Lp."
   },
   "employee": {
+    "id": "ID",
     "header": "Informacje o pracownikach",
-    "top": "Najlepsi pracownicy",
+    "recent.header": "Ostatnio zatrudnieni pracownicy",
     "search": "Szukaj pracowników",
+    "show": "Show information about the employee",
     "detail": {
       "header": {
         "add": "Dodaj nowego pracownika",
@@ -20,21 +42,17 @@
         "choose": "Wybierz menedżera"
       },
       "skills": {
-        "skills": "Umięjetności",
+        "header": "Umięjetności",
         "skill": "Umiejętność",
         "remove": "Usuń umiejętność",
         "add": "Dodaj kolejną umiejętność"
       },
       "projects": {
-        "projects": "Projekty",
+        "header": "Projekty",
         "project": "Projekt",
         "remove": "Usuń projekt",
         "add": "Dodaj kolejny projekt"
-      },
-      "submit": "Zatwierdź",
-      "undo": "Cofnij zmiany",
-      "delete": "Usuń",
-      "back": "Wróć"
+      }
     }
   },
   "messages": {

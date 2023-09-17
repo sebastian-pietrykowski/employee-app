@@ -1,12 +1,34 @@
 {
-  "nav": {
+  "navigation": {
     "dashboard": "Dashboard",
-    "employee": "Employees"
+    "employee": "Employees",
+    "language": "Change language",
+    "messages": "Show messages",
+    "log.in": "Log in",
+    "log.out": "Log out"
+  },
+  "form": {
+    "submit": "Submit",
+    "undo": "Undo changes",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "log.in": {
+    "header": "Log into your account",
+    "invalid": "Invalid login credentials",
+    "log.in": "Log in",
+    "password": "Password",
+    "username": "Username"
+  },
+  "table": {
+    "number": "No."
   },
   "employee": {
+    "id": "ID",
     "header": "Employee info",
-    "top": "Top employees",
+    "recent.header": "Recently hired employees",
     "search": "Search for employees",
+    "show": "Show information about the employee",
     "detail": {
       "header": {
         "add": "Add new employee",
@@ -20,21 +42,17 @@
         "choose": "Choose a manager"
       },
       "skills": {
-        "skills": "Skills",
+        "header": "Skills",
         "skill": "Skill",
         "remove": "Remove skill",
         "add": "Add another skill"
       },
       "projects": {
-        "projects": "Projects",
+        "header": "Projects",
         "project": "Project",
         "remove": "Remove project",
         "add": "Add another project"
-      },
-      "submit": "Submit",
-      "undo": "Undo changes",
-      "delete": "Delete",
-      "back": "Back"
+      }
     }
   },
   "messages": {

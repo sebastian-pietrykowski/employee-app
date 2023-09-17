@@ -1,5 +1,6 @@
 @import "../../styles/buttons";
 @import "../../styles/colors";
+@import "../../styles/variables";
 
 $font-size: 1.6rem;
 $flex-gap: 1.5rem;
@@ -19,12 +20,8 @@ $list-button-hover-left: 0.1rem;
   gap: $flex-gap;
   padding: 0 $sides-padding;
 
-  &__header {
-    margin-top: $flex-gap;
-  }
-
-  &__mat-card-content {
-    width: 75%;
+  &__content {
+    width: $card-content-width;
   }
 
   &__search-bar {
