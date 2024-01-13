@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "725e26cf-2857-45ff-859d-0b01118f9817",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23560905"
+	},
+	"item": [
+		{
+			"name": "addEmployee (no manager)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Jan\",\r\n    \"surname\": \"Kowalski-Nowak\",\r\n    \"employmentDate\": \"2023-07-17\",\r\n    \"projectIds\": [\"1aa63fd0-1af1-4b43-8691-6d01fdc5c070\"],\r\n    \"skillIds\": [\"5050d3fe-3654-4d86-ba3a-c109939b4a80\", \"f519b0b3-781c-494d-9197-5f2f47db618c\"]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addEmployee (no manager, projects, skills)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Aleksandra\",\r\n    \"surname\": \"Nowak\",\r\n    \"employmentDate\": \"2021-05-01\",\r\n    \"projectIds\": [],\r\n    \"skillIds\": []\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addEmployee (existing one)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"373acd6a-54e1-4291-ba16-6b80320db9c1\",\r\n    \"name\": \"Jan\",\r\n    \"surname\": \"Kowalski\",\r\n    \"employmentDate\": \"2023-07-17\",\r\n    \"projectIds\": [\"1aa63fd0-1af1-4b43-8691-6d01fdc5c070\"],\r\n    \"skillIds\": [\"5050d3fe-3654-4d86-ba3a-c109939b4a80\", \"f519b0b3-781c-494d-9197-5f2f47db618c\"]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addEmployee (with manager)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Michał\",\r\n    \"surname\": \"Kowalski\",\r\n    \"employmentDate\": \"2023-07-01\",\r\n    \"projectIds\": [\"1aa63fd0-1af1-4b43-8691-6d01fdc5c070\"],\r\n    \"skillIds\": [\"5050d3fe-3654-4d86-ba3a-c109939b4a80\", \"f519b0b3-781c-494d-9197-5f2f47db618c\"],\r\n    \"managerId\": \"173acd6a-54e1-4291-ba16-6b80320db9c1\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEmployees",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/employees",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEmployee",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/employees/9080083d-1619-4fbd-9f65-259c1d204039",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees",
+						"9080083d-1619-4fbd-9f65-259c1d204039"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getEmployee (with term)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/employees?term=nowak",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees"
+					],
+					"query": [
+						{
+							"key": "term",
+							"value": "nowak"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteEmployeeById",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/employees/373acd6a-54e1-4291-ba16-6b80320db9c1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees",
+						"373acd6a-54e1-4291-ba16-6b80320db9c1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateEmployee",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"373acd6a-54e1-4291-ba16-6b80320db9c1\",\r\n    \"name\": \"Jan\",\r\n    \"surname\": \"Kowalski\",\r\n    \"projectIds\": [\"1aa63fd0-1af1-4b43-8691-6d01fdc5c070\", \"7581f7c4-5c2c-4f4c-a8ca-d51d4433f91e\"],\r\n    \"skillIds\": [\"5050d3fe-3654-4d86-ba3a-c109939b4a80\", \"f519b0b3-781c-494d-9197-5f2f47db618c\"]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees/373acd6a-54e1-4291-ba16-6b80320db9c1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees",
+						"373acd6a-54e1-4291-ba16-6b80320db9c1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateEmployee (different ids)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"373acd6a-54e1-4291-ba16-6b80320db9c1\",\r\n    \"name\": \"Jan\",\r\n    \"surname\": \"Kowalski\",\r\n    \"employmentDate\": \"2023-07-17\",\r\n    \"projectIds\": [\"1aa63fd0-1af1-4b43-8691-6d01fdc5c070\", \"7581f7c4-5c2c-4f4c-a8ca-d51d4433f91e\"],\r\n    \"skillIds\": [\"5050d3fe-3654-4d86-ba3a-c109939b4a80\", \"f519b0b3-781c-494d-9197-5f2f47db618c\"]\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/employees/eaadbf4f-825e-4b07-9701-b216181d65ff",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"employees",
+						"eaadbf4f-825e-4b07-9701-b216181d65ff"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,64 @@
+{
+	"info": {
+		"_postman_id": "879cb905-f8ad-4996-814c-7e71bb2b1203",
+		"name": "Skill",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23560905"
+	},
+	"item": [
+		{
+			"name": "addSkill",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Java\"\r\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/skills",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"skills"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getSkills",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/skills",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"skills"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
