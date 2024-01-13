@@ -8,7 +8,7 @@ A full-stack application for managing employees within a company.
 * List of all employees
 * Search bar for employees
 * Adding, editing and removing an employee
-* Elaborated form for storing data about an employee, including separate lists of data
+* Elaborate form for storing data about an employee, including separate lists of data
 * Notifications window
 * Support for languages: English, Polish
 
