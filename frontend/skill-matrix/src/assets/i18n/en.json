@@ -1,0 +1,99 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "employee": "Employees",
+    "language": "Change language",
+    "messages": "Show messages",
+    "log.in": "Log in",
+    "log.out": "Log out"
+  },
+  "form": {
+    "submit": "Submit",
+    "undo": "Undo changes",
+    "delete": "Delete",
+    "back": "Back"
+  },
+  "log.in": {
+    "header": "Log into your account",
+    "invalid": "Invalid login credentials",
+    "log.in": "Log in",
+    "password": "Password",
+    "username": "Username"
+  },
+  "table": {
+    "number": "No."
+  },
+  "employee": {
+    "id": "ID",
+    "header": "Employee info",
+    "recent.header": "Recently hired employees",
+    "search": "Search for employees",
+    "show": "Show information about the employee",
+    "detail": {
+      "header": {
+        "add": "Add new employee",
+        "show": "{{name}} {{surname}} Details"
+      },
+      "name": "Name",
+      "surname": "Surname",
+      "employment.date": "Employment date",
+      "manager": {
+        "manager": "Manager",
+        "choose": "Choose a manager"
+      },
+      "skills": {
+        "header": "Skills",
+        "skill": "Skill",
+        "remove": "Remove skill",
+        "add": "Add another skill"
+      },
+      "projects": {
+        "header": "Projects",
+        "project": "Project",
+        "remove": "Remove project",
+        "add": "Add another project"
+      }
+    }
+  },
+  "messages": {
+    "header": "Messages",
+    "nothing.new": "Nothing new",
+    "clear": "Clear messages",
+    "employee": {
+      "component": {
+        "selected": "EmployeeComponent: Selected employee id={{id}}"
+      },
+      "service": {
+        "added": "Added employee id={{id}}",
+        "deleted": "Deleted employee id={{id}}",
+        "fetched": "Fetched employees",
+        "manager": {
+          "fetched": "Fetched managers"
+        },
+        "search": {
+          "failure": "No employees matching term '{{term}}'",
+          "success": "Found employees matching '{{term}}'"
+        },
+        "updated": "Updated employee id={{id}}"
+      }
+    },
+    "project": {
+      "service": {
+        "fetched": "Fetched projects",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
+      }
+    },
+    "skill": {
+      "service": {
+        "fetched": "Fetched skills",
+        "search": {
+          "failure": "No projects matching term '{{term}}'",
+          "success": "Found projects matching '{{term}}'"
+        }
+      }
+    }
+  }
+}

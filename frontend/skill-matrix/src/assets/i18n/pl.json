@@ -1,0 +1,99 @@
+{
+  "navigation": {
+    "dashboard": "Panel",
+    "employee": "Pracownicy",
+    "language": "Zmień język",
+    "messages": "Pokaż wiadomości",
+    "log.in": "Zaloguj sie",
+    "log.out": "Wyloguj się"
+  },
+  "form": {
+    "submit": "Zatwierdź",
+    "undo": "Cofnij zmiany",
+    "delete": "Usuń",
+    "back": "Wróć"
+  },
+  "log.in": {
+    "header": "Zaloguj się do swojego konta",
+    "invalid": "Nieprawidłowe dane logowania",
+    "log.in": "Zaloguj się",
+    "password": "Hasło",
+    "username": "Nazwa użytkownika"
+  },
+  "table": {
+    "number": "Lp."
+  },
+  "employee": {
+    "id": "ID",
+    "header": "Informacje o pracownikach",
+    "recent.header": "Ostatnio zatrudnieni pracownicy",
+    "search": "Szukaj pracowników",
+    "show": "Show information about the employee",
+    "detail": {
+      "header": {
+        "add": "Dodaj nowego pracownika",
+        "show": "{{name}} {{surname}} Szczegóły"
+      },
+      "name": "Imię",
+      "surname": "Nazwisko",
+      "employment.date": "Data zatrudnienia",
+      "manager": {
+        "manager": "Menedżer",
+        "choose": "Wybierz menedżera"
+      },
+      "skills": {
+        "header": "Umięjetności",
+        "skill": "Umiejętność",
+        "remove": "Usuń umiejętność",
+        "add": "Dodaj kolejną umiejętność"
+      },
+      "projects": {
+        "header": "Projekty",
+        "project": "Projekt",
+        "remove": "Usuń projekt",
+        "add": "Dodaj kolejny projekt"
+      }
+    }
+  },
+  "messages": {
+    "header": "Komunikaty",
+    "nothing.new": "Nic nowego",
+    "clear": "Wyczyść komunikaty",
+    "employee": {
+      "component": {
+        "selected": "EmployeeComponent: Wybrano pracownika id={{id}}"
+      },
+      "service": {
+        "added": "Dodano pracownika id={{id}}",
+        "deleted": "Usunięto pracownika id={{id}}",
+        "fetched": "Pobrano pracowników",
+        "manager": {
+          "fetched": "Pobrano menedżerów"
+        },
+        "search": {
+          "failure": "Nie znaleziono pracowników pasujących do '{{term}}'",
+          "success": "Znaleziono pracowników pasujących do '{{term}}'"
+        },
+        "updated": "Zaktualizowano pracownika id={{id}}"
+      }
+    },
+    "project": {
+      "service": {
+        "fetched": "Pobrano projekty",
+        "search": {
+          "failure": "Nie znaleziono projektów pasujących do '{{term}}'",
+          "success": "Znaleziono projekty pasujące do '{{term}}'"
+        }
+      }
+    },
+    "skill": {
+      "service": {
+        "fetched": "Pobrano umiejętności",
+        "search": {
+          "failure": "Nie znaleziono umiejętności pasujących do '{{term}}'",
+          "success": "Znaleziono umiejętności pasujące do '{{term}}'"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,60 @@
+<mat-spinner *ngIf="isLoading; else dashboard" class="spinner"> </mat-spinner>
+
+<ng-template #dashboard>
+  <mat-card class="dashboard">
+    <mat-card-header>
+      <mat-card-title>
+        <h1>{{ "employee.recent.header" | translate }}</h1>
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="dashboard__content">
+      <table
+        mat-table
+        [dataSource]="recentlyEmployedEmployees"
+        class="dashboard__table"
+      >
+        <ng-container matColumnDef="index">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "table.number" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "employee.detail.name" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.name }}</td>
+        </ng-container>
+        <ng-container matColumnDef="surname">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "employee.detail.surname" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let employee">{{ employee.surname }}</td>
+        </ng-container>
+        <ng-container matColumnDef="employmentDate">
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "employee.detail.employment.date" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let employee">
+            {{
+              employee.employmentDate
+                | date: "longDate" : "" : translateService.currentLang
+            }}
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="recentlyEmployedEmployeesHeaders"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: recentlyEmployedEmployeesHeaders"
+          role="link"
+          [routerLink]="['/' + ROUTE_PATHS.SHOW_EMPLOYEE + '/' + row.id]"
+          attr.aria-label="{{ 'employee.show' | translate }}"
+          class="dashboard__row-link"
+        ></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</ng-template>

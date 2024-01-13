@@ -1,0 +1,37 @@
+@import "../../../styles/colors";
+@import "../../../styles/screen-sizes";
+
+$navbar-height: 6rem;
+$navbar-padding: 3px;
+$navbar-border-bottom: 1px;
+$element-margin: 3px;
+$button-width: 3.5rem;
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: $navbar-height;
+  padding: $navbar-padding;
+  background-color: $app-dim-gray;
+  border-bottom: $navbar-border-bottom solid $app-medium-gray;
+
+  &__link-menu {
+    @media screen and (min-width: $small-screen-min-width) {
+      display: none;
+    }
+  }
+
+  &__link {
+    @media screen and (max-width: $extra-small-screen-max-width) {
+      display: none;
+    }
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

@@ -1,0 +1,29 @@
+@import "./styles/screen-sizes";
+
+$extra-small-screen-container-width: 95%;
+$small-screen-container-width: 80%;
+$large-screen-container-width: 60%;
+$extra-large-screen-container-width: 50%;
+
+$top-margin: 4%;
+$flex-gap: 5rem;
+
+@media screen and (min-width: $large-screen-min-width) {
+  $container-width: 50%;
+}
+
+.app-container__content {
+  width: $extra-small-screen-container-width;
+  @media screen and (min-width: $small-screen-min-width) {
+    width: $small-screen-container-width;
+  }
+  @media screen and (min-width: $large-screen-min-width) {
+    width: $large-screen-container-width;
+  }
+
+  margin: $top-margin auto;
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  gap: $flex-gap;
+}

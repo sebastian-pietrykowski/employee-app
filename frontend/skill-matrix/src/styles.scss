@@ -1,0 +1,58 @@
+@use "@angular/material" as mat;
+@import "app/styles/colors";
+@import "app/styles/buttons";
+@import "app/styles/headers";
+
+$font-size: 10px;
+$html-margin: 8px;
+
+body {
+  margin: 0;
+}
+
+html {
+  font-size: $font-size;
+  margin: $html-margin;
+  color: $app-white;
+}
+
+* {
+  // clear default password input settings to enable using Angular Material one
+  input[type="password"]::-ms-reveal,
+  input[type="password"]::-ms-clear {
+    display: none;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 1,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 48;
+}
+
+.spinner {
+  margin: auto auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+$my-primary: mat.define-palette(mat.$light-blue-palette, 200, 100, 400);
+$my-accent: mat.define-palette(mat.$green-palette, A200, A100, A400);
+$my-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+    // Only include `typography` and `density` in the default dark theme.
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+@include mat.all-component-themes($my-theme);
+@include mat.typography-hierarchy($my-theme);

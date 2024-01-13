@@ -1,0 +1,83 @@
+@import "../../styles/buttons";
+@import "../../styles/colors";
+@import "../../styles/variables";
+
+$font-size: 1.6rem;
+$flex-gap: 1.5rem;
+$sides-padding: 1rem;
+
+$list-button-margin: 0.5rem;
+$list-button-padding: 0.2rem;
+$list-button-border-radius: 4px;
+$list-button-height: 5rem;
+$list-button-hover-left: 0.1rem;
+
+.employee {
+  font-size: $font-size;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $flex-gap;
+  padding: 0 $sides-padding;
+
+  &__content {
+    width: $card-content-width;
+  }
+
+  &__search-bar {
+    width: 100%;
+  }
+
+  &__list {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin: 0 auto 0 auto;
+    list-style-type: none;
+    padding: 0;
+    width: 100%;
+  }
+
+  &__list-element {
+    display: flex;
+  }
+
+  &__list-button {
+    font-size: $font-size;
+    flex: 1;
+    cursor: pointer;
+    position: relative;
+    left: 0;
+    margin: $list-button-margin;
+    padding: $list-button-padding;
+    border-radius: $list-button-border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: $list-button-height;
+  }
+
+  &__list-button:hover {
+    color: $app-dark-slate-blue;
+    background-color: $app-very-light-gray;
+    left: $list-button-hover-left;
+  }
+
+  &__list-button:active {
+    background-color: $app-dim-gray;
+    color: $app-white;
+  }
+
+  &__employee_list {
+    display: inline-block;
+    color: $app-white;
+    background-color: $app-steel-blue;
+  }
+
+  &__employee_list &__full-name-select {
+    align-self: center;
+  }
+
+  &__detail {
+    padding: $button-margin;
+  }
+}

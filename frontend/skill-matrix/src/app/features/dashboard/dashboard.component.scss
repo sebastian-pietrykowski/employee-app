@@ -1,0 +1,23 @@
+@import "../../styles/colors";
+@import "../../styles/variables";
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__content {
+    width: $card-content-width;
+  }
+
+  &__table {
+    table-layout: fixed;
+    width: 100%;
+    display: table;
+  }
+
+  &__row-link:hover {
+    cursor: pointer;
+    background-color: $app-medium-dim-gray !important;
+  }
+}

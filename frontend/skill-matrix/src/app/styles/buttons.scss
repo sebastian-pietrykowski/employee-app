@@ -1,0 +1,29 @@
+@import "./colors";
+
+$button-margin: 0.5rem;
+$button-border-radius: 4px;
+$button-font-size: 1.2rem;
+$button-padding: 1rem;
+
+button,
+a {
+  margin: $button-margin;
+  border: none;
+  border-radius: $button-border-radius;
+  cursor: pointer;
+  padding: $button-padding;
+  text-align: center;
+
+  &:disabled {
+    cursor: auto;
+  }
+}
+
+a {
+  color: $app-white;
+}
+
+button {
+  color: $app-black;
+  font-size: $button-font-size;
+}
