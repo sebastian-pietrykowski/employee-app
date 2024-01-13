@@ -1,0 +1,412 @@
+openapi: 3.0.3
+info:
+  title: Skill matrix
+  description: Server storing information about Employees.
+  version: 1.0.11
+servers:
+  - url: localhost:8080/api
+tags:
+  - name: auth
+    description: Authentication
+  - name: employees
+    description: Everything about Employees
+  - name: projects
+    description: Access to projects
+  - name: skills
+    description: Access to skills
+paths:
+  /employees:
+    post:
+      tags:
+        - employees
+      summary: Add a new employee
+      description: Add a new employee
+      operationId: addEmployee
+      requestBody:
+        description: Create a new employee
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Invalid input
+        '409':
+          description: Employee already exists
+    get:
+      tags:
+        - employees
+      summary: Get all employees
+      description: Get all employees
+      operationId: getEmployees
+      parameters:
+        - name: term
+          in: query
+          required: false
+          description: Term matching name and surname
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Employee not found
+  /employees/{employeeId}:
+    get:
+      tags:
+        - employees
+      summary: Find employee by ID
+      description: Returns a single employee with specific ID
+      operationId: getEmployeeById
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employee to return
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Employee not found
+    put:
+      tags:
+        - employees
+      summary: Updates an employee by ID
+      description: Updates an employee with specific ID
+      operationId: updateEmployee
+      parameters:
+        - name: employeeId
+          in: path
+          description: ID of employee that needs to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Modify an employee
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmployeeRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeResponse'
+        '400':
+          description: Invalid input
+        '404':
+          description: Employee not found
+        '409':
+          description: IDs from path and body don't match
+    delete:
+      tags:
+        - employees
+      summary: Deletes an employee by ID
+      description: Deletes an employee with specific ID
+      operationId: deleteEmployee
+      parameters:
+        - name: employeeId
+          in: path
+          description: Employee id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Successfully deleted
+        '404':
+          description: Employee not found
+  /employees/managers:
+    get:
+      tags:
+        - employees
+      summary: Get all managers
+      description: Get all managers
+      operationId: getManagers
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Manager'
+        '400':
+          description: Invalid status value
+  /auth/login:
+    post:
+      tags:
+        - auth
+      summary: Login
+      description: Authentication
+      operationId: login
+      requestBody:
+        description: Login data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticationRequest'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthenticationResponse'
+        '401':
+          description: Invalid data (unauthorized)
+  /projects:
+    post:
+      tags:
+        - projects
+      summary: Add a new project
+      description: Add a new project
+      operationId: addProject
+      requestBody:
+        description: Create a new project
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Project'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid input
+        '409':
+          description: Project already exists
+    get:
+      tags:
+        - projects
+      summary: Get all projects
+      description: Get all projects
+      operationId: getProjects
+      parameters:
+        - name: term
+          in: query
+          description: Term matching project name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Project'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Project not found
+  /skills:
+    post:
+      tags:
+        - skills
+      summary: Add a new skill
+      description: Add a new skill
+      operationId: addSkill
+      requestBody:
+        description: Create a new skill
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Skill'
+        required: true
+      responses:
+        '201':
+          description: Successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '400':
+          description: Invalid input
+        '409':
+          description: Skill already exists
+    get:
+      tags:
+        - skills
+      summary: Get all skills
+      description: Get all skills
+      operationId: getSkills
+      parameters:
+        - name: term
+          in: query
+          description: Term matching skill name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Skill'
+        '400':
+          description: Invalid status value
+        '404':
+          description: Skill not found
+components:
+  schemas:
+    AuthenticationRequest:
+      required:
+        - username
+        - password
+      type: object
+      properties:
+        username:
+          type: string
+          example: my-username
+        password:
+          type: string
+          example: my.password
+    AuthenticationResponse:
+      required:
+        - username
+      type: object
+      properties:
+        username:
+          type: string
+          example: my-username
+    EmployeeRequest:
+      required:
+        - name
+        - surname
+        - employmentDate
+        - skills
+        - projects
+      type: object
+      properties:
+        id:
+          type: string
+          example: 373acd6a-54e1-4291-ba16-6b80320db9c1
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Kowalski
+        employmentDate:
+          type: string
+          format: date
+          example: 2023-7-17
+        projectIds:
+          type: array
+          items:
+            type: string
+          example:
+            - 1aa63fd0-1af1-4b43-8691-6d01fdc5c070
+            - 305bc94e-bfb8-42fa-b5da-5bf63fe6ec66
+        skillIds:
+          type: array
+          items:
+            type: string
+          example:
+            - 1da7bf61-0927-4a80-9048-62c06730a284
+            - 5050d3fe-3654-4d86-ba3a-c109939b4a80
+        managerId:
+          type: string
+          example: 9080083d-1619-4fbd-9f65-259c1d204039
+    EmployeeResponse:
+      required:
+        - id
+        - name
+        - surname
+        - employmentDate
+        - skills
+        - projects
+      type: object
+      properties:
+        id:
+          type: string
+          example: 373acd6a-54e1-4291-ba16-6b80320db9c1
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Kowalski
+        employmentDate:
+          type: string
+          format: date
+          example: 2023-7-17
+        projects:
+          $ref: '#/components/schemas/Project'
+        skills:
+          $ref: '#/components/schemas/Skill'
+        manager:
+          $ref: '#/components/schemas/Manager'
+    Manager:
+      required:
+        - id
+        - name
+        - surname
+      type: object
+      properties:
+        id:
+          type: string
+          example: 9080083d-1619-4fbd-9f65-259c1d204039
+        name:
+          type: string
+          example: Jan
+        surname:
+          type: string
+          example: Nowak
+    Project:
+      type: array
+      items:
+        type: string
+      example:
+        - DataTrackr
+        - eHealthPlus
+    Skill:
+      type: array
+      items:
+        type: string
+      example:
+        - Angular
+        - HTML
+        - CSS
+        - TypeScript
+  requestBodies:
+    Employee:
+      description: Employee object that needs to be added
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EmployeeResponse'
